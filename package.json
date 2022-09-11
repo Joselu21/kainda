@@ -1,0 +1,22 @@
+{
+    "name": "kainda",
+    "version": "1.0.0",
+    "description": "Helper functions and classes for creating new API projects",
+    "main": "./index.js",
+    "scripts": {
+    },
+    "keywords": [
+      "framework",
+      "backend",
+      "api",
+      "structure"
+    ],
+    "author": "Joselu21",
+    "license": "ISC",
+    "dependencies": {
+      "jsonwebtoken": "*",
+      "mongodb" : "*",
+      "sqlite3" : "*"
+    }
+  }
+  
