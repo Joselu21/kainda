@@ -33,9 +33,13 @@ class KaindaException extends Error {
 function ExceptionHandler(error, res) {
 
     // If the logs are active, log the error to the console
-    // TODO: Log the error to a handler
-    if (config.get("logging"))
-        console.log(error);
+    if (config.get("logging")) {
+        if(Logger) {
+            Logger.log(error);
+        } else {
+            console.log(error);
+        }
+    }
 
     // If error is an array, extract the first element, it should not happen.
     if (Array.isArray(error))
