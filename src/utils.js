@@ -1,35 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 
-function _mkdir(name) {
-    if (!fs.existsSync(name)) {
-        fs.mkdirSync(name);
-    } else {
-        throw new Error(`${name} directory already exists`);
-    }
-}
-
-function _copyTemplate(from, to) {
-    if (!fs.existsSync(from)) {
-        throw new Error(`${from} does not exist`);
-    }
-    if (fs.existsSync(to)) {
-        throw new Error(`${to} already exists`);
-    }
-    const template = fs.readFileSync(from, 'utf8');
-    // Create new file
-    fs.writeFileSync(to, template);
-
-}
-
-function _reformatFile(path, options = {}) {
-    let file = fs.readFileSync(path, 'utf8');
-    file = file.replaceAll("%%$MODEL_NAME_UPPERCASE$%%", options.entity_name.charAt(0).toUpperCase() + options.entity_name.slice(1));
-    file = file.replaceAll("%%$MODEL_NAME_LOWERCASE$%%", options.entity_name.toLowerCase());
-    file = file.replaceAll("%%$PROJECT_NAME$%%", options.project_name);
-    fs.writeFileSync(path, file);
-}
-
 function getFiles(path = "./app/", extension = "model.js") {
     const entries = fs.readdirSync(path, { withFileTypes: true });
 
@@ -69,24 +40,22 @@ function getModel(model) {
     return __exportModels()[model];
 }
 
-function requireIfExists(path) {
+function requireIfExists(file_path) {
     try {
-        const module = require(path);
+        const module = require(file_path);
         return module;
     }
     catch (e) {
-        if (e instanceof Error && e.code === "MODULE_NOT_FOUND")
-            console.log("Can't load module: " + path);
-        else
+        if (e instanceof Error && e.code === "MODULE_NOT_FOUND"){
+            //console.log("Can't load module: " + file_path);
+        } else {
             throw e;
+        }
     }
     return null;
 }
 
 const KaindaUtils = {
-    _mkdir,
-    _copyTemplate,
-    _reformatFile,
     getFiles,
     getModels,
     getModel,
