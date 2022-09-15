@@ -26,7 +26,8 @@ function __exportModels() {
 
     for (let i = 0; i < files.length; i++) {
         let model = files[i].name.substring(0, files[i].name.indexOf("."));
-        models[model.charAt(0).toUpperCase() + model.slice(1)] = require(path.join(process.cwd(), files[i].path));
+        let modelClass = require(path.join(process.cwd(), files[i].path));
+        models[modelClass.modelName ?? model.charAt(0).toUpperCase() + model.slice(1)] = modelClass;
     }
 
     return models;
