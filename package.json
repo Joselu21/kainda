@@ -1,24 +1,22 @@
 {
-    "name": "kainda",
-    "version": "2.0.3",
-    "description": "Helper functions and classes for creating new API projects",
-    "main": "./index.js",
-    "scripts": {
-    },
-    "bin": {
-      "kainda": "./bin/index.js"
-    },
-    "keywords": [
-      "framework",
-      "backend",
-      "api",
-      "structure"
-    ],
-    "author": "Joselu21",
-    "license": "ISC",
-    "dependencies": {
-      "chalk": "4.1.2",
-      "prompt" : "*"
-    }
+  "name": "kainda",
+  "version": "2.0.3",
+  "description": "Opinionated framework for backend APIs that has a CLI that generates a REST API with a CRUD interface for a given model.",
+  "main": "./index.js",
+  "scripts": {},
+  "bin": {
+    "kainda": "./bin/index.js"
+  },
+  "keywords": [
+    "framework",
+    "backend",
+    "api",
+    "structure"
+  ],
+  "author": "Joselu21",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "4.1.2",
+    "prompt": "*"
   }
-  
+}
