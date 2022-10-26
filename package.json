@@ -5,6 +5,9 @@
     "main": "./index.js",
     "scripts": {
     },
+    "bin": {
+      "kainda": "./bin/index.js"
+    },
     "keywords": [
       "framework",
       "backend",
@@ -14,9 +17,8 @@
     "author": "Joselu21",
     "license": "ISC",
     "dependencies": {
-      "jsonwebtoken": "*",
-      "mongodb" : "*",
-      "sqlite3" : "*"
+      "chalk": "4.1.2",
+      "prompt" : "*"
     }
   }
   

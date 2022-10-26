@@ -1,0 +1,48 @@
+const mongoose = require('mongoose');
+const { requireIfExists } = require("kainda");
+const path = require("path");
+
+const %%$MODEL_NAME_LOWERCASE$%%Schema = new mongoose.Schema({
+    // TODO: Fill the fields of the schema
+}, {
+    timestamps: true,
+
+});
+
+const %%$MODEL_NAME_UPPERCASE$%% = mongoose.model('%%$MODEL_NAME_UPPERCASE$%%', %%$MODEL_NAME_LOWERCASE$%%Schema);
+
+/**
+ * REQUIRES
+ */
+%%$MODEL_NAME_UPPERCASE$%%.Controller = requireIfExists(path.join(__dirname, '%%$MODEL_NAME_LOWERCASE$%%.controller'));
+%%$MODEL_NAME_UPPERCASE$%%.Exceptions = requireIfExists(path.join(__dirname, '%%$MODEL_NAME_LOWERCASE$%%.exceptions'));
+%%$MODEL_NAME_UPPERCASE$%%.Middlewares = requireIfExists(path.join(__dirname, '%%$MODEL_NAME_LOWERCASE$%%.middlewares'));
+%%$MODEL_NAME_UPPERCASE$%%.Routes = requireIfExists(path.join(__dirname, '%%$MODEL_NAME_LOWERCASE$%%.routes'));
+%%$MODEL_NAME_UPPERCASE$%%.Seeders = requireIfExists(path.join(__dirname, '%%$MODEL_NAME_LOWERCASE$%%.seeders'));
+%%$MODEL_NAME_UPPERCASE$%%.Validators = requireIfExists(path.join(__dirname, '%%$MODEL_NAME_LOWERCASE$%%.validators'));
+
+/**
+ * VARIABLES
+*/
+// TODO: Fill this
+%%$MODEL_NAME_UPPERCASE$%%.create_required_keys = [
+
+];
+
+// TODO: Fill this
+%%$MODEL_NAME_UPPERCASE$%%.updateable_keys = [
+
+];
+
+// TODO: Change this when not needed
+%%$MODEL_NAME_UPPERCASE$%%.seed_options = {
+    seed : true
+    dependencies: [
+    ],
+    is_seeded: false
+};
+
+// TODO: Change this when not needed
+%%$MODEL_NAME_UPPERCASE$%%.seed = true;
+
+module.exports = %%$MODEL_NAME_UPPERCASE$%%;

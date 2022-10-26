@@ -1,0 +1,32 @@
+{
+    "server": {
+        "host": "0.0.0.0",
+        "port": 3234
+    },
+    "databases": [
+        {
+            "description": "critical",
+            "username": "",
+            "password": "",
+            "host": "",
+            "port": 0,
+            "dialect": "",
+            "database_name": "",
+            "pool": {
+                "max": 5,
+                "min": 0,
+                "acquire": 30000,
+                "idle": 10000
+            }
+        }
+    ],
+    "cors": {
+        "origin": "*",
+        "methods": "GET,HEAD,PUT,PATCH,POST,DELETE"
+    },
+    "jwt" : {
+        "secret": "",
+        "expiresIn": "1d"
+    },
+    "logging": false
+}
