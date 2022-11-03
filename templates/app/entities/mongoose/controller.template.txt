@@ -21,14 +21,15 @@ async function __delete%%$MODEL_NAME_UPPERCASE$%%(container, transaction) {
 }
 
 async function create%%$MODEL_NAME_UPPERCASE$%%(req, res) {
-    let transaction = await sequelize.transaction();
+    let transaction = await mongoose.startSession();
     try {
+        transaction.startTransaction();
         const %%$MODEL_NAME_LOWERCASE$%% = await __create%%$MODEL_NAME_UPPERCASE$%%(req.body, transaction);
-        await transaction.commit();
+        await transaction.commitTransaction();
         return res.status(200).json(%%$MODEL_NAME_LOWERCASE$%%.toJSON());
     } catch (error) {
         if(transaction) {
-            await transaction.rollback();
+            await transaction.abortTransaction();
         }
         ExceptionHandler(error, res);
     }
@@ -40,11 +41,11 @@ async function getAll%%$MODEL_NAME_UPPERCASE$%%s(req, res) {
         if(!%%$MODEL_NAME_LOWERCASE$%%s || %%$MODEL_NAME_LOWERCASE$%%s.length === 0){
             throw new Models.%%$MODEL_NAME_UPPERCASE$%%.Exceptions.%%$MODEL_NAME_UPPERCASE$%%NotFoundException({
                 error_type: "NOT_FOUND",
-                error_message: "Currently, there are no %%$MODEL_NAME_LOWERCASE$%%s in the database."
+                error_message: "Currently, there are no %%$MODEL_NAME_LOWERCASE$%%s in the database.",
                 error_data: {
                     req: req.body
                 }
-            });
+            })
         }
         return res.status(200).json(%%$MODEL_NAME_LOWERCASE$%%s.map(
             (%%$MODEL_NAME_LOWERCASE$%%) => %%$MODEL_NAME_LOWERCASE$%%.toJSON()
@@ -73,29 +74,31 @@ async function get%%$MODEL_NAME_UPPERCASE$%%(req, res) {
 }
 
 async function update%%$MODEL_NAME_UPPERCASE$%%(req, res) {
-    let transaction = await sequelize.transaction();
+    let transaction = await mongoose.startSession();
     try {
+        transaction.startTransaction();
         let container = { ...req.body, %%$MODEL_NAME_LOWERCASE$%%_id: req.params.%%$MODEL_NAME_LOWERCASE$%%_id };
         const %%$MODEL_NAME_LOWERCASE$%% = await __update%%$MODEL_NAME_UPPERCASE$%%(container, transaction);
-        await transaction.commit();
+        await transaction.commitTransaction();
         return res.status(200).json(%%$MODEL_NAME_LOWERCASE$%%.toJSON()); 
     } catch (error) {
         if(transaction) {
-            await transaction.rollback();
+            await transaction.abortTransaction();
         }
         ExceptionHandler(error, res);
     }
 }
 
 async function delete%%$MODEL_NAME_UPPERCASE$%%(req, res) {
-    let transaction = await sequelize.transaction();
+    let transaction = await mongoose.startSession();
     try {
+        transaction.startTransaction();
         const %%$MODEL_NAME_LOWERCASE$%% = await __delete%%$MODEL_NAME_UPPERCASE$%%(req.params.%%$MODEL_NAME_LOWERCASE$%%_id ?? req.body.%%$MODEL_NAME_LOWERCASE$%%_id, transaction);
-        await transaction.commit();
+        await transaction.commitTransaction();
         return res.status(200).json(%%$MODEL_NAME_LOWERCASE$%%.toJSON()); 
     } catch (error) {
         if(transaction) {
-            await transaction.rollback();
+            await transaction.abortTransaction();
         }
         ExceptionHandler(error, res);
     }

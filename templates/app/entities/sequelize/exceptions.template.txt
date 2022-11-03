@@ -39,7 +39,8 @@ function %%$MODEL_NAME_UPPERCASE$%%ExceptionHandler(error, res) {
 
     if (error instanceof %%$MODEL_NAME_UPPERCASE$%%Exception) {
         res.status(error.response_code ?? error.code).json(error.body ?? {
-            message: error.message,
+            error_type: error.name,
+            error_message: error.message,
         });
     } 
 

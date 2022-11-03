@@ -4,7 +4,7 @@
  * If it is an object, it is the full response body
  * @param {*} code The code of the exception. The response code, if not specified, it is the default of that exception class.
  */
-class KaindaException extends Error {
+ class KaindaException extends Error {
     constructor(options, user_code = null) {
         if (typeof options === "string") {
             super(options);
@@ -35,7 +35,7 @@ function ExceptionHandler(error, res) {
     // If the logs are active, log the error to the console
     if (config.get("logging")) {
         if(Logger) {
-            Logger.log(error);
+            Logger.log("exceptions", error);
         } else {
             console.log(error);
         }
@@ -57,17 +57,47 @@ function ExceptionHandler(error, res) {
 
     // If the error is a Sequelize error
     if (error?.errors) {
+
         return res.status(500).send({
-            reason: error.errors[0].message,
-            attribute: error.errors[0].path,
+            error_type : "SEQUELIZE_ERROR",
+            error_message : error.errors[0].message,
+            error_data : error.errors[0]
         });
     
+    // MongoDB error
+    } else if ( error?.code || error?.kind) {
+
+        // If the error is a duplicate key error
+        if (error.code === 11000) {
+            return res.status(409).send({
+                error_type: "NOT_CREATED",
+                error_message: "The resource already exists",
+                error_data : error
+            });
+        }
+
+        // If the error is a casting error
+        if (error.kind === "ObjectId") {
+            return res.status(400).send({
+                error_type: "NOT_FOUND",
+                error_message: "The resource does not exist",
+                error_data : error
+            });
+        }
+
+        return res.status(500).send({
+            error_type: "MONGOOSE_ERROR",
+            error_message: "An error occurred while processing the request",
+            error_data : error
+        });
+
     // If the error is not handled correctly, send a generic error
     // NOTE: This should not happen, you must program your exceptions to be handled by this point
     } else {
         return res.status(418).send({
-            message: "This should never happen, fck im a teapot",
-            error: error.message
+            error_type: "GENERIC_ERROR",
+            error_message: "This should never happen, fck im a teapot",
+            error: error
         });
     }
 

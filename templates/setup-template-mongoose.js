@@ -47,16 +47,19 @@ async function main() {
     const server = https.createServer(app);
     server.listen(port, host, (err) => {
         if (err) {
-            console.log(err);
+            console.log(kainda.chalk.red(err));
             process.exit(1);
         }
-        Logger.log('adi_server_starts', `adi_server is running on ${host}:${port}`);
+        Logger.log('%%$PROJECT_NAME$%%_server_starts', `%%$PROJECT_NAME$%% is running on ${host}:${port}`);
         poll = false;
     });
 
-    while(poll) {
+    while (poll) {
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
+
+    console.log(kainda.chalk.green("[SERVER] Server started on " + host + ":" + port));
+
 
     return app;
 
@@ -86,7 +89,7 @@ async function setupMiddlewares(app) {
     app.use(function (req, res, next) {
         const ip = req.headers['origin'];
         if (!kainda.blockByIP(ip, { whitelist: whitelist })) {
-            console.log("[SECURITY] IP blocked: " + ip);
+            console.log(kainda.chalk.red("[SECURITY] IP blocked: " + ip));
             return res.status(403).send({ message: 'Forbidden' });
         }
         next();
@@ -139,14 +142,25 @@ async function setupLogger() {
     const logging_config = config.get('databases').filter(db => db.description === 'logging')[0];
 
     if (!logging_config) {
-        console.log("[CONFIG] Your configuration file is incorrect, you must specify a logging database");
+        console.log(kainda.chalk.yellow("[CONFIG] Your configuration file is incorrect, you must specify a logging database or disable database logging"));
+
+        // Log only to file and console
+        const Logger = new kainda.Logger("file", {
+            full_path: path.join(__dirname + "/logs/"),
+            loggers: [
+                new kainda.Logger("console", {})
+            ]
+        });
+
+        return Logger;
+
     }
 
     const logging_uri = "mongodb://" + logging_config.username + ":" + encodeURIComponent(logging_config.password) + "@"
         + logging_config.host + ":" + logging_config.port
         + "/" + logging_config.database_name;
 
-    // We start the logger database
+    // We start the logger database, and log also to file and to console
     const Logger = new kainda.Logger("mongodb", {
         uri: logging_uri,
         options: logging_config.options ?? {},
@@ -166,33 +180,34 @@ async function setupCriticalDatabase() {
     // Get critical database
     const critical = config.get('databases').filter(db => db.description === 'critical')[0];
 
-    if (!critical) {
-        console.log("[CONFIG] Your configuration file is incorrect, you must specify a critical database");
-        throw new Error("Your configuration file is incorrect, you must specify a critical database");
+    if (!critical || !critical.host || !critical.port || !critical.database_name) {
+        console.log(kainda.chalk.red("[CONFIG] Your configuration file is incorrect, you must specify a critical database"));
+        process.exit(1);
     }
 
     const uri = `mongodb://${critical.username}:${encodeURIComponent(critical.password)}@${critical.host}:${critical.port}/${critical.database_name}`;
-    await mongoose.connect(uri, { useNewUrlParser: true, compressors: ['zstd'] });
+    return await mongoose.connect(uri, { useNewUrlParser: true, compressors: ['zstd'] });
 
 }
 
 async function seedDatabase() {
 
-    if (process.env.NODE_ENV !== 'production' && process.argv.includes('seed')) {
-        let transaction = await sequelize.transaction();
+    if ((process.env.NODE_ENV !== 'production' && process.argv.includes('seed')) || process.env.NODE_ENV === 'test') {
+        let transaction = await mongoose.startSession();
         try {
-            console.log('[SEED] Seeding database...');
+            await transaction.startTransaction();
+            console.log(kainda.chalk.blue('[SEED] Seeding database...'));
             for (let model of Object.keys(Models)) {
                 await Models[model].Seeders.seed(transaction);
             }
             for (let model of Object.keys(Models)) {
                 await Models[model].Seeders.associate(transaction);
             }
-            await transaction.commit();
-            console.log('[SEED] Database seeded successfully');
+            await transaction.commitTransaction();
+            console.log(kainda.chalk.green('[SEED] Database seeded successfully'));
         } catch (error) {
-            await transaction.rollback();
-            console.log('[SEED] Error seeding database. Rolled back');
+            await transaction.abortTransaction();
+            console.log(kainda.chalk.red('[SEED] Error seeding database. Rolled back'));
         }
 
     }

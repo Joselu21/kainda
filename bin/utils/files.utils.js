@@ -1,5 +1,5 @@
 const { extractArgument } = require('./args.utils');
-const fs = require('fs'); 
+const fs = require('fs');
 
 let conflict_mode = extractArgument('--conflict_mode') ?? extractArgument('-c') ?? 'stop';
 
@@ -49,9 +49,12 @@ function _copyTemplate(from, to, overwrite_conflict_mode = null) {
 
 function _reformatFile(path, options = {}) {
     let file = fs.readFileSync(path, 'utf8');
-    file = file.replaceAll("%%$MODEL_NAME_UPPERCASE$%%", options.entity_name.charAt(0).toUpperCase() + options.entity_name.slice(1));
-    file = file.replaceAll("%%$MODEL_NAME_LOWERCASE$%%", options.entity_name.toLowerCase());
-    file = file.replaceAll("%%$PROJECT_NAME$%%", options.project_name);
+    if (options.entity_name) {
+        file = file.replaceAll("%%$MODEL_NAME_UPPERCASE$%%", options.entity_name.charAt(0).toUpperCase() + options.entity_name.slice(1));
+        file = file.replaceAll("%%$MODEL_NAME_LOWERCASE$%%", options.entity_name.toLowerCase());
+    } else if (options.project_name) {
+        file = file.replaceAll("%%$PROJECT_NAME$%%", options.project_name);
+    }
     fs.writeFileSync(path, file);
 }
 

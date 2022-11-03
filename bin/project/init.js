@@ -1,23 +1,34 @@
 const join = require('path').join;
 const prompt = require('prompt');
 const chalk = require('chalk');
+const fs = require('fs');
 const { _copyTemplate, _reformatFile, _mkdir } = require('../utils/files.utils');
-const { extractArgument } = require('../utils/args.utils');
+const { extractArgument, argsContains } = require('../utils/args.utils');
 
-function createPackageJson(project_name) {
+function createPackageJson(project_name, options = {}) {
 
-    _copyTemplate(join(__dirname, '../../templates/package-template.json'), './package.json');
+    console.log(chalk.yellow('Creating project with name: ' + project_name));
+    console.log(chalk.blue('Creating package.json...'));
+    if(options.sequelize) {
+        _copyTemplate(join(__dirname, '../../templates/package-template-sequelize.json'), './package.json');
+    } else if (options.mongoose) {
+        _copyTemplate(join(__dirname, '../../templates/package-template-mongoose.json'), './package.json');
+    }
     _reformatFile('./package.json', { project_name });
+    console.log(chalk.green('package.json created'));
 
 }
 
 function createIndexJs(project_name, options = {}) {
 
-    createPackageJson(project_name);
+    createPackageJson(project_name, options);
 
+    console.log(chalk.blue('Creating index.js and setup.js...'));
     if (options.sequelize) {
+        console.log(chalk.blue('Creating sequelize files...'));
         _copyTemplate(join(__dirname, '../../templates/setup-template-sequelize.js'), './setup.js');
     } else if (options.mongoose) {
+        console.log(chalk.blue('Creating mongoose files...'));
         _copyTemplate(join(__dirname, '../../templates/setup-template-mongoose.js'), './setup.js');
     }
 
@@ -25,26 +36,28 @@ function createIndexJs(project_name, options = {}) {
 
     _reformatFile('./setup.js', { project_name });
 
+    console.log(chalk.green('index.js and setup.js created'));
+
 }
 
 
-function initializeStructure(project_name) {
+function initializeStructure(project_name, options = {}) {
 
     try {
-        createIndexJs(project_name);
-        _mkdir('config', conflict_mode);
-        _copyTemplate(join(__dirname, '../../templates/config/default-config-template.json'), './config/default.json', conflict_mode);
-        _copyTemplate(join(__dirname, '../../templates/config/development-config-template.json'), './config/development.json', conflict_mode);
-        _copyTemplate(join(__dirname, '../../templates/config/production-config-template.json'), './config/production.json', conflict_mode);
-        _copyTemplate(join(__dirname, '../../templates/config/test-config-template.json'), './config/test.json', conflict_mode);
-        _copyTemplate(join(__dirname, '../../templates/gitignore.template.txt'), './.gitignore', conflict_mode);
-        _mkdir('app', conflict_mode);
-        _mkdir('app/entities', conflict_mode);
-        _mkdir('app/test', conflict_mode);
-        _copyTemplate(join(__dirname, '../../templates/app/test/mocha.setup.test.js'), './app/test/mocha.setup.test.js', conflict_mode);
-        _copyTemplate(join(__dirname, '../../templates/app/test/utils.test.js'), './app/test/utils.test.js', conflict_mode);
-        _mkdir('app/test/endpoints', conflict_mode);
-        _mkdir('app/test/unit', conflict_mode);
+        createIndexJs(project_name, options);
+        _mkdir('config');
+        _copyTemplate(join(__dirname, '../../templates/config/default-config-template.json'), './config/default.json');
+        _copyTemplate(join(__dirname, '../../templates/config/development-config-template.json'), './config/development.json');
+        _copyTemplate(join(__dirname, '../../templates/config/production-config-template.json'), './config/production.json');
+        _copyTemplate(join(__dirname, '../../templates/config/test-config-template.json'), './config/test.json');
+        _copyTemplate(join(__dirname, '../../templates/gitignore.template.txt'), './.gitignore');
+        _mkdir('app');
+        _mkdir('app/entities');
+        _mkdir('app/test');
+        _copyTemplate(join(__dirname, '../../templates/app/test/mocha.setup.test.js'), './app/test/mocha.setup.test.js');
+        _copyTemplate(join(__dirname, '../../templates/app/test/utils.test.js'), './app/test/utils.test.js');
+        _mkdir('app/test/endpoints');
+        _mkdir('app/test/unit');
     } catch (error) {
         console.log(error.message);
         return;
@@ -58,7 +71,8 @@ async function createProject(name = null) {
         name ??
         extractArgument('--project_name') ??
         extractArgument('-p') ??
-        extractArgument('create');
+        extractArgument('create') ??
+        extractArgument('init');
     while (!project_name) {
         console.log("Please, introduce a project name");
         prompt.start();
@@ -80,7 +94,12 @@ async function createProject(name = null) {
         }
     }
 
-    initializeStructure(project_name);
+    options = {
+        sequelize: argsContains('--sequelize') || argsContains('--relational') || argsContains('-sql') || argsContains('--sql'),
+        mongoose: argsContains('--mongoose') || argsContains('--non-relational') || argsContains('-nosql') || argsContains('--nosql'),
+    }
+
+    initializeStructure(project_name, options);
 
 }
 

@@ -9,6 +9,11 @@ function extractArgument(indicator) {
 
 }
 
+function argsContains(indicator) {
+    return process.argv.indexOf(indicator) > -1;
+}
+
 module.exports = {
-    extractArgument
+    extractArgument,
+    argsContains
 }

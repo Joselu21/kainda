@@ -2,6 +2,7 @@
 const prompt = require('prompt');
 const chalk = require('chalk');
 const createEntity = require('./entities/create');
+const createProject = require('./project/init');
 const { extractArgument } = require('./utils/args.utils');
 
 loop();
@@ -10,8 +11,8 @@ async function loop() {
 
     let exitCondition = false;
     let enterMode = process.argv[2];
-    console.log(enterMode);
     if (enterMode === 'project') {
+        console.log('enterManageProjects');
         await manageProjects();
         process.exit(0);
     } else if (enterMode === 'entity') {
@@ -72,12 +73,15 @@ async function manageProjects(action = null) {
     if(action) {
         switch (action) {
             case 'create':
+            case 'init':
+                console.log('createProject');
                 await createProject();
                 break;
             default:
                 console.log(chalk.red('Invalid project action: ' + action));
                 break;
         }
+        process.exit(0);
     }
 
     console.clear();
@@ -142,6 +146,7 @@ async function manageEntities(action = null) {
                 console.log(chalk.red('Invalid entity action: ' + action));
                 break;
         }
+        process.exit(0);
     }
 
     console.clear();

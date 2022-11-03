@@ -1,6 +1,7 @@
 const { DataTypes, Model } = require('sequelize');
-const { requireIfExists } = require("kainda");
+const { requireIfExists, Metas } = require("kainda");
 const path = require("path");
+const %%$MODEL_NAME_UPPERCASE$%%Meta = require("./meta/%%$MODEL_NAME_UPPERCASE$%%.meta.model");
 
 class %%$MODEL_NAME_UPPERCASE$%% extends Model {
 
@@ -21,6 +22,16 @@ class %%$MODEL_NAME_UPPERCASE$%% extends Model {
         ],
         is_seeded: false
     };
+
+    // Meta info
+    meta_class = %%$MODEL_NAME_UPPERCASE$%%Meta;
+    identifier = "%%$MODEL_NAME_LOWERCASE$%%_id";
+    createMeta = MetaInterface.createMeta;
+    getMeta    = MetaInterface.getMeta;
+    updateMeta = MetaInterface.updateMeta;
+    deleteMeta = MetaInterface.deleteMeta;
+    static get%%$MODEL_NAME_UPPERCASE$%%IdFromMeta    = async (meta_key, meta_value) => { return await MetaInterface.getIdFromMeta(meta_key, meta_value, %%$MODEL_NAME_UPPERCASE$%%Meta); }
+    static get%%$MODEL_NAME_UPPERCASE$%%FromMeta      = async (meta_key, meta_value) => { return await %%$MODEL_NAME_UPPERCASE$%%.findByPk(await %%$MODEL_NAME_UPPERCASE$%%.get%%$MODEL_NAME_UPPERCASE$%%IdFromMeta(meta_key, meta_value)); }
 
 }
 
@@ -46,6 +57,7 @@ class %%$MODEL_NAME_UPPERCASE$%% extends Model {
 %%$MODEL_NAME_UPPERCASE$%%.Seeders = requireIfExists(path.join(__dirname, './%%$MODEL_NAME_LOWERCASE$%%.seeders'));
 %%$MODEL_NAME_UPPERCASE$%%.Middlewares = requireIfExists(path.join(__dirname, './%%$MODEL_NAME_LOWERCASE$%%.middlewares'));
 %%$MODEL_NAME_UPPERCASE$%%.Validators = requireIfExists(path.join(__dirname, './%%$MODEL_NAME_LOWERCASE$%%.validators'));
+%%$MODEL_NAME_UPPERCASE$%%.meta_class.seed_options.dependencies.push(%%$MODEL_NAME_UPPERCASE$%%);
 
 /**
  * RELATIONSHIPS

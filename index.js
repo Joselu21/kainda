@@ -5,6 +5,7 @@ const KaindaUtils = require("./src/utils");
 const { ExceptionHandler, KaindaException } = require("./src/exceptions");
 const KaindaMiddlewareUtils = require("./src/middlewares.utils");
 const AuthFunctions = require("./src/auth.functions");
+const chalk = require("chalk");
 
 module.exports = {
     GenericControllers,
@@ -14,5 +15,6 @@ module.exports = {
     ExceptionHandler,
     KaindaException,
     ...KaindaMiddlewareUtils,
-    ...AuthFunctions
+    ...AuthFunctions,
+    chalk
 };

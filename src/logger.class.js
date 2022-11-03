@@ -1,3 +1,5 @@
+const chalk = require('chalk');
+
 class Logger {
 
     constructor(type, options) {
@@ -116,7 +118,7 @@ class Logger {
 
     async _logConsole(collection_name, data, options) {
         if(options.ignoreConsole) return;
-        console.log(`[${collection_name}] ${JSON.stringify(data)}`);
+        console.log(chalk.gray(`[${collection_name}] ${JSON.stringify(data)}`));
     }
 
     async log(collection_name, data, options = {}) {

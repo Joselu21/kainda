@@ -36,7 +36,7 @@ const %%$MODEL_NAME_UPPERCASE$%% = mongoose.model('%%$MODEL_NAME_UPPERCASE$%%', 
 
 // TODO: Change this when not needed
 %%$MODEL_NAME_UPPERCASE$%%.seed_options = {
-    seed : true
+    seed : true,
     dependencies: [
     ],
     is_seeded: false

@@ -1,6 +1,9 @@
 const { checkObjectHas, missingFieldsResponse } = require("kainda");
 
 async function checkRequiredKeys(req, res, next) {
+    if(Models.%%$MODEL_NAME_UPPERCASE$%%.create_required_keys.length === 0) {
+        return next();
+    }
     let arrayOfKeys = [
         Models.%%$MODEL_NAME_UPPERCASE$%%.create_required_keys
     ];
