@@ -29,14 +29,14 @@ function _backupFile(path) {
     fs.copyFileSync(path, backup_path);
 }
 
-function _mkdir(name, overwrite_conflict_mode = null) {
+function mkdirSafe(name, overwrite_conflict_mode = null) {
     if (fs.existsSync(name)) {
         conflict(name, conflict_mode ?? overwrite_conflict_mode);
     }
     fs.mkdirSync(name);
 }
 
-function _copyTemplate(from, to, overwrite_conflict_mode = null) {
+function copyTemplate(from, to, overwrite_conflict_mode = null) {
     console.log(`Creating ${to} with template ${from}, overwrite_conflict_mode: ${overwrite_conflict_mode}, conflict_mode: ${conflict_mode}`);
     if (!fs.existsSync(from)) {
         console.log(`Template ${from} does not exist`);
@@ -50,7 +50,7 @@ function _copyTemplate(from, to, overwrite_conflict_mode = null) {
     fs.writeFileSync(to, template);
 }
 
-function _reformatFile(path, options = {}) {
+function hydrateFile(path, options = {}) {
     let file = fs.readFileSync(path, 'utf8');
     if (options.entity_name) {
         file = file.replaceAll("%%$MODEL_NAME_UPPERCASE$%%", options.entity_name.charAt(0).toUpperCase() + options.entity_name.slice(1));
@@ -62,9 +62,9 @@ function _reformatFile(path, options = {}) {
 }
 
 module.exports = {
-    _mkdir,
-    _copyTemplate,
-    _reformatFile,
+    mkdirSafe,
+    copyTemplate,
+    hydrateFile,
     _backupFile,
     conflict,
     conflict_mode

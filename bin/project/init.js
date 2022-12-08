@@ -1,4 +1,4 @@
-const { _copyTemplate, _reformatFile, _mkdir } = require('../utils/files.utils');
+const { copyTemplate, hydrateFile, mkdirSafe } = require('../utils/files.utils');
 const { extractArgument, argsContains } = require('../utils/args.utils');
 const join = require('path').join;
 const prompt = require('prompt');
@@ -9,11 +9,11 @@ function createPackageJson(project_name, options = {}) {
     console.log(chalk.yellow('Creating project with name: ' + project_name));
     console.log(chalk.blue('Creating package.json... with options: ' + JSON.stringify(options)));
     if(options.sequelize) {
-        _copyTemplate(join(__dirname, '../../templates/package-template-sequelize.json'), './package.json');
+        copyTemplate(join(__dirname, '../../templates/package-template-sequelize.json'), './package.json');
     } else if (options.mongoose) {
-        _copyTemplate(join(__dirname, '../../templates/package-template-mongoose.json'), './package.json');
+        copyTemplate(join(__dirname, '../../templates/package-template-mongoose.json'), './package.json');
     }
-    _reformatFile('./package.json', { project_name });
+    hydrateFile('./package.json', { project_name });
     console.log(chalk.green('package.json created'));
 
 }
@@ -25,15 +25,15 @@ function createIndexJs(project_name, options = {}) {
     console.log(chalk.blue('Creating index.js and setup.js...'));
     if (options.sequelize) {
         console.log(chalk.blue('Creating sequelize files...'));
-        _copyTemplate(join(__dirname, '../../templates/setup-template-sequelize.js'), './setup.js');
+        copyTemplate(join(__dirname, '../../templates/setup-template-sequelize.js'), './setup.js');
     } else if (options.mongoose) {
         console.log(chalk.blue('Creating mongoose files...'));
-        _copyTemplate(join(__dirname, '../../templates/setup-template-mongoose.js'), './setup.js');
+        copyTemplate(join(__dirname, '../../templates/setup-template-mongoose.js'), './setup.js');
     }
 
-    _copyTemplate(join(__dirname, '../../templates/index-template.js'), './index.js');
+    copyTemplate(join(__dirname, '../../templates/index-template.js'), './index.js');
 
-    _reformatFile('./setup.js', { project_name });
+    hydrateFile('./setup.js', { project_name });
 
     console.log(chalk.green('index.js and setup.js created'));
 
@@ -43,19 +43,19 @@ function initializeStructure(project_name, options = {}) {
 
     try {
         createIndexJs(project_name, options);
-        _mkdir('config');
-        _copyTemplate(join(__dirname, '../../templates/config/default-config-template.json'), './config/default.json');
-        _copyTemplate(join(__dirname, '../../templates/config/development-config-template.json'), './config/development.json');
-        _copyTemplate(join(__dirname, '../../templates/config/production-config-template.json'), './config/production.json');
-        _copyTemplate(join(__dirname, '../../templates/config/test-config-template.json'), './config/test.json');
-        _copyTemplate(join(__dirname, '../../templates/gitignore.template.txt'), './.gitignore');
-        _mkdir('app');
-        _mkdir('app/entities');
-        _mkdir('app/test');
-        _copyTemplate(join(__dirname, '../../templates/app/test/mocha.setup.test.js'), './app/test/mocha.setup.test.js');
-        _copyTemplate(join(__dirname, '../../templates/app/test/utils.test.js'), './app/test/utils.test.js');
-        _mkdir('app/test/endpoints');
-        _mkdir('app/test/unit');
+        mkdirSafe('config');
+        copyTemplate(join(__dirname, '../../templates/config/default-config-template.json'), './config/default.json');
+        copyTemplate(join(__dirname, '../../templates/config/development-config-template.json'), './config/development.json');
+        copyTemplate(join(__dirname, '../../templates/config/production-config-template.json'), './config/production.json');
+        copyTemplate(join(__dirname, '../../templates/config/test-config-template.json'), './config/test.json');
+        copyTemplate(join(__dirname, '../../templates/gitignore.template.txt'), './.gitignore');
+        mkdirSafe('app');
+        mkdirSafe('app/entities');
+        mkdirSafe('app/test');
+        copyTemplate(join(__dirname, '../../templates/app/test/mocha.setup.test.js'), './app/test/mocha.setup.test.js');
+        copyTemplate(join(__dirname, '../../templates/app/test/utils.test.js'), './app/test/utils.test.js');
+        mkdirSafe('app/test/endpoints');
+        mkdirSafe('app/test/unit');
     } catch (error) {
         console.log(error.message);
         return;
