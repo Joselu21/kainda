@@ -37,10 +37,13 @@ function _mkdir(name, overwrite_conflict_mode = null) {
 }
 
 function _copyTemplate(from, to, overwrite_conflict_mode = null) {
+    console.log(`Creating ${to} with template ${from}, overwrite_conflict_mode: ${overwrite_conflict_mode}, conflict_mode: ${conflict_mode}`);
     if (!fs.existsSync(from)) {
+        console.log(`Template ${from} does not exist`);
         throw new Error(`${from} does not exist`);
     }
     if (fs.existsSync(to)) {
+        console.log(`${to} already exists`);
         conflict(to, conflict_mode ?? overwrite_conflict_mode);
     }
     const template = fs.readFileSync(from, 'utf8');

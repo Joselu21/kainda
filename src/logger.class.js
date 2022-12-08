@@ -118,7 +118,7 @@ class Logger {
 
     async _logConsole(collection_name, data, options) {
         if(options.ignoreConsole) return;
-        console.log(chalk.gray(`[${collection_name}] ${JSON.stringify(data)}`));
+        console.log(chalk.gray(`[${collection_name}] ${JSON.stringify(data, null, 2)}`));
     }
 
     async log(collection_name, data, options = {}) {

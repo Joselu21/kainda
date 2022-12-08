@@ -1,14 +1,13 @@
+const { _copyTemplate, _reformatFile, _mkdir } = require('../utils/files.utils');
+const { extractArgument, argsContains } = require('../utils/args.utils');
 const join = require('path').join;
 const prompt = require('prompt');
 const chalk = require('chalk');
-const fs = require('fs');
-const { _copyTemplate, _reformatFile, _mkdir } = require('../utils/files.utils');
-const { extractArgument, argsContains } = require('../utils/args.utils');
 
 function createPackageJson(project_name, options = {}) {
 
     console.log(chalk.yellow('Creating project with name: ' + project_name));
-    console.log(chalk.blue('Creating package.json...'));
+    console.log(chalk.blue('Creating package.json... with options: ' + JSON.stringify(options)));
     if(options.sequelize) {
         _copyTemplate(join(__dirname, '../../templates/package-template-sequelize.json'), './package.json');
     } else if (options.mongoose) {
@@ -39,7 +38,6 @@ function createIndexJs(project_name, options = {}) {
     console.log(chalk.green('index.js and setup.js created'));
 
 }
-
 
 function initializeStructure(project_name, options = {}) {
 
@@ -88,7 +86,7 @@ async function createProject(name = null) {
         };
         const result = await prompt.get(schema);
         project_name = result.project_name;
-        if (project_name.match(/^[a-z_-]+$/)) {
+        if (!project_name.match(/^[a-z_-]+$/)) {
             console.log(chalk.red('Project name must be lowercase and can only contain letters, dashes and underscores'));
             project_name = null;
         }
@@ -97,6 +95,27 @@ async function createProject(name = null) {
     options = {
         sequelize: argsContains('--sequelize') || argsContains('--relational') || argsContains('-sql') || argsContains('--sql'),
         mongoose: argsContains('--mongoose') || argsContains('--non-relational') || argsContains('-nosql') || argsContains('--nosql'),
+    }
+
+    while (!options.sequelize && !options.mongoose) {
+        console.log("Please, choose a database type");
+        prompt.start();
+        const schema = {
+            properties: {
+                database_type: {
+                    description: 'Database type (sequelize, mongoose)',
+                    type: 'string',
+                    required: true,
+                    message: 'Database type is required'
+                }
+            }
+        };
+        const result = await prompt.get(schema);
+        options.sequelize = result.database_type === 'sequelize';
+        options.mongoose = result.database_type === 'mongoose';
+        if (!options.sequelize && !options.mongoose) {
+            console.log(chalk.red('Database type must be sequelize or mongoose'));
+        }
     }
 
     initializeStructure(project_name, options);
