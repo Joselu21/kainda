@@ -40,13 +40,13 @@ async function getAll%%$MODEL_NAME_UPPERCASE$%%s(req, res) {
         if(!%%$MODEL_NAME_LOWERCASE$%%s || %%$MODEL_NAME_LOWERCASE$%%s.length === 0){
             throw new Models.%%$MODEL_NAME_UPPERCASE$%%.Exceptions.%%$MODEL_NAME_UPPERCASE$%%NotFoundException({
                 error_type: "NOT_FOUND",
-                error_message: "Currently, there are no %%$MODEL_NAME_LOWERCASE$%%s in the database."
+                error_message: "Currently, there are no %%$MODEL_NAME_LOWERCASE$%%s in the database.",
                 error_data: {
                     req: req.body
                 }
             });
         }
-        return res.status(200).json(%%$MODEL_NAME_LOWERCASE$%%s.map(
+        return res.status(201).json(%%$MODEL_NAME_LOWERCASE$%%s.map(
             (%%$MODEL_NAME_LOWERCASE$%%) => %%$MODEL_NAME_LOWERCASE$%%.toJSON()
         ));
     } catch (error) {
@@ -78,7 +78,7 @@ async function update%%$MODEL_NAME_UPPERCASE$%%(req, res) {
         let container = { ...req.body, %%$MODEL_NAME_LOWERCASE$%%_id: req.params.%%$MODEL_NAME_LOWERCASE$%%_id };
         const %%$MODEL_NAME_LOWERCASE$%% = await __update%%$MODEL_NAME_UPPERCASE$%%(container, transaction);
         await transaction.commit();
-        return res.status(200).json(%%$MODEL_NAME_LOWERCASE$%%.toJSON()); 
+        return res.status(204).json(%%$MODEL_NAME_LOWERCASE$%%.toJSON()); 
     } catch (error) {
         if(transaction) {
             await transaction.rollback();

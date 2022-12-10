@@ -35,6 +35,24 @@ function _createEntityMongoose(name, options = {}) {
 
 
 async function createEntity(name, options = {}) {
+
+    while (!name || name === '') {
+        console.log("Please, choose a name for your entity");
+        prompt.start();
+        const schema = {
+            properties: {
+                entity_name: {
+                    description: 'Entity name',
+                    type: 'string',
+                    required: true,
+                    message: 'Entity name is required'
+                }
+            }
+        };
+        const result = await prompt.get(schema);
+        name = result.entity_name;
+    }
+    
     name = name.toLowerCase();
 
     // Question the user if he wants to create a new sequelize or mongoose entity
@@ -70,7 +88,7 @@ async function createEntity(name, options = {}) {
         console.log('No entity type specified');
         return;
     }
-    
+
     hydrateFile('./app/entities/' + name + '/' + name + '.routes.js',      { entity_name: name, project_name: options.project_name });
     hydrateFile('./app/entities/' + name + '/' + name + '.model.js',       { entity_name: name, project_name: options.project_name });
     hydrateFile('./app/entities/' + name + '/' + name + '.exceptions.js',  { entity_name: name, project_name: options.project_name });

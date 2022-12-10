@@ -60,7 +60,7 @@ function ExceptionHandler(error, res) {
 
         return res.status(500).send({
             error_type : "SEQUELIZE_ERROR",
-            error_message : error.errors[0].message,
+            error_message : error.errors[0]?.message,
             error_data : error.errors[0]
         });
     
