@@ -42,7 +42,4 @@ const %%$MODEL_NAME_UPPERCASE$%% = mongoose.model('%%$MODEL_NAME_UPPERCASE$%%', 
     is_seeded: false
 };
 
-// TODO: Change this when not needed
-%%$MODEL_NAME_UPPERCASE$%%.seed = true;
-
 module.exports = %%$MODEL_NAME_UPPERCASE$%%;

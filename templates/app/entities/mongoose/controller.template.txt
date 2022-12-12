@@ -26,7 +26,7 @@ async function create%%$MODEL_NAME_UPPERCASE$%%(req, res) {
         transaction.startTransaction();
         const %%$MODEL_NAME_LOWERCASE$%% = await __create%%$MODEL_NAME_UPPERCASE$%%(req.body, transaction);
         await transaction.commitTransaction();
-        return res.status(200).json(%%$MODEL_NAME_LOWERCASE$%%.toJSON());
+        return res.status(201).json(%%$MODEL_NAME_LOWERCASE$%%.toJSON());
     } catch (error) {
         if(transaction) {
             await transaction.abortTransaction();
