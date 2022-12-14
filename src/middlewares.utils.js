@@ -34,8 +34,13 @@ function missingFieldsResponse(arrayOfKeys, container, exceptions = []) {
         if (missingFields !== true) {
             if (JSON.stringify(response) === "{}") {
                 response = {
-                    reason: "This field is required",
-                    attribute: Array.isArray(missingFields) ? missingFields[0] : missingFields
+                    error_type: "EMPTY_FIELD",
+                    error_message: "Missing " + (Array.isArray(missingFields) ? missingFields[0] : missingFields) + " field",
+                    error_data: {
+                        error_code : "EMPTY_FIELD",
+                        element : Array.isArray(missingFields) ? missingFields[0] : missingFields,
+                        data : container
+                    }
                 }
             } else {
                 if(!response.allAttributesMissing)
