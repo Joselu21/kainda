@@ -1,6 +1,7 @@
 /**
 * IMPORTS 
 */
+require('module-alias/register');   
 const Sequelize = require('sequelize');
 const kainda = require('kainda');
 const express = require("express");

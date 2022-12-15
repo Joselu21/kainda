@@ -14,6 +14,7 @@
     "config": "*",
     "cors": "*",
     "cross-env": "*",
+    "module-alias": "*",
     "express": "*",
     "sqlite3": "*",
     "helmet": "*",
@@ -26,5 +27,12 @@
     "chai": "*",
     "supertest": "*",
     "mocha": "*"
+  },
+  "_moduleAliases": {
+    "@" : "./",
+    "@app" : "./app",
+    "@entities": "./app/entities",
+    "@servies": "./app/services",
+    "@test" : "./app/test"
   }
 }

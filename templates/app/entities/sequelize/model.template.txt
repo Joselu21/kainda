@@ -1,28 +1,6 @@
 const { DataTypes, Model } = require('sequelize');
-const { requireIfExists } = require("kainda");
-const path = require("path");
 
-class %%$MODEL_NAME_UPPERCASE$%% extends Model {
-
-    // TODO: Fill this
-    static create_required_keys = [
-
-    ];
-
-    // TODO: Fill this
-    static updateable_keys = [
-
-    ];
-
-    // TODO: Change this when not needed
-    static seed_options = {
-        seed : true,
-        dependencies: [
-        ],
-        is_seeded: false
-    };
-
-}
+class %%$MODEL_NAME_UPPERCASE$%% extends Model {}
 
 %%$MODEL_NAME_UPPERCASE$%%.init({
     %%$MODEL_NAME_LOWERCASE$%%_id: {
@@ -40,22 +18,13 @@ class %%$MODEL_NAME_UPPERCASE$%% extends Model {
     paranoid: true,
 });
 
-%%$MODEL_NAME_UPPERCASE$%%.Controller = requireIfExists(path.join(__dirname, './%%$MODEL_NAME_LOWERCASE$%%.controller'));
-%%$MODEL_NAME_UPPERCASE$%%.Exceptions = requireIfExists(path.join(__dirname, './%%$MODEL_NAME_LOWERCASE$%%.exceptions'));
-%%$MODEL_NAME_UPPERCASE$%%.Routes = requireIfExists(path.join(__dirname, './%%$MODEL_NAME_LOWERCASE$%%.routes'));
-%%$MODEL_NAME_UPPERCASE$%%.Seeders = requireIfExists(path.join(__dirname, './%%$MODEL_NAME_LOWERCASE$%%.seeders'));
-%%$MODEL_NAME_UPPERCASE$%%.Middlewares = requireIfExists(path.join(__dirname, './%%$MODEL_NAME_LOWERCASE$%%.middlewares'));
-%%$MODEL_NAME_UPPERCASE$%%.Validators = requireIfExists(path.join(__dirname, './%%$MODEL_NAME_LOWERCASE$%%.validators'));
-
 /**
  * RELATIONSHIPS
  */
 
 
-
 /**
  * HOOKS
  */
-
 
 module.exports = %%$MODEL_NAME_UPPERCASE$%%;

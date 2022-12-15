@@ -1,6 +1,7 @@
 /**
 * IMPORTS 
 */
+require('module-alias/register');   
 const mongoose = require('mongoose');
 const kainda = require('kainda');
 const express = require("express");

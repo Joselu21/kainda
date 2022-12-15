@@ -1,11 +1,11 @@
-const { checkObjectHas, missingFieldsResponse } = require("kainda");
+const { missingFieldsResponse } = require("kainda");
 
-async function checkRequiredKeys(req, res, next) {
-    if(Models.%%$MODEL_NAME_UPPERCASE$%%.create_required_keys.length === 0) {
+async function checkRequiredKeys(req, res, next, required_keys = Models.%%$MODEL_NAME_UPPERCASE$%%.create_required_keys) {
+    if(required_keys.length === 0) {
         return next();
     }
     let arrayOfKeys = [
-        Models.%%$MODEL_NAME_UPPERCASE$%%.create_required_keys
+        required_keys
     ];
     let response = missingFieldsResponse(arrayOfKeys, req.body);
     if(Object.keys(response).length > 0){

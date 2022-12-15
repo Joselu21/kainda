@@ -1,0 +1,25 @@
+const { GenericControllers } = require("kainda");
+
+async function __create%%$MODEL_NAME_UPPERCASE$%%(container, transaction, options) {
+    return await GenericControllers.__genericCreate(Models.%%$MODEL_NAME_UPPERCASE$%%, container, transaction, options);
+}
+
+async function create%%$MODEL_NAME_UPPERCASE$%%(req, res) {
+    let transaction = await mongoose.startSession();
+    try {
+        transaction.startTransaction();
+        const %%$MODEL_NAME_LOWERCASE$%% = await __create%%$MODEL_NAME_UPPERCASE$%%(req.body, transaction);
+        await transaction.commitTransaction();
+        return res.status(201).json(%%$MODEL_NAME_LOWERCASE$%%.toJSON());
+    } catch (error) {
+        if(transaction) {
+            await transaction.abortTransaction();
+        }
+        ExceptionHandler(error, res);
+    }
+}
+
+module.exports = {
+    __create%%$MODEL_NAME_UPPERCASE$%%,
+    create%%$MODEL_NAME_UPPERCASE$%%,
+}

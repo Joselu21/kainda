@@ -1,19 +1,34 @@
 const fs = require("fs");
 const path = require("path");
 
-function getFiles(path = "./app/", extension = "model.js") {
-    const entries = fs.readdirSync(path, { withFileTypes: true });
+function getFiles(searchPath = "./app/", extension = "model.js") {
+
+    if (!searchPath.endsWith("/")) searchPath += "/";
+
+    const entries = fs.readdirSync(searchPath, { withFileTypes: true });
 
     const files = entries
         .filter((file) => !file.isDirectory() && file.name !== extension && file.name.includes(extension))
-        .map((file) => ({ ...file, path: path + file.name }));
+        .map((file) => ({ ...file, path: searchPath + file.name }));
 
     const folders = entries.filter((folder) => folder.isDirectory());
 
     for (const folder of folders)
-        files.push(...getFiles(`${path}${folder.name}/`));
+        files.push(...getFiles(`${searchPath}${folder.name}/`, extension));
 
     return files;
+}
+
+function exportFiles (searchPath, extension) {
+    let files = getFiles(searchPath, extension);
+    let exportable = {};
+    for (let i = 0; i < files.length; i++) {
+        let aux = requireIfExists(files[i].path);
+        if (aux) {
+            exportable = { ...exportable, ...aux };
+        }
+    }
+    return exportable;
 }
 
 function __exportModels() {
@@ -60,6 +75,7 @@ const KaindaUtils = {
     getFiles,
     getModels,
     getModel,
+    exportFiles,
     requireIfExists
 };
 

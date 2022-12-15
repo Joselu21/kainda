@@ -1,8 +1,6 @@
-const %%$MODEL_NAME_UPPERCASE$%% = require('./%%$MODEL_NAME_LOWERCASE$%%.model');
-
 /**
  * This function will populate the database with some %%$MODEL_NAME_LOWERCASE$%%s.
- * @param {Sequelize.Transaction} t The transaction object, it is optional but kainda framework always seeds with transactions.
+ * @param {Mongoose.Transaction} t The transaction object, it is optional but kainda framework always seeds with transactions.
  * @returns {Void} Nothing.
  * @throws {Error} If something goes wrong, it will throw an error. This can happen if your data is not valid or if there is a database error.
  */
