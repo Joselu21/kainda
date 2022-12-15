@@ -40,7 +40,9 @@ async function main() {
 
     // Require the routes
     for (let model of Object.keys(Models)) {
-        Models[model].Routes(app);
+        for (let route of Object.keys(Models[model].Routes)) {
+            Models[model].Routes[route](app);
+        }
     }
 
     /**

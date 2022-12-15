@@ -35,13 +35,17 @@ function __exportModels() {
     
     let models = {};
     let files = getFiles().map((file) => {
-        file.path = file.path.replace(/\.js$/, "").substring(0, file.path.length);
+        file.path = file.path.substring(0, file.path.lastIndexOf("/"));
+        file.path = file.path.substring(0, file.path.lastIndexOf("/"));
+        file.path = file.path.substring(0, file.path.lastIndexOf("/"));
         return file;
     });
 
     for (let i = 0; i < files.length; i++) {
         let model = files[i].name.substring(0, files[i].name.indexOf("."));
-        let modelClass = require(path.join(process.cwd(), files[i].path));
+        let pathPreModel = files[i].path.substring(0, files[i].path.indexOf(model));
+        let requirePath = pathPreModel.substring(2) + model;
+        let modelClass = require("@/" + requirePath);
         models[modelClass.modelName ?? model.charAt(0).toUpperCase() + model.slice(1)] = modelClass;
     }
 

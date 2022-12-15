@@ -1,2 +1,4 @@
+const { exportFiles } = require('kainda');
+
 const %%$MODEL_NAME_UPPERCASE$%% = exportFiles(__dirname, '%%$MODEL_NAME_LOWERCASE$%%.js');
 module.exports = %%$MODEL_NAME_UPPERCASE$%%;

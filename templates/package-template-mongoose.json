@@ -32,7 +32,7 @@
     "@" : "./",
     "@app" : "./app",
     "@entities": "./app/entities",
-    "@servies": "./app/services",
+    "@services": "./app/services",
     "@test" : "./app/test"
   }
 }

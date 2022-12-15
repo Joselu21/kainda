@@ -1,6 +1,6 @@
 const %%$MODEL_NAME_UPPERCASE$%% = require('@entities/%%$MODEL_NAME_LOWERCASE$%%/model');
 
-%%$MODEL_NAME_UPPERCASE$%%.Controller = require('@entities/%%$MODEL_NAME_LOWERCASE$%%/controller');
+%%$MODEL_NAME_UPPERCASE$%%.Controller = require('@entities/%%$MODEL_NAME_LOWERCASE$%%/controllers');
 %%$MODEL_NAME_UPPERCASE$%%.Routes = require('@entities/%%$MODEL_NAME_LOWERCASE$%%/routes');
 %%$MODEL_NAME_UPPERCASE$%%.Exceptions = require('@entities/%%$MODEL_NAME_LOWERCASE$%%/exceptions');
 %%$MODEL_NAME_UPPERCASE$%%.Seeders = require('@entities/%%$MODEL_NAME_LOWERCASE$%%/seeders');
