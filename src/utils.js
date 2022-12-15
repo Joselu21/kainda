@@ -43,8 +43,8 @@ function __exportModels() {
 
     for (let i = 0; i < files.length; i++) {
         let model = files[i].name.substring(0, files[i].name.indexOf("."));
-        let pathPreModel = files[i].path.substring(0, files[i].path.indexOf(model));
-        let requirePath = pathPreModel.substring(2) + model;
+        let pathPreModel = files[i].path.substring(0, files[i].path.lastIndexOf("/" + model));
+        let requirePath = pathPreModel.substring(2) + "/" + model;
         let modelClass = require("@/" + requirePath);
         models[modelClass.modelName ?? model.charAt(0).toUpperCase() + model.slice(1)] = modelClass;
     }
