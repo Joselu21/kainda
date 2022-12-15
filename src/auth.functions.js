@@ -65,6 +65,7 @@ function decodeToken(token) {
  * Verify the token and return it decoded if it is valid
  * @param {*} token The token to verify
  * @returns {object} The decoded token
+ * @example verifyToken(process.env.JWT_SECRET, -token-)
  */
 async function verifyToken(secret, token) {
 
@@ -82,6 +83,14 @@ async function verifyToken(secret, token) {
 
 }
 
+/**
+ * Check if the IP is blocked or not
+ * @param {*} ip The IP to check
+ * @param {*} options The options object
+ * @returns {boolean} True if the IP is blocked, false otherwise
+ * @example blockByIP('192.168.1.12', { blacklist: process.env.BLACKLIST_IPS.split(',') })
+ * @example blockByIP('192.168.1.12', { whitelist: process.env.WHITELIST_IPS.split(',') })
+ */
 function blockByIP(ip, options) {
     let whitelist = options.whitelist ?? [];
     let blacklist = options.blacklist ?? [];

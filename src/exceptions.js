@@ -78,7 +78,7 @@ function ExceptionHandler(error, res) {
 
         // If the error is a casting error
         if (error.kind === "ObjectId") {
-            return res.status(400).send({
+            return res.status(404).send({
                 error_type: "NOT_FOUND",
                 error_message: "The resource does not exist",
                 error_data : error

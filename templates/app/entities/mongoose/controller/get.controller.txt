@@ -1,11 +1,11 @@
 const { GenericControllers } = require("kainda");
 
-async function __getAll%%$MODEL_NAME_UPPERCASE$%%s(transaction) {
-    return await GenericControllers.__genericGetAll(Models.%%$MODEL_NAME_UPPERCASE$%%, transaction);
+async function __getAll%%$MODEL_NAME_UPPERCASE$%%s(transaction, options) {
+    return await GenericControllers.__genericGetAll(Models.%%$MODEL_NAME_UPPERCASE$%%, transaction, options);
 }
 
-async function __get%%$MODEL_NAME_UPPERCASE$%%(id, transaction) {
-    return await GenericControllers.__genericGet(Models.%%$MODEL_NAME_UPPERCASE$%%, id, transaction);
+async function __get%%$MODEL_NAME_UPPERCASE$%%(id, transaction, options) {
+    return await GenericControllers.__genericGet(Models.%%$MODEL_NAME_UPPERCASE$%%, id, transaction, options);
 }
 
 async function getAll%%$MODEL_NAME_UPPERCASE$%%s(req, res) {
