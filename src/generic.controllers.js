@@ -1,3 +1,5 @@
+const { missingFieldsResponse } = require("./middlewares.utils");
+
 /**
  * The generic function that handles the creation of a new instance of a model.
  * @param {*} model The model class to create the instance of.
@@ -30,21 +32,11 @@ async function __genericCreate(model, data, transaction = null, options = {}) {
     }
 
     // Check if the required keys are present in the data
-    const missing_fields = required_keys.filter(key => data[key] === undefined);
+    const missing_fields = missingFieldsResponse(required_keys, data);
 
     // If there are missing fields, throw an exception
-    if (missing_fields.length > 0) {
-        throw new model.Exceptions[(model.modelName ?? model.name) + "NotCreatedException"]({
-            error_type: "ATTRIBUTE_MISSING",
-            error_message: "Missing fields: " + missing_fields.join(", "),
-            error_data: {
-                model_name: (model.modelName ?? model.name),
-                data: data,
-                transaction: transaction?.id,
-                options: options,
-                missing_fields: missing_fields
-            }
-        }, 400);
+    if (Object.keys(missing_fields).length > 0 && missing_fields.error_type) {
+        throw new model.Exceptions[(model.modelName ?? model.name) + "NotCreatedException"](missing_fields, 400);
     }
 
     // Create the instance

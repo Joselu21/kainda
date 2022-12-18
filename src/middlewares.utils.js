@@ -4,19 +4,38 @@ function checkObjectHas(keys, container, exceptions = []) {
     if (!keys || !keys.length || keys.length === 0) {
         return false;
     }
-    if (Array.isArray(keys) && keys.length > 0) {
+    if ((Array.isArray(keys) && keys.length > 0)) {
         keys.forEach(element => {
             let aux = element.split(".");
             if (aux.length > 1) {
-                if (aux.length > 1 && !container[aux[0]][aux[1]] && !exceptions.includes(element)) {
-                    missingFields.push(element);
+                try {
+                    let auxElement = container[aux[0]];
+                    for (let i = 1; i < aux.length; i++) {
+                        auxElement = auxElement[aux[i]];
+                    }
+                    if (!auxElement && !exceptions.includes(element)) {
+                        missingFields.push(element);
+                    }
+                } catch (error) {
+                    if (!exceptions.includes(element)) {
+                        missingFields.push(element);
+                    }
                 }
             } else if (!container[element] && !exceptions.includes(element)) {
                 missingFields.push(element);
             }
         });
     } else if (typeof keys === "string") {
-        if (!container[keys] && !exceptions.includes(keys)) {
+        if(keys.split(".").length > 1) {
+            let aux = keys.split(".");
+            let auxElement = container[aux[0]];
+            for (let i = 1; i < aux.length; i++) {
+                auxElement = auxElement[aux[i]];
+            }
+            if (!auxElement && !exceptions.includes(keys)) {
+                missingFields.push(keys);
+            }
+        } else if (!container[keys] && !exceptions.includes(keys)) {
             missingFields.push(keys);
         }
     }
@@ -26,6 +45,7 @@ function checkObjectHas(keys, container, exceptions = []) {
     }
     return true;
 }
+
 
 function missingFieldsResponse(arrayOfKeys, container, exceptions = []) {
     let response = {}
