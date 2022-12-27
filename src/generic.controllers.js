@@ -125,7 +125,7 @@ async function __genericGetBy(model, data, transaction = null) {
             error_message: "Error finding " + (model.modelName ?? model.name) + " with data: " + JSON.stringify(data),
             error_data: {
                 model_name: (model.modelName ?? model.name),
-                id: id,
+                data: data,
                 transaction: transaction?.id,
                 instance: instance
             }
