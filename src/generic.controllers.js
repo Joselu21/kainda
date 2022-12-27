@@ -204,6 +204,7 @@ module.exports = {
     __genericCreate,
     __genericGet,
     __genericGetAll,
+    __genericGetBy,
     __genericUpdate,
     __genericDelete,
 }
