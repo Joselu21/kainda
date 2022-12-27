@@ -122,7 +122,7 @@ async function __genericGetBy(model, data, transaction = null) {
     if (!instance) {
         throw new model.Exceptions[(model.modelName ?? model.name) + "NotFoundException"]({
             error_type: "NOT_FOUND",
-            error_message: "Error finding " + (model.modelName ?? model.name) + " with id: " + id,
+            error_message: "Error finding " + (model.modelName ?? model.name) + " with data: " + JSON.stringify(data),
             error_data: {
                 model_name: (model.modelName ?? model.name),
                 id: id,
