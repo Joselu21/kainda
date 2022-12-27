@@ -115,6 +115,28 @@ async function __genericGet(model, id, transaction = null) {
 
 }
 
+async function __genericGetBy(model, data, transaction = null) {
+
+    // Retrieve the instance of the model using sequelize's findByPk function or mongoose's findById function
+    const instance = model.sequelize ? await model.findOne({ where: data, transaction: transaction }) : await model.findOne(data).session(transaction).exec();
+    if (!instance) {
+        throw new model.Exceptions[(model.modelName ?? model.name) + "NotFoundException"]({
+            error_type: "NOT_FOUND",
+            error_message: "Error finding " + (model.modelName ?? model.name) + " with id: " + id,
+            error_data: {
+                model_name: (model.modelName ?? model.name),
+                id: id,
+                transaction: transaction?.id,
+                instance: instance
+            }
+        }, 404);
+    }
+
+    // Return the instance
+    return instance;
+
+}
+
 /**
  * The generic function that handles the update of a single instance of a model by primary key.
  * @param {*} model The model class to update the instance of.
@@ -124,6 +146,7 @@ async function __genericGet(model, id, transaction = null) {
  */
 async function __genericUpdate(model, data, transaction = null, options = {}) {
 
+    // Extract the updatable keys from the model or update the keys from the options
     let updateable_keys = options.updateable_keys ?? model.updateable_keys;
 
     // Check if the updateable keys array is present in the model
@@ -139,7 +162,7 @@ async function __genericUpdate(model, data, transaction = null, options = {}) {
         });
     }
 
-    // Extract the required keys from the model or update the required keys from the options
+    // Get the instance of the model
     const id = data[(model.modelName ?? model.name).toLowerCase() + "_id"];
     const instance = await __genericGet(model, id, transaction);
 
