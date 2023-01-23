@@ -168,8 +168,33 @@ async function __genericUpdate(model, data, transaction = null, options = {}) {
 
     // Iterate over the data and update the instance if the key is updateable
     for (let key in data) {
-        if (updateable_keys.includes(key)) {
-            instance[key] = data[key];
+        let subKeys = key.split(".");
+        if (subKeys.length === 1) {
+            if (updateable_keys.includes(key)) {
+                instance[key] = data[key];
+            }
+        } else {
+            let updatable = false;
+            for (let i = 0; i < subKeys.length - 1; i++) {
+                if (updateable_keys.includes(subKeys[i])) {
+                    updatable = true;
+                    break;
+                }
+            }
+            if (updatable) {
+                let orginalData = instance[subKeys[0]];
+                let newData = orginalData;
+                for (let i = 0; i < subKeys.length - 1; i++) {
+                    newData = {
+                        ...newData,
+                        [subKeys[i]]: orginalData[subKeys[i]]
+                    }
+                    if (subKeys.length - 2 === i) {
+                        newData[subKeys[i + 1]] = data[key];
+                    }
+                }
+                instance[subKeys[0]] = newData;
+            }
         }
     }
 
