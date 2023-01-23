@@ -1,6 +1,6 @@
 {
   "name": "kainda",
-  "version": "4.1.3",
+  "version": "4.2.0",
   "description": "Opinionated framework for backend APIs that has a CLI that generates a REST API with a CRUD interface for a given model.",
   "main": "./index.js",
   "scripts": {},
