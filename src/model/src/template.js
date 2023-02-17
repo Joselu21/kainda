@@ -30,14 +30,34 @@ class KaindaModel {
         /**
          * The passthrough methods for the submodel
          * These methods are used to access the submodel's methods
-         * @type {Object}
          */
+        this.#__initPassthrough(model);
+
+        /**
+         * Seed Options
+         * @type {Object}
+         * @property {Boolean} seed - Whether or not to seed the model on startup
+         * @property {Array} dependencies - The dependencies of the model that they must be seeded before this model
+         * @property {Boolean} is_seeded - Whether or not the model has been seeded already
+         * @property {String} oldRecords - The options for what to do with old records, valid options are:
+         */
+        this.seed_options = {
+            seed : false,
+            dependencies: [
+            ],
+            is_seeded: false,
+            oldRecords: "deleteAll"
+        };
+
+    }
+
+    #__initPassthrough(model) {
         const passthrough = generatePassthrough(model);
         this.createOne = passthrough.create.createOne;
         this.insertOne = passthrough.create.createOne;
         this.createMany = passthrough.create.createMany;
         this.insertMany = passthrough.create.createMany;
-        
+
         this.findOne = passthrough.get.findOne;
         this.getOne = passthrough.get.findOne;
         this.findAll = passthrough.get.findMany;
@@ -50,8 +70,7 @@ class KaindaModel {
         this.getByPk = passthrough.get.findById;
         this.findAndCountAll = passthrough.get.findAndCountAll;
         this.getAndCountAll = passthrough.get.findAndCountAll;
-
-    }
+    };
 
 }
 
