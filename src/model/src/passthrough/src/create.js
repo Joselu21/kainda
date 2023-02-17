@@ -5,10 +5,11 @@ async function __createOneSequelize(data, options) {
 }
 
 async function __createOneMongoose(data, options) {
-    return await this.subModel.insertMany([data], {
+    const result = await this.subModel.insertMany([data], {
         session : options?.transaction,
         ...options,
     });
+    return result[0];
 }
 
 async function __createManySequelize(data, options) {
@@ -22,7 +23,7 @@ async function __createManyMongoose(data, options) {
     });
 }
 
-async function generateCreatePassThrough(model) {
+function generateCreatePassThrough(model) {
     if(!model) {
         throw new Error("No model found for this submodel");
     }

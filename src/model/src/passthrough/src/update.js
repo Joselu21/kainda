@@ -23,7 +23,7 @@ async function __updateManyMongoose(data, options) {
     });
 }
 
-async function generateUpdatePassThrough(model) {
+function generateUpdatePassThrough(model) {
     if(!model) {
         throw new Error("No model found for this submodel");
     }

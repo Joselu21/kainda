@@ -1,6 +1,6 @@
 
 function isSequelizeModel(model) {
-    return model?.subModel?.prototype?.constructor?.name === "Model";
+    return !!(model?.subModel?.sequelize);
 }
 
 function isMongooseModel(model) {

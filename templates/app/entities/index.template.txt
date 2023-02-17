@@ -25,7 +25,8 @@ const %%$MODEL_NAME_UPPERCASE$%% = require('@entities/%%$MODEL_NAME_LOWERCASE$%%
     seed : false,
     dependencies: [
     ],
-    is_seeded: false
+    is_seeded: false,
+    oldRecords: "deleteAll",
 };
 
 module.exports = %%$MODEL_NAME_UPPERCASE$%%;

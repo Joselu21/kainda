@@ -1,13 +1,9 @@
 const { GenericControllers } = require("kainda");
 
-async function __delete%%$MODEL_NAME_UPPERCASE$%%(container, transaction, options) {
-    return await GenericControllers.__genericDelete(Models.%%$MODEL_NAME_UPPERCASE$%%, container, transaction, options);
-}
-
 async function delete%%$MODEL_NAME_UPPERCASE$%%(req, res) {
     let transaction = await sequelize.transaction();
     try {
-        const %%$MODEL_NAME_LOWERCASE$%% = await __delete%%$MODEL_NAME_UPPERCASE$%%(req.params.%%$MODEL_NAME_LOWERCASE$%%_id ?? req.body.%%$MODEL_NAME_LOWERCASE$%%_id, transaction);
+        const %%$MODEL_NAME_LOWERCASE$%% = await Models.%%$MODEL_NAME_UPPERCASE$%%.Controller.__delete%%$MODEL_NAME_UPPERCASE$%%(req.params.%%$MODEL_NAME_LOWERCASE$%%_id ?? req.body.%%$MODEL_NAME_LOWERCASE$%%_id, transaction);
         await transaction.commit();
         return res.status(200).json(%%$MODEL_NAME_LOWERCASE$%%.toJSON()); 
     } catch (error) {
@@ -19,6 +15,5 @@ async function delete%%$MODEL_NAME_UPPERCASE$%%(req, res) {
 }
 
 module.exports = {
-    __delete%%$MODEL_NAME_UPPERCASE$%%,
     delete%%$MODEL_NAME_UPPERCASE$%%
 }

@@ -1,13 +1,9 @@
 const { GenericControllers } = require("kainda");
 
-async function __create%%$MODEL_NAME_UPPERCASE$%%(container, transaction, options) {
-    return await GenericControllers.__genericCreate(Models.%%$MODEL_NAME_UPPERCASE$%%, container, transaction, options);
-}
-
 async function create%%$MODEL_NAME_UPPERCASE$%%(req, res) {
     let transaction = await sequelize.transaction();
     try {
-        const %%$MODEL_NAME_LOWERCASE$%% = await __create%%$MODEL_NAME_UPPERCASE$%%(req.body, transaction);
+        const %%$MODEL_NAME_LOWERCASE$%% = await Models.%%$MODEL_NAME_UPPERCASE$%%.Controller.__create%%$MODEL_NAME_UPPERCASE$%%(req.body, transaction);
         await transaction.commit();
         return res.status(201).json(%%$MODEL_NAME_LOWERCASE$%%.toJSON());
     } catch (error) {
@@ -19,6 +15,5 @@ async function create%%$MODEL_NAME_UPPERCASE$%%(req, res) {
 }
 
 module.exports = {
-    __create%%$MODEL_NAME_UPPERCASE$%%,
     create%%$MODEL_NAME_UPPERCASE$%%,
 }

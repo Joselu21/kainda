@@ -1,5 +1,6 @@
 const ModelType = require("./modelType");
 const generatePassthrough = require("./passthrough");
+const generateControllers = require("./controllers");
 
 /**
  * KaindaModel is a wrapper for Sequelize and Mongoose models.
@@ -25,7 +26,7 @@ class KaindaModel {
         this.subModel = model;
         this.isMongoose = ModelType.isMongoose;
         this.isSequelize = ModelType.isSequelize;
-        this.modelType = ModelType.getType(model);
+        this.modelType = ModelType.getTypeExternal(model);
 
         /**
          * The passthrough methods for the submodel
@@ -70,7 +71,25 @@ class KaindaModel {
         this.getByPk = passthrough.get.findById;
         this.findAndCountAll = passthrough.get.findAndCountAll;
         this.getAndCountAll = passthrough.get.findAndCountAll;
+
+        this.updateOne = passthrough.update.updateOne;
+        this.updateMany = passthrough.update.updateMany;
+
+        this.deleteOne = passthrough.delete.deleteOne;
+        this.deleteMany = passthrough.delete.deleteMany;
+
     };
+
+    /**
+     * The controller methods for the submodel
+     * @param {Object} controller
+     */
+    set Controller (controller) {
+        this.controller = {
+            ...generateControllers(this.subModel),
+            ...controller,
+        };
+    }
 
 }
 

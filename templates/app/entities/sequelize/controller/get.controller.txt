@@ -1,16 +1,8 @@
 const { GenericControllers } = require("kainda");
 
-async function __getAll%%$MODEL_NAME_UPPERCASE$%%s(transaction, options) {
-    return await GenericControllers.__genericGetAll(Models.%%$MODEL_NAME_UPPERCASE$%%, transaction, options);
-}
-
-async function __get%%$MODEL_NAME_UPPERCASE$%%(id, transaction, options) {
-    return await GenericControllers.__genericGet(Models.%%$MODEL_NAME_UPPERCASE$%%, id, transaction, options);
-}
-
 async function getAll%%$MODEL_NAME_UPPERCASE$%%s(req, res) {
     try {
-        const %%$MODEL_NAME_LOWERCASE$%%s = await __getAll%%$MODEL_NAME_UPPERCASE$%%s();
+        const %%$MODEL_NAME_LOWERCASE$%%s = await Models.%%$MODEL_NAME_UPPERCASE$%%.Controller.__getAll%%$MODEL_NAME_UPPERCASE$%%s();
         if(!%%$MODEL_NAME_LOWERCASE$%%s || %%$MODEL_NAME_LOWERCASE$%%s.length === 0){
             throw new Models.%%$MODEL_NAME_UPPERCASE$%%.Exceptions.%%$MODEL_NAME_UPPERCASE$%%NotFoundException({
                 error_type: "NOT_FOUND",
@@ -30,7 +22,7 @@ async function getAll%%$MODEL_NAME_UPPERCASE$%%s(req, res) {
 
 async function get%%$MODEL_NAME_UPPERCASE$%%(req, res) {
     try {
-        const %%$MODEL_NAME_LOWERCASE$%% = await __get%%$MODEL_NAME_UPPERCASE$%%(req.params.%%$MODEL_NAME_LOWERCASE$%%_id);
+        const %%$MODEL_NAME_LOWERCASE$%% = await Models.%%$MODEL_NAME_UPPERCASE$%%.Controller.__get%%$MODEL_NAME_UPPERCASE$%%(req.params.%%$MODEL_NAME_LOWERCASE$%%_id);
         if(!%%$MODEL_NAME_LOWERCASE$%%) {
             throw new Models.%%$MODEL_NAME_UPPERCASE$%%.Exceptions.%%$MODEL_NAME_UPPERCASE$%%NotFoundException({
                 error_type: "NOT_FOUND",
@@ -47,8 +39,6 @@ async function get%%$MODEL_NAME_UPPERCASE$%%(req, res) {
 }
 
 module.exports = {
-    __getAll%%$MODEL_NAME_UPPERCASE$%%s,
-    __get%%$MODEL_NAME_UPPERCASE$%%,
     getAll%%$MODEL_NAME_UPPERCASE$%%s,
     get%%$MODEL_NAME_UPPERCASE$%%,
 };
