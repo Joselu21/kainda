@@ -1,6 +1,7 @@
 const ModelType = require("./modelType");
 const generatePassthrough = require("./passthrough");
 const generateControllers = require("./controllers");
+const { SeedFunctions, SeedOptions } = require("./seeders");
 
 /**
  * KaindaModel is a wrapper for Sequelize and Mongoose models.
@@ -52,6 +53,14 @@ class KaindaModel {
 
     }
 
+    async seed (...args) {
+        if(Array.isArray(args[0])) {
+            return await SeedFunctions.seed(this, args[0], args[1]);
+        } else {
+            return await SeedFunctions.seed(this, this.Seeders?.records ?? [], args[0]);
+        }
+    }
+
     #__initPassthrough(model) {
         const passthrough = generatePassthrough(model);
         this.createOne = passthrough.create.createOne;
@@ -90,6 +99,15 @@ class KaindaModel {
             ...controller,
         };
     }
+
+    /**
+     * @param {Object} seed_options
+     */
+    set seed_options (seed_options) {
+        SeedOptions.validate(seed_options);
+        this._seed_options = seed_options;
+    }
+
 
 }
 

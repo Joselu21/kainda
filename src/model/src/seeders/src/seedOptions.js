@@ -14,7 +14,7 @@ const OldRecords = [
     "dontSeedIfAnyExist"
 ];
 
-function validateSeedOptions(seed_options) {
+function validate(seed_options) {
     if (!seed_options) {
         throw new Error("Seed options are not defined.");
     }
@@ -42,7 +42,7 @@ function validateSeedOptions(seed_options) {
 }
 
 module.exports = {
-    validateSeedOptions,
+    validate,
     MinKeys,
     OldRecords
 };
