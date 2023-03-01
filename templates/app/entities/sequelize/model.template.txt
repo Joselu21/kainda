@@ -16,7 +16,7 @@ class %%$MODEL_NAME_UPPERCASE$%% extends Model {}
     modelName: '%%$MODEL_NAME_UPPERCASE$%%',
     tableName: '%%$MODEL_NAME_LOWERCASE$%%s', // TODO: Check if the table name is correct
     timestamps: true,
-    paranoid: true,
+    paranoid: false,
 });
 
 /**
