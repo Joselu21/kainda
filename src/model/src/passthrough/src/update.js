@@ -1,12 +1,14 @@
 const ModelType = require("../../modelType");
 
-async function __updateOneSequelize(data, options) {
-    const instance = await this.subModel.find(data, options);
+async function __updateOneSequelize(data, filter, options) {
+    const instance = await this.subModel.findOne({
+        where : filter,
+    }, options);
     return await instance.update(data, options);
 }
 
-async function __updateOneMongoose(data, options) {
-    return await this.subModel.updateOne(data, {
+async function __updateOneMongoose(data, filter, options) {
+    return await this.subModel.updateOne(filter, data, {
         session : options?.transaction,
         ...options,
     });
@@ -17,7 +19,9 @@ async function __updateManySequelize(data, options) {
 }
 
 async function __updateManyMongoose(data, options) {
-    return await this.subModel.updateMany(data, {
+    return await this.subModel.updateMany({
+        ...options.where
+    }, data, {
         session : options?.transaction,
         ...options,
     });

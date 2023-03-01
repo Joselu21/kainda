@@ -1,7 +1,10 @@
 const ModelType = require("../../modelType");
 
 async function __findOneSequelize(conditions, options) {
-    return await this.subModel.findOne(conditions, options);
+    return await this.subModel.findOne({
+        where : conditions,
+        ...options,
+    });
 }
 
 async function __findOneMongoose(conditions, options) {
@@ -12,7 +15,10 @@ async function __findOneMongoose(conditions, options) {
 }
 
 async function __findManySequelize(conditions, options) {
-    return await this.subModel.findAll(conditions, options);
+    return await this.subModel.findAll({
+        where : conditions,
+        ...options,
+    });
 }
 
 async function __findManyMongoose(conditions, options) {
@@ -23,7 +29,10 @@ async function __findManyMongoose(conditions, options) {
 }
 
 async function __findAndCountAllSequelize(conditions, options) {
-    return await this.subModel.findAndCountAll(conditions, options);
+    return await this.subModel.findAndCountAll({
+        where : conditions,
+        ...options,
+    });
 }
 
 async function __findAndCountAllMongoose(conditions, options) {

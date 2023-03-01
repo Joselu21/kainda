@@ -39,8 +39,6 @@ async function get%%$MODEL_NAME_UPPERCASE$%%(req, res) {
 }
 
 module.exports = {
-    __getAll%%$MODEL_NAME_UPPERCASE$%%s,
-    __get%%$MODEL_NAME_UPPERCASE$%%,
     getAll%%$MODEL_NAME_UPPERCASE$%%s,
     get%%$MODEL_NAME_UPPERCASE$%%,
 };

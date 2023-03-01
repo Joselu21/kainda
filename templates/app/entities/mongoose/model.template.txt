@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { KaindaModel } = require('kainda');
 
 const %%$MODEL_NAME_LOWERCASE$%%Schema = new mongoose.Schema({
     // TODO: Fill the fields of the schema
@@ -7,5 +8,6 @@ const %%$MODEL_NAME_LOWERCASE$%%Schema = new mongoose.Schema({
 
 });
 
-const %%$MODEL_NAME_UPPERCASE$%% = mongoose.model('%%$MODEL_NAME_UPPERCASE$%%', %%$MODEL_NAME_LOWERCASE$%%Schema);
+const tmpModel = mongoose.model('%%$MODEL_NAME_UPPERCASE$%%', %%$MODEL_NAME_LOWERCASE$%%Schema);
+const %%$MODEL_NAME_UPPERCASE$%% = new KaindaModel(tmpModel);
 module.exports = %%$MODEL_NAME_UPPERCASE$%%;

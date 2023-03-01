@@ -1,4 +1,5 @@
 const { DataTypes, Model } = require('sequelize');
+const { KaindaModel } = require('kainda');
 
 class %%$MODEL_NAME_UPPERCASE$%% extends Model {}
 
@@ -27,4 +28,5 @@ class %%$MODEL_NAME_UPPERCASE$%% extends Model {}
  * HOOKS
  */
 
-module.exports = %%$MODEL_NAME_UPPERCASE$%%;
+const Kainda%%$MODEL_NAME_UPPERCASE$%% = new KaindaModel(%%$MODEL_NAME_UPPERCASE$%%);
+module.exports = Kainda%%$MODEL_NAME_UPPERCASE$%%;

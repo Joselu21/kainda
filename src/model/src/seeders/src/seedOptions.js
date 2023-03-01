@@ -26,7 +26,7 @@ function validate(seed_options) {
     }
     for (let i = 0; i < MinKeys.length; i++) {
         const key = MinKeys[i];
-        if (!seed_options[key]) {
+        if (Object.keys(seed_options).indexOf(key) === -1) {
             throw new Error("Seed options must have the following key: " + key);
         }
     }
