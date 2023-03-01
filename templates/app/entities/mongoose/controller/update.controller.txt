@@ -1,0 +1,21 @@
+const { GenericControllers } = require("kainda");
+
+async function update%%$MODEL_NAME_UPPERCASE$%%(req, res) {
+    let transaction = await mongoose.startSession();
+    try {
+        transaction.startTransaction();
+        let container = { ...req.body, %%$MODEL_NAME_LOWERCASE$%%_id: req.params.%%$MODEL_NAME_LOWERCASE$%%_id };
+        const %%$MODEL_NAME_LOWERCASE$%% = await Models.%%$MODEL_NAME_UPPERCASE$%%.Controller.__update%%$MODEL_NAME_UPPERCASE$%%(container, transaction);
+        await transaction.commitTransaction();
+        return res.status(200).json(%%$MODEL_NAME_LOWERCASE$%%.toJSON()); 
+    } catch (error) {
+        if(transaction) {
+            await transaction.abortTransaction();
+        }
+        ExceptionHandler(error, res);
+    }
+}
+
+module.exports = {
+    update%%$MODEL_NAME_UPPERCASE$%%
+}

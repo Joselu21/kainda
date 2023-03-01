@@ -1,0 +1,38 @@
+{
+  "name": "%%$PROJECT_NAME$%%",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development node --trace-warnings index.js",
+    "deploy": "cross-env NODE_ENV=production node index.js",
+    "test": "cross-env NODE_ENV=test mocha --recursive \"./app/test/**/*.test.js\" --exit --timeout 1000000"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "config": "*",
+    "cors": "*",
+    "cross-env": "*",
+    "module-alias": "*",
+    "express": "*",
+    "sqlite3": "*",
+    "helmet": "*",
+    "kainda": "*",
+    "mongoose": "*",
+    "@mongodb-js/zstd": "*",
+    "jsonwebtoken": "*"
+  },
+  "devDependencies": {
+    "chai": "*",
+    "supertest": "*",
+    "mocha": "*"
+  },
+  "_moduleAliases": {
+    "@" : "./",
+    "@app" : "./app",
+    "@entities": "./app/entities",
+    "@services": "./app/services",
+    "@test" : "./app/test"
+  }
+}

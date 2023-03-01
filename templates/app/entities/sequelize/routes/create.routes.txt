@@ -1,0 +1,17 @@
+const { tokenValid } = require("kainda");
+
+module.exports = { 
+    
+    create : function (app) {
+        // Create new %%$MODEL_NAME_LOWERCASE$%%
+        app.post(
+            "/%%$MODEL_NAME_LOWERCASE$%%",
+            [
+                tokenValid,
+                Models.%%$MODEL_NAME_UPPERCASE$%%.Middlewares.checkRequiredKeys
+            ],
+            Models.%%$MODEL_NAME_UPPERCASE$%%.Controller.create%%$MODEL_NAME_UPPERCASE$%%
+        );
+    }
+
+};

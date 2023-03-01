@@ -1,0 +1,46 @@
+/**
+ * This function will populate the database with some %%$MODEL_NAME_LOWERCASE$%%s.
+ * @param {Sequelize.Transaction} t The transaction object, it is optional but kainda framework always seeds with transactions.
+ * @returns {Void} Nothing.
+ * @throws {Error} If something goes wrong, it will throw an error. This can happen if your data is not valid or if there is a database error.
+ */
+async function seed(t) {
+    if(Models.%%$MODEL_NAME_UPPERCASE$%%.seed_options.seed !== true || Models.%%$MODEL_NAME_UPPERCASE$%%.seed_options.is_seeded) {
+        return;
+    }
+    if(Models.%%$MODEL_NAME_UPPERCASE$%%.seed_options.dependencies.length > 0) {
+        for(let i = 0; i < Models.%%$MODEL_NAME_UPPERCASE$%%.seed_options.dependencies.length; i++) {
+            await Models.%%$MODEL_NAME_UPPERCASE$%%.seed_options.dependencies[i].Seeders.seed(t);
+        }
+    }
+    await Models.%%$MODEL_NAME_UPPERCASE$%%.bulkCreate([
+        {
+        },
+        {
+        },
+        {
+        },
+    ], {
+        transaction: t,
+        validators: true,
+        individualHooks: true
+    });
+    Models.%%$MODEL_NAME_UPPERCASE$%%.seed_options.seed = true;
+}
+
+/**
+ * This function will populate the foreign keys of the %%$MODEL_NAME_LOWERCASE$%%s.
+ * @param {Sequelize.Transaction} t The transaction object, it is optional but kainda framework always seeds with transactions.
+ * @returns {Void} Nothing.
+ * @throws {Error} If something goes wrong, it will throw an error. This can happen if your data is not valid or if there is a database error.
+ */
+async function associate(t) {
+
+}
+
+const %%$MODEL_NAME_UPPERCASE$%%Seeders = {
+    seed: seed,
+    associate: associate
+}
+
+module.exports = %%$MODEL_NAME_UPPERCASE$%%Seeders;

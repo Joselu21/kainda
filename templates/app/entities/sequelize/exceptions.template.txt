@@ -1,0 +1,58 @@
+const { KaindaException } = require("kainda");
+
+class %%$MODEL_NAME_UPPERCASE$%%Exception extends KaindaException {
+    code = 500;
+    name = "%%$MODEL_NAME_UPPERCASE$%%Exception";
+}
+
+class %%$MODEL_NAME_UPPERCASE$%%NotCreatedException extends %%$MODEL_NAME_UPPERCASE$%%Exception {
+    code = 500;
+    name = "%%$MODEL_NAME_UPPERCASE$%%NotCreatedException";
+}
+
+class %%$MODEL_NAME_UPPERCASE$%%NotFoundException extends %%$MODEL_NAME_UPPERCASE$%%Exception {
+    code = 404;
+    name = "%%$MODEL_NAME_UPPERCASE$%%NotFoundException";
+}
+
+class %%$MODEL_NAME_UPPERCASE$%%NotUpdatedException extends %%$MODEL_NAME_UPPERCASE$%%Exception {
+    code = 500;
+    name = "%%$MODEL_NAME_UPPERCASE$%%NotUpdatedException";
+}
+
+class %%$MODEL_NAME_UPPERCASE$%%NotDeletedException extends %%$MODEL_NAME_UPPERCASE$%%Exception {
+    code = 500;
+    name = "%%$MODEL_NAME_UPPERCASE$%%NotDeletedException";
+}
+
+class %%$MODEL_NAME_UPPERCASE$%%AlreadyExistsException extends %%$MODEL_NAME_UPPERCASE$%%Exception {
+    code = 409;
+    name = "%%$MODEL_NAME_UPPERCASE$%%AlreadyExistsException";
+}
+
+class %%$MODEL_NAME_UPPERCASE$%%InvalidArgumentException extends %%$MODEL_NAME_UPPERCASE$%%Exception {
+    code = 400;
+    name = "%%$MODEL_NAME_UPPERCASE$%%InvalidArgumentException";
+}
+
+function %%$MODEL_NAME_UPPERCASE$%%ExceptionHandler(error, res) {
+
+    if (error instanceof %%$MODEL_NAME_UPPERCASE$%%Exception) {
+        res.status(error.response_code ?? error.code).json(error.body ?? {
+            error_type: error.name,
+            error_message: error.message,
+        });
+    } 
+
+}
+
+module.exports = {
+    %%$MODEL_NAME_UPPERCASE$%%Exception,
+    %%$MODEL_NAME_UPPERCASE$%%NotCreatedException,
+    %%$MODEL_NAME_UPPERCASE$%%NotFoundException,
+    %%$MODEL_NAME_UPPERCASE$%%NotUpdatedException,
+    %%$MODEL_NAME_UPPERCASE$%%NotDeletedException,
+    %%$MODEL_NAME_UPPERCASE$%%AlreadyExistsException,
+    %%$MODEL_NAME_UPPERCASE$%%InvalidArgumentException,
+    %%$MODEL_NAME_UPPERCASE$%%ExceptionHandler
+}

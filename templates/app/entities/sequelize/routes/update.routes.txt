@@ -1,0 +1,16 @@
+const { tokenValid } = require("kainda");
+
+module.exports = {
+    
+    update : function (app) {
+        // Update %%$MODEL_NAME_LOWERCASE$%%
+        app.put(
+            "/%%$MODEL_NAME_LOWERCASE$%%/:%%$MODEL_NAME_LOWERCASE$%%_id", 
+            [
+                tokenValid
+            ], 
+            Models.%%$MODEL_NAME_UPPERCASE$%%.Controller.update%%$MODEL_NAME_UPPERCASE$%%
+        );
+    }
+
+};

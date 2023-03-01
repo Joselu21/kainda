@@ -1,0 +1,32 @@
+const { DataTypes, Model } = require('sequelize');
+const { KaindaModel } = require('kainda');
+
+class %%$MODEL_NAME_UPPERCASE$%% extends Model {}
+
+%%$MODEL_NAME_UPPERCASE$%%.init({
+    %%$MODEL_NAME_LOWERCASE$%%_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+    }
+    // TODO: Create more fields for the model
+}, {
+    sequelize,
+    modelName: '%%$MODEL_NAME_UPPERCASE$%%',
+    tableName: '%%$MODEL_NAME_LOWERCASE$%%s', // TODO: Check if the table name is correct
+    timestamps: true,
+    paranoid: false,
+});
+
+/**
+ * RELATIONSHIPS
+ */
+
+
+/**
+ * HOOKS
+ */
+
+const Kainda%%$MODEL_NAME_UPPERCASE$%% = new KaindaModel(%%$MODEL_NAME_UPPERCASE$%%);
+module.exports = Kainda%%$MODEL_NAME_UPPERCASE$%%;
