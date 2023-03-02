@@ -29,7 +29,7 @@ function __validSeeder(model) {
 
 function shouldSeed(model) {
     __validModel(model);
-    return model.seed_options.seed === true && !model.seed_options.is_seeded;
+    return model.seed_options.seed === true && model.seed_options.is_seeded !== true;
 }
 
 async function seedDependencies(model, options = {}) {
@@ -38,7 +38,12 @@ async function seedDependencies(model, options = {}) {
         for (let dependency of model.seed_options.dependencies) {
             if (shouldSeed(dependency)) {
                 __validSeeder(model.seed_options[dependency]);
-                await model.seed_options[dependency].Seeders.seed(options.transaction);
+                if (model.seed_options[dependency].Seeders && model.seed_options[dependency].Seeders.seed && typeof model.seed_options[dependency].Seeders.seed === "function"){
+                    // TODO: For user-defined seed functions we pass the full options object to ensure that the user can easily override this command. 2 dependencies???
+                    await model.seed_options[dependency].Seeders.seed(options);
+                } else if (model.seed_options[dependency].seed && typeof model.seed_options[dependency].seed === "function"){
+                    await model.seed_options[dependency].seed(null, options);
+                }
             }
         }
     }
@@ -50,21 +55,23 @@ async function __seed(model, data, options = {}) {
     return model.seed_options.is_seeded = true;
 }
 
-async function seed(model, data, options = {}) {
-    __validModel(model);
-    if(!shouldSeed(model)) {
+async function seed(data = null, options = {}) {
+    __validModel(this);
+    if (!shouldSeed(this)) {
         return;
     }
-    await seedDependencies(model, options);
+    await seedDependencies(this, options);
+    if (!data || data.length === 0) {
+        data = this.seed_options.data;
+    }
     let need_to_seed = true;
-    if (model.seed_options.oldRecords && model.seed_options.oldRecords !== "") {
-        need_to_seed = await processOldRecords(model, data, options);
+    if (this.seed_options.oldRecords && this.seed_options.oldRecords !== "") {
+        need_to_seed = await processOldRecords(this, data, options);
     }
     if (need_to_seed) {
-        await __seed(model, data, options);
+        await __seed(this, data, options);
     }
 }
-
 
 async function processOldRecords(model, data, options = {}) {
     __validModel(model);
@@ -72,23 +79,30 @@ async function processOldRecords(model, data, options = {}) {
         return;
     }
     if (model.seed_options.oldRecords) {
-        if(options.override && options.override[model.seed_options.oldRecords]) {
+        if (options.override && options.override[model.seed_options.oldRecords]) {
             await options.override[model.seed_options.oldRecords](model, data, options);
         } else {
-            const option_name = model.seed_options.oldRecords.charAt(0).toUpperCase() + model.seed_options.oldRecords.slice(1);
-            await ("__processOld" + option_name)(model, data, options);
-        }                
+            return await processOldFunctions[model.seed_options.oldRecords](model, data, options);
+        }
     }
 }
 
+const processOldFunctions = {
+    deleteAll: __processOldDeleteAll,
+    onlyOverwrite: __processOldOnlyOverwrite,
+    overwriteAndSeed: __processOldOverwriteAndSeed,
+    dontSeedIfRecordsExists: __processOldDontSeedIfRecordsExists,
+    dontSeedIfAnyExists: __processOldDontSeedIfAnyExists,
+    dontSeedIfAllExists: __processOldDontSeedIfAllExists,
+};
+
 async function __processOldDeleteAll(model, data, options = {}) {
-    __validModel(model);
     await model.deleteMany({}, options);
     return true;
 }
 
+// TODO: Fix this SHIT
 async function __processOldOnlyOverwrite(model, options = {}) {
-    __validModel(model);
     for (let i = 0; i < data.length; i++) {
         const element = data[i];
         const record = isSequelizeModel
@@ -100,28 +114,37 @@ async function __processOldOnlyOverwrite(model, options = {}) {
 }
 
 async function __processOldOverwriteAndSeed(model, data, options = {}) {
-    __validModel(model);
     await __processOldOnlyOverwrite(model, options);
     return true;
 }
 
 async function __processOldDontSeedIfRecordsExists(model, data, options = {}) {
-    __validModel(model);
-    const { count } = await model.findAndCountAll({ where: {}, transaction: options.transaction });
-    return count === 0;    
+    const { count } = await model.findAndCountAll({}, { transaction: options.transaction });
+    return count === 0;
+}
+
+async function __processOldDontSeedIfAnyExists(model, data, options = {}) {
+    let exists = false;
+    for (let i = 0; i < data.length; i++) {
+        const element = data[i];
+        const record = await model.findMany(element, options);
+        if (record && record.length > 0) {
+            exists = true;
+            break;
+        }
+    }
+    return !exists;
 }
 
 async function __processOldDontSeedIfAllExists(model, data, options = {}) {
-    __validModel(model);
     for (let i = 0; i < data.length; i++) {
         const element = data[i];
-        const record = model.findOne({ where: element, transaction: options.transaction });
-        if (!record) {
-            return true;
+        const record = await model.findMany(element, options);
+        if (!record || record.length > 0) {
+            return false;
         }
     }
-    return false;
-
+    return true;
 }
 
 module.exports = {

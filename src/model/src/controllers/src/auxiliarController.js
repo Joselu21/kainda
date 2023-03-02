@@ -1,39 +1,39 @@
-const { GenericControllers } = require("../../../../generic.controllers");
+const GenericControllers = require("../../../../generic.controllers");
 const ModelType = require("../../modelType");
 
 function genericAuxiliarCreate(model) {
     return async function(data, options) {
-        return await GenericControllers.__genericCreate(model, data, options.transaction, options);
+        return await GenericControllers.__genericCreate(model, data, options?.transaction, options);
     };
 }
 
 function genericAuxiliarGetAll(model) {
     return async function(options) {
-        return await GenericControllers.__genericGetAll(model, options.transaction, options);
+        return await GenericControllers.__genericGetAll(model, options?.transaction, options);
     };
 }
 
 function genericAuxiliarGetById(model) {
     return async function(id, options) {
-        return await GenericControllers.__genericGet(model, id, options.transaction, options);
+        return await GenericControllers.__genericGet(model, id, options?.transaction, options);
     };
 }
 
 function genericAuxiliarGetBy(model) {
     return async function(data, options) {
-        return await GenericControllers.__genericGetBy(model, data, options.transaction, options);
+        return await GenericControllers.__genericGetBy(model, data, options?.transaction, options);
     };
 }
 
 function genericAuxiliarUpdate(model) {
     return async function(data, options) {
-        return await GenericControllers.__genericUpdate(model, data, options.transaction, options);
+        return await GenericControllers.__genericUpdate(model, data, options?.transaction, options);
     };
 }
 
 function genericAuxiliarDelete(model) {
     return async function(id, options) {
-        return await GenericControllers.__genericDelete(model, id, options.transaction, options);
+        return await GenericControllers.__genericDelete(model, id, options?.transaction, options);
     };
 }
 

@@ -198,13 +198,14 @@ async function seedDatabase() {
     if ((process.env.NODE_ENV !== 'production' && process.argv.includes('seed')) || process.env.NODE_ENV === 'test') {
         let transaction = await mongoose.startSession();
         try {
-            await transaction.startTransaction();
+            transaction.startTransaction();
             console.log(kainda.chalk.blue('[SEED] Seeding database...'));
             for (let model of Object.keys(Models)) {
-                await Models[model].Seeders.seed(transaction);
-            }
-            for (let model of Object.keys(Models)) {
-                await Models[model].Seeders.associate(transaction);
+                if(Models[model].Seeders.seed && typeof Models[model].Seeders.seed === 'function'){
+                    await Models[model].Seeders.seed(transaction);
+                } else if (Models[model].seed && typeof Models[model].seed === 'function'){
+                    await Models[model].seed(null, { transaction });
+                }            
             }
             await transaction.commitTransaction();
             console.log(kainda.chalk.green('[SEED] Database seeded successfully'));

@@ -1,11 +1,11 @@
-const %%$MODEL_NAME_UPPERCASE$%% = require('@entities/%%$MODEL_NAME_LOWERCASE$%%/model');
+const %%$MODEL_NAME_UPPERCASE$%% = require('@entities/%%$MODEL_NAME_URL$%%/model');
 
-%%$MODEL_NAME_UPPERCASE$%%.Controller = require('@entities/%%$MODEL_NAME_LOWERCASE$%%/controllers');
-%%$MODEL_NAME_UPPERCASE$%%.Routes = require('@entities/%%$MODEL_NAME_LOWERCASE$%%/routes');
-%%$MODEL_NAME_UPPERCASE$%%.Exceptions = require('@entities/%%$MODEL_NAME_LOWERCASE$%%/exceptions');
-%%$MODEL_NAME_UPPERCASE$%%.Seeders = require('@entities/%%$MODEL_NAME_LOWERCASE$%%/seeders');
-%%$MODEL_NAME_UPPERCASE$%%.Middlewares = require('@entities/%%$MODEL_NAME_LOWERCASE$%%/middlewares');
-%%$MODEL_NAME_UPPERCASE$%%.Validators = require('@entities/%%$MODEL_NAME_LOWERCASE$%%/validators');
+%%$MODEL_NAME_UPPERCASE$%%.Controller = require('@entities/%%$MODEL_NAME_URL$%%/controllers');
+%%$MODEL_NAME_UPPERCASE$%%.Routes = require('@entities/%%$MODEL_NAME_URL$%%/routes');
+%%$MODEL_NAME_UPPERCASE$%%.Exceptions = require('@entities/%%$MODEL_NAME_URL$%%/exceptions');
+%%$MODEL_NAME_UPPERCASE$%%.Seeders = require('@entities/%%$MODEL_NAME_URL$%%/seeders');
+%%$MODEL_NAME_UPPERCASE$%%.Middlewares = require('@entities/%%$MODEL_NAME_URL$%%/middlewares');
+%%$MODEL_NAME_UPPERCASE$%%.Validators = require('@entities/%%$MODEL_NAME_URL$%%/validators');
 
 /**
  * VARIABLES
@@ -27,6 +27,7 @@ const %%$MODEL_NAME_UPPERCASE$%% = require('@entities/%%$MODEL_NAME_LOWERCASE$%%
     ],
     is_seeded: false,
     oldRecords: "deleteAll",
+    data: %%$MODEL_NAME_UPPERCASE$%%.Seeders.data
 };
 
 module.exports = %%$MODEL_NAME_UPPERCASE$%%;

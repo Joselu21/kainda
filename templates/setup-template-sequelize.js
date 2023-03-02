@@ -224,10 +224,11 @@ async function seedDatabase() {
         try {
             console.log(kainda.chalk.blue('[SEED] Seeding database...'));
             for (let model of Object.keys(Models)) {
-                await Models[model].Seeders.seed(transaction);
-            }
-            for (let model of Object.keys(Models)) {
-                await Models[model].Seeders.associate(transaction);
+                if(Models[model].Seeders.seed && typeof Models[model].Seeders.seed === 'function'){
+                    await Models[model].Seeders.seed(transaction);
+                } else if (Models[model].seed && typeof Models[model].seed === 'function'){
+                    await Models[model].seed(null, { transaction });
+                }            
             }
             await transaction.commit();
             console.log(kainda.chalk.green('[SEED] Database seeded successfully'));

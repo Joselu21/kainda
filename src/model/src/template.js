@@ -44,21 +44,18 @@ class KaindaModel {
          * @property {String} oldRecords - The options for what to do with old records, valid options are:
          */
         this.seed_options = {
-            seed : false,
+            seed: false,
             dependencies: [
             ],
             is_seeded: false,
-            oldRecords: "deleteAll"
+            oldRecords: "deleteAll",
+            data: []
         };
 
-    }
+        this.seed = SeedFunctions.seed;
 
-    async seed (...args) {
-        if(Array.isArray(args[0])) {
-            return await SeedFunctions.seed(this, args[0], args[1]);
-        } else {
-            return await SeedFunctions.seed(this, this.Seeders?.records ?? [], args[0]);
-        }
+        this.#_Controller = generateControllers(this.subModel);
+
     }
 
     #__initPassthrough(model) {
@@ -89,25 +86,22 @@ class KaindaModel {
 
     };
 
+    #_Controller = {};
+
     /**
      * The controller methods for the submodel
-     * @param {Object} controller
+     * @param {Object} Controller
      */
-    set Controller (controller) {
-        this.controller = {
+    set Controller (newController) {
+        this.#_Controller = {
             ...generateControllers(this.subModel),
-            ...controller,
+            ...newController,
         };
     }
 
-    /**
-     * @param {Object} seed_options
-     */
-    set seed_options (seed_options) {
-        SeedOptions.validate(seed_options);
-        this._seed_options = seed_options;
+    get Controller () {
+        return this.#_Controller;
     }
-
 
 }
 
