@@ -55,6 +55,7 @@ function hydrateFile(path, options = {}) {
     if (options.entity_name) {
         file = file.replaceAll("%%$MODEL_NAME_UPPERCASE$%%", options.entity_name.charAt(0).toUpperCase() + options.entity_name.slice(1));
         file = file.replaceAll("%%$MODEL_NAME_LOWERCASE$%%", options.entity_name.toLowerCase());
+        file = file.replaceAll("%%$MODEL_NAME_URL$%%", options.entity_name.toLowerCase().substring(0, 1) + options.entity_name.substring(1));
     } else if (options.project_name) {
         file = file.replaceAll("%%$PROJECT_NAME$%%", options.project_name);
     }

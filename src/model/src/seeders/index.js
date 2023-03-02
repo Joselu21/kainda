@@ -3,5 +3,5 @@ const SeedFunctions = require('./src/seedFunctions');
 
 module.exports = {
     SeedOptions,
-    ...SeedFunctions
+    SeedFunctions
 };
