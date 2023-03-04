@@ -1,3 +1,12 @@
+/**
+ * @typedef {Object} SeedOptions
+ * @property {boolean} seed - Whether or not to seed the data
+ * @property {boolean} is_seeded - Whether or not the data has already been seeded
+ * @property {string} oldRecords - The type of old records processing to perform
+ * @property {Array<KaindaModel>} dependencies - An array of model names that this model depends on
+ * @export SeedOptions
+ */
+
 const MinKeys = [
     "seed",
     "dependencies",
@@ -7,8 +16,6 @@ const MinKeys = [
 
 const OldRecords = [
     "deleteAll",
-    "onlyOverwrite",
-    "overwriteAndSeed",
     "dontSeedIfRecordsExists",
     "dontSeedIfAllExist",
     "dontSeedIfAnyExist"
