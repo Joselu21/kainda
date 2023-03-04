@@ -5,20 +5,27 @@ const Logger = require("./src/logger.class");
 const KaindaUtils = require("./src/utils");
 const { 
     ExceptionHandler, 
-    KaindaException 
+    KaindaException,
+    GenericKaindaExceptionHandler,
+    GenericKaindaExceptions
 } = require("./src/exceptions");
 const KaindaMiddlewareUtils = require("./src/middlewares.utils");
 const AuthFunctions = require("./src/auth.functions");
 const chalk = require("chalk");
 
 module.exports = {
+    KaindaModel,
+
     GenericControllers,
     Metas,
     Logger,
     ...KaindaUtils,
-    ExceptionHandler,
-    KaindaModel,
+
     KaindaException,
+    ExceptionHandler,
+    GenericKaindaExceptionHandler,
+    GenericKaindaExceptions,
+    
     ...KaindaMiddlewareUtils,
     ...AuthFunctions,
     chalk

@@ -19,7 +19,7 @@ async function __genericCreate(model, data, transaction = null, options = {}) {
 
     // Check if the required keys array is present in the model
     if (!required_keys || required_keys.length === 0) {
-        throw new model.Exceptions[(model.modelName ?? model.name) + "NotCreatedException"]({
+        throw new model.Exceptions[(model.modelName ?? model.name) + "Exception"]({
             error_type: "BACKEND_ERROR",
             error_message: "No required keys found for " + (model.modelName ?? model.name) + ", change the model definition or provide the required keys in the options.",
             error_data: {
@@ -36,7 +36,7 @@ async function __genericCreate(model, data, transaction = null, options = {}) {
 
     // If there are missing fields, throw an exception
     if (Object.keys(missing_fields).length > 0 && missing_fields.error_type) {
-        throw new model.Exceptions[(model.modelName ?? model.name) + "NotCreatedException"](missing_fields, 400);
+        throw new model.Exceptions[(model.modelName ?? model.name) + "BadRequestException"](missing_fields, 400);
     }
 
     // Create the instance
@@ -151,7 +151,7 @@ async function __genericUpdate(model, data, transaction = null, options = {}) {
 
     // Check if the updateable keys array is present in the model
     if (!updateable_keys || updateable_keys.length === 0) {
-        throw new model.Exceptions[(model.modelName ?? model.name) + "NotUpdatedException"]({
+        throw new model.Exceptions[(model.modelName ?? model.name) + "Exception"]({
             error_type: "BACKEND_ERROR",
             error_message: "No updateable keys found for " + (model.modelName ?? model.name) + ", change the model definition or provide the updateable keys in the options.",
             error_data: {

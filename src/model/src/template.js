@@ -2,6 +2,11 @@ const ModelType = require("./modelType");
 const generatePassthrough = require("./passthrough");
 const generateControllers = require("./controllers");
 const { SeedFunctions, SeedOptions } = require("./seeders");
+const { KaindaException, GenericKaindaExceptions } = require("./../../exceptions");
+
+/**
+ * @typedef import("./seeders/seedOptions")} SeedOptions;
+ */
 
 /**
  * KaindaModel is a wrapper for Sequelize and Mongoose models.
@@ -25,9 +30,9 @@ class KaindaModel {
          * Submodel is the model that is being used by the KaindaModel (Sequelize or Mongoose)
          */
         this.subModel = model;
-        this.isMongoose = ModelType.isMongoose;
-        this.isSequelize = ModelType.isSequelize;
         this.modelType = ModelType.getTypeExternal(model);
+        this.isMongoose = this.modelType === "mongoose";
+        this.isSequelize = this.modelType === "sequelize";
 
         /**
          * The passthrough methods for the submodel
@@ -36,14 +41,15 @@ class KaindaModel {
         this.#__initPassthrough(model);
 
         /**
-         * Seed Options
-         * @type {Object}
-         * @property {Boolean} seed - Whether or not to seed the model on startup
-         * @property {Array} dependencies - The dependencies of the model that they must be seeded before this model
-         * @property {Boolean} is_seeded - Whether or not the model has been seeded already
-         * @property {String} oldRecords - The options for what to do with old records, valid options are:
+         * The controller methods for the submodel
+         * These methods are the functions called by the routes
          */
-        this.seed_options = {
+        this.#_Controller = generateControllers(this.subModel);
+
+        /**
+         * Seeder Options
+         */
+        this.#_seed_options = {
             seed: false,
             dependencies: [
             ],
@@ -52,9 +58,10 @@ class KaindaModel {
             data: []
         };
 
-        this.seed = SeedFunctions.seed;
-
-        this.#_Controller = generateControllers(this.subModel);
+        /**
+         * Seeder Function
+         */
+        this.#_seed = SeedFunctions.seed;
 
     }
 
@@ -85,23 +92,115 @@ class KaindaModel {
         this.deleteMany = passthrough.delete.deleteMany;
 
     };
-
+    
+    // -------------------- //
+    // ---- CONTROLLER ---- //
+    //  #region CONTROLLER  //
+    // -------------------- //
     #_Controller = {};
 
     /**
      * The controller methods for the submodel
      * @param {Object} Controller
      */
-    set Controller (newController) {
+    set Controller(newController) {
         this.#_Controller = {
             ...generateControllers(this.subModel),
             ...newController,
         };
     }
 
-    get Controller () {
+    /**
+     * Controller getter
+     * @returns {Object}
+     */
+    get Controller() {
         return this.#_Controller;
     }
+
+    // #endregion //
+
+    // ------------------- //
+    // --- EXCEPTIONS ---  //
+    // #region EXCEPTIONS  //
+    // ------------------- //
+    #_exceptions = {};
+
+    /**
+     * The exceptions for the model
+     * @param {Object} newExceptions
+     */
+    set Exceptions(newExceptions) {
+        this.#_exceptions = {
+            ...GenericKaindaExceptions,
+            ...newExceptions,
+        };
+    }
+
+    /**
+     * Exceptions getter
+     * @returns {Object}
+     */
+    get Exceptions() {
+        return this.#_exceptions;
+    }
+
+    // #endregion //
+
+    // ------------------- //
+    // ----- SEEDERS ----- //
+    //   #region SEEDERS   //
+    // ------------------- //
+
+    /**
+     * Seed Options
+     * @type {SeedOptions}
+     * @property {Boolean} seed - Whether or not to seed the model on startup
+     * @property {Array} dependencies - The dependencies of the model that they must be seeded before this model
+     * @property {Boolean} is_seeded - Whether or not the model has been seeded already
+     * @property {String} oldRecords - The options for what to do with old records.
+     */
+    #_seed_options = {};
+    #_seed = () => {};
+
+    /**
+     * Seed Options setter
+     * @param {SeedOptions} newSeedOptions
+     */
+    set seed_options(newSeedOptions) {
+        SeedOptions.validate(newSeedOptions);
+        this.#_seed_options = {
+            ...this.#_seed_options,
+            ...newSeedOptions,
+        };
+    }
+
+    /**
+     * Seed Options getter
+     * @returns {SeedOptions}
+     */
+    get seed_options() {
+        return this.#_seed_options;
+    }
+
+    /**
+     * Seed function setter
+     * @param {Function} newSeedFunction
+     */
+    set seed(newSeedFunction) {
+        throw new KaindaException("Seed function cannot be set directly because it can break other seeders functionality when there are dependencies. You can override the seed function by setting the Seeders.seed function in the model.");
+    }
+
+    /**
+     * Seed function getter
+     * @returns {Function}
+     * @see Seeders.seed
+     */
+    get seed() {
+        return this.#_seed;
+    }
+
+    // #endregion //
 
 }
 
