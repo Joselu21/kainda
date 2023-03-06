@@ -7,17 +7,10 @@ function __createControllers(name, options) {
     mkdirSafe('app/entities/' + name + '/controllers/src');
     copyTemplate(path.join(__dirname, '../../templates/app/entities/subindex.template.txt'), './app/entities/' + name + '/controllers/index.js');
     hydrateFile('./app/entities/' + name + '/controllers/index.js', { entity_name: 'controller' });
-    if (options.sequelize) {
-        copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/controller/create.controller.txt'), './app/entities/' + name + '/controllers/src/create.controller.js');
-        copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/controller/delete.controller.txt'), './app/entities/' + name + '/controllers/src/delete.controller.js');
-        copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/controller/get.controller.txt'), './app/entities/' + name + '/controllers/src/get.controller.js');
-        copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/controller/update.controller.txt'), './app/entities/' + name + '/controllers/src/update.controller.js');
-    } else if (options.mongoose) {
-        copyTemplate(path.join(__dirname, '../../templates/app/entities/mongoose/controller/create.controller.txt'), './app/entities/' + name + '/controllers/src/create.controller.js');
-        copyTemplate(path.join(__dirname, '../../templates/app/entities/mongoose/controller/delete.controller.txt'), './app/entities/' + name + '/controllers/src/delete.controller.js');
-        copyTemplate(path.join(__dirname, '../../templates/app/entities/mongoose/controller/get.controller.txt'), './app/entities/' + name + '/controllers/src/get.controller.js');
-        copyTemplate(path.join(__dirname, '../../templates/app/entities/mongoose/controller/update.controller.txt'), './app/entities/' + name + '/controllers/src/update.controller.js');
-    }
+    copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/controller/create.controller.txt'), './app/entities/' + name + '/controllers/src/create.controller.js');
+    copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/controller/delete.controller.txt'), './app/entities/' + name + '/controllers/src/delete.controller.js');
+    copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/controller/get.controller.txt'), './app/entities/' + name + '/controllers/src/get.controller.js');
+    copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/controller/update.controller.txt'), './app/entities/' + name + '/controllers/src/update.controller.js');
     hydrateFile('./app/entities/' + name + '/controllers/src/create.controller.js', { entity_name: name });
     hydrateFile('./app/entities/' + name + '/controllers/src/delete.controller.js', { entity_name: name });
     hydrateFile('./app/entities/' + name + '/controllers/src/get.controller.js', { entity_name: name });
@@ -100,8 +93,8 @@ function __createModel(name, options) {
         copyTemplate(path.join(__dirname, '../../templates/app/entities/mongoose/model.template.txt'), './app/entities/' + name + '/model/src/' + name + '.model.js');
     }
 
-    hydrateFile('./app/entities/' + name + '/model/src/' + name + '.model.js', { 
-        entity_name: name, 
+    hydrateFile('./app/entities/' + name + '/model/src/' + name + '.model.js', {
+        entity_name: name,
     });
 
 }

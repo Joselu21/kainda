@@ -3,26 +3,32 @@ const ModelType = require("../../modelType");
 async function __updateOneSequelize(data, filter, options) {
     const instance = await this.subModel.findOne({
         where : filter,
-    }, options);
+    }, {
+        ...options,
+        transaction : (options?.transaction?.isKaindaTransaction ? options.transaction.transaction : options?.transaction),
+    });
     return await instance.update(data, options);
 }
 
 async function __updateOneMongoose(data, filter, options) {
     return await this.subModel.updateOne(filter, data, {
-        session : options?.transaction,
+        session : (options?.transaction?.isKaindaTransaction ? options.transaction.transaction : options?.transaction),
         ...options,
     });
 }
 
 async function __updateManySequelize(data, options) {
-    return await this.subModel.update(data, options);
+    return await this.subModel.update(data, {
+        ...options,
+        transaction: (options?.transaction?.isKaindaTransaction ? options.transaction.transaction : options?.transaction),
+    });
 }
 
 async function __updateManyMongoose(data, options) {
     return await this.subModel.updateMany({
         ...options.where
     }, data, {
-        session : options?.transaction,
+        session : (options?.transaction?.isKaindaTransaction ? options.transaction.transaction : options?.transaction),
         ...options,
     });
 }

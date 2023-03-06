@@ -1,4 +1,5 @@
 const { missingFieldsResponse } = require("./middlewares.utils");
+const { GenericKaindaExceptions } = require("./exceptions");
 
 /**
  * The generic function that handles the creation of a new instance of a model.
@@ -7,6 +8,7 @@ const { missingFieldsResponse } = require("./middlewares.utils");
  * @param {*} transaction The transaction to use for the operation. It can be null.
  * @param {*} options An object containing the options for the operation. In this case, the options are:
  * - required_keys: An array of strings containing the required keys for the operation. If not provided, the required keys will be extracted from the model.
+ * - bypass_required_keys: A boolean that indicates if the required keys should be checked or not. If true, the required keys will not be checked.
  * @returns The recently created instance.
  */
 async function __genericCreate(model, data, transaction = null, options = {}) {
@@ -18,17 +20,20 @@ async function __genericCreate(model, data, transaction = null, options = {}) {
     }
 
     // Check if the required keys array is present in the model
-    if (!required_keys || required_keys.length === 0) {
-        throw new model.Exceptions[(model.modelName ?? model.name) + "Exception"]({
+    if (!required_keys || required_keys.length === 0 && !options.bypass_required_keys) {
+        throw new GenericKaindaExceptions.Kainda500Exception({
             error_type: "BACKEND_ERROR",
-            error_message: "No required keys found for " + (model.modelName ?? model.name) + ", change the model definition or provide the required keys in the options.",
+            error_message: "No required keys found for " + model.name + ", change the model definition or provide the required keys in the options.",
             error_data: {
-                model_name: (model.modelName ?? model.name),
+                model_name: model.name,
                 data: data,
-                transaction: transaction?.id,
-                options: options
+                transaction: !!transaction,
+                options: {
+                    ...options,
+                    transaction: !!transaction,
+                }
             }
-        }, 500);
+        });
     }
 
     // Check if the required keys are present in the data
@@ -36,23 +41,26 @@ async function __genericCreate(model, data, transaction = null, options = {}) {
 
     // If there are missing fields, throw an exception
     if (Object.keys(missing_fields).length > 0 && missing_fields.error_type) {
-        throw new model.Exceptions[(model.modelName ?? model.name) + "BadRequestException"](missing_fields, 400);
+        throw new GenericKaindaExceptions.Kainda400Exception(missing_fields);
     }
 
     // Create the instance
-    const instance = model.sequelize ? await model.create(data, { transaction: transaction }) : await model.create([data], { session: transaction });
+    const instance =await model.createOne(data, { transaction: transaction });
     if (!instance) {
-        throw new model.Exceptions[(model.modelName ?? model.name) + "NotCreatedException"]({
+        throw new GenericKaindaExceptions.Kainda500Exception({
             error_type: "NOT_CREATED",
-            error_message: "Error creating " + (model.modelName ?? model.name),
+            error_message: "Error creating " + model.name,
             error_data: {
-                model_name: (model.modelName ?? model.name),
+                model_name: model.name,
                 data: data,
-                transaction: transaction?.id,
-                options: options,
+                transaction: !!transaction,
+                options: {
+                    ...options,
+                    transaction: !!transaction,
+                },
                 instance: instance,
             }
-        }, 500);
+        });
     }
 
     // Return the instance
@@ -67,18 +75,18 @@ async function __genericCreate(model, data, transaction = null, options = {}) {
  */
 async function __genericGetAll(model, transaction = null) {
 
-    // Retrieve all instances of the model using sequelize's findAll function or mongoose's find function
-    const instances = model.sequelize ? await model.findAll({ transaction: transaction }) : await model.find({}).session(transaction).exec();
+    // Retrieve all instances of the model
+    const instances = model.findMany({}, { transaction: transaction });
     if (!instances) {
-        throw new model.Exceptions[(model.modelName ?? model.name) + "NotFoundException"]({
+        throw new GenericKaindaExceptions.Kainda500Exception({
             error_type: "NOT_FOUND",
-            error_message: "Error finding all " + (model.modelName ?? model.name),
+            error_message: "Error finding all " + model.name,
             error_data: {
-                model_name: (model.modelName ?? model.name),
-                transaction: transaction?.id,
+                model_name: model.name,
+                transaction: !!transaction,
                 instances: instances
             }
-        }, 404);
+        });
     }
 
     // Return the instances
@@ -95,19 +103,19 @@ async function __genericGetAll(model, transaction = null) {
  */
 async function __genericGet(model, id, transaction = null) {
 
-    // Retrieve the instance of the model using sequelize's findByPk function or mongoose's findById function
-    const instance = model.sequelize ? await model.findByPk(id, { transaction: transaction }) : await model.findById(id).session(transaction).exec();
+    // Retrieve the instance of the model
+    const instance = await model.findById(id, { transaction: transaction });
     if (!instance) {
-        throw new model.Exceptions[(model.modelName ?? model.name) + "NotFoundException"]({
+        throw new GenericKaindaExceptions.Kainda404Exception({
             error_type: "NOT_FOUND",
-            error_message: "Error finding " + (model.modelName ?? model.name) + " with id: " + id,
+            error_message: "Error finding " + model.name + " with id: " + id,
             error_data: {
-                model_name: (model.modelName ?? model.name),
+                model_name: model.name,
                 id: id,
-                transaction: transaction?.id,
+                transaction: !!transaction,
                 instance: instance
             }
-        }, 404);
+        });
     }
 
     // Return the instance
@@ -117,19 +125,19 @@ async function __genericGet(model, id, transaction = null) {
 
 async function __genericGetBy(model, data, transaction = null) {
 
-    // Retrieve the instance of the model using sequelize's findByPk function or mongoose's findById function
-    const instance = model.sequelize ? await model.findOne({ where: data, transaction: transaction }) : await model.findOne(data).session(transaction).exec();
+    // Retrieve the instance of the model
+    const instance = await model.findOne(data, { transaction: transaction })
     if (!instance) {
-        throw new model.Exceptions[(model.modelName ?? model.name) + "NotFoundException"]({
+        throw new GenericKaindaExceptions.Kainda404Exception({
             error_type: "NOT_FOUND",
-            error_message: "Error finding " + (model.modelName ?? model.name) + " with data: " + JSON.stringify(data),
+            error_message: "Error finding " + model.name + " with data: " + JSON.stringify(data),
             error_data: {
-                model_name: (model.modelName ?? model.name),
+                model_name: model.name,
                 data: data,
-                transaction: transaction?.id,
+                transaction: !!transaction,
                 instance: instance
             }
-        }, 404);
+        });
     }
 
     // Return the instance
@@ -151,19 +159,19 @@ async function __genericUpdate(model, data, transaction = null, options = {}) {
 
     // Check if the updateable keys array is present in the model
     if (!updateable_keys || updateable_keys.length === 0) {
-        throw new model.Exceptions[(model.modelName ?? model.name) + "Exception"]({
+        throw new GenericKaindaExceptions.Kainda500Exception({
             error_type: "BACKEND_ERROR",
-            error_message: "No updateable keys found for " + (model.modelName ?? model.name) + ", change the model definition or provide the updateable keys in the options.",
+            error_message: "No updateable keys found for " + model.name + ", change the model definition or provide the updateable keys in the options.",
             error_data: {
-                model_name: (model.modelName ?? model.name),
+                model_name: model.name,
                 data: data,
-                transaction: transaction?.id,
+                transaction: !!transaction,
             }
         });
     }
 
     // Get the instance of the model
-    const id = data[(model.modelName ?? model.name).toLowerCase() + "_id"];
+    const id = data[model.modelId];
     const instance = await __genericGet(model, id, transaction);
 
     // Iterate over the data and update the instance if the key is updateable
@@ -199,14 +207,15 @@ async function __genericUpdate(model, data, transaction = null, options = {}) {
     }
 
     // Save the instance
-    model.sequelize ? await instance.save({ transaction: transaction }) : await instance.save({ session: transaction });
+    const nativeTransaction = (transaction?.isKaindaTransaction ? transaction.transaction : transaction);
+    model.isSequelize ? await instance.save({ transaction: nativeTransaction }) : await instance.save({ session: nativeTransaction });
 
     // Return the instance
     return instance;
 }
 
 /**
- * The generic function that handles the deletion of a single instance of a model by primary key.
+ * The generic function that handles the deletion of a single instance of a model by its identifier.
  * @param {*} model The model class to delete the instance of.
  * @param {*} id The primary key of the instance to delete.
  * @param {*} transaction The transaction to use for the operation. It can be null.
@@ -214,13 +223,14 @@ async function __genericUpdate(model, data, transaction = null, options = {}) {
  */
 async function __genericDelete(model, id, transaction = null) {
 
-    // Retrieve the instance of the model using kainda's generic get function
+    // Get the instance of the model
     const instance = await __genericGet(model, id, transaction);
 
     // Delete the instance
-    model.sequelize ? await instance.destroy({ transaction: transaction }) : await instance.remove({ session: transaction });
+    const nativeTransaction = (transaction?.isKaindaTransaction ? transaction.transaction : transaction);
+    model.isSequelize ? await instance.destroy({ transaction: nativeTransaction }) : await instance.deleteOne({ session: nativeTransaction });
 
-    // Return the instance
+    // Return the deleted instance
     return instance;
 
 }

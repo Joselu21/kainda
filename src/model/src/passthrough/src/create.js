@@ -1,24 +1,30 @@
 const ModelType = require("../../modelType");
 
 async function __createOneSequelize(data, options) {
-    return await this.subModel.create(data, options);
+    return await this.subModel.create(data, {
+        ...options,
+        transaction : (options?.transaction?.isKaindaTransaction ? options.transaction.transaction : options?.transaction),
+    });
 }
 
 async function __createOneMongoose(data, options) {
     const result = await this.subModel.insertMany([data], {
-        session : options?.transaction,
+        session : (options?.transaction?.isKaindaTransaction ? options.transaction.transaction : options?.transaction),
         ...options,
     });
     return result[0];
 }
 
 async function __createManySequelize(data, options) {
-    return await this.subModel.bulkCreate(data, options);
+    return await this.subModel.bulkCreate(data, {
+        ...options,
+        transaction : (options?.transaction?.isKaindaTransaction ? options.transaction.transaction : options?.transaction),
+    });
 }
 
 async function __createManyMongoose(data, options) {
     return await this.subModel.insertMany(data, {
-        session : options?.transaction,
+        session : (options?.transaction?.isKaindaTransaction ? options.transaction.transaction : options?.transaction),
         ...options,
     });
 }

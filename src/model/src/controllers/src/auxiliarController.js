@@ -1,5 +1,4 @@
 const GenericControllers = require("../../../../generic.controllers");
-const ModelType = require("../../modelType");
 
 function genericAuxiliarCreate(model) {
     return async function(data, options) {
@@ -37,20 +36,17 @@ function genericAuxiliarDelete(model) {
     };
 }
 
-function generateGenericControllers(model) {
-    if(!model) {
-        throw new Error("No model found for this submodel");
+function generateGenericControllers(kaindaModel) {
+    if(!kaindaModel) {
+        throw new Error("Invalid KaindaModel received in generateGenericControllers");
     }
-    const type = ModelType.getTypeExternal(model);
-    let name = type === "sequelize" ? model.name : model.modelName;
-    let plural = name + "s";
     return {
-        ["__create" + name] :       genericAuxiliarCreate(model),
-        ["__get" + name + "ById"] : genericAuxiliarGetById(model),
-        ["__getAll" + plural] :     genericAuxiliarGetAll(model),
-        ["__get" + name + "By"] :   genericAuxiliarGetBy(model),
-        ["__update" + name] :       genericAuxiliarUpdate(model),
-        ["__delete" + name] :       genericAuxiliarDelete(model),
+        ["__create" + kaindaModel.name] :       genericAuxiliarCreate(kaindaModel),
+        ["__get" + kaindaModel.name + "ById"] : genericAuxiliarGetById(kaindaModel),
+        ["__getAll" + kaindaModel.name + "s"] : genericAuxiliarGetAll(kaindaModel),
+        ["__get" + kaindaModel.name + "By"] :   genericAuxiliarGetBy(kaindaModel),
+        ["__update" + kaindaModel.name] :       genericAuxiliarUpdate(kaindaModel),
+        ["__delete" + kaindaModel.name] :       genericAuxiliarDelete(kaindaModel),
     };
 }
 

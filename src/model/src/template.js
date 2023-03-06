@@ -2,6 +2,7 @@ const ModelType = require("./modelType");
 const generatePassthrough = require("./passthrough");
 const generateControllers = require("./controllers");
 const { SeedFunctions, SeedOptions } = require("./seeders");
+const KaindaTransaction = require("./transaction/transaction");
 const { KaindaException, GenericKaindaExceptions } = require("./../../exceptions");
 
 /**
@@ -33,6 +34,10 @@ class KaindaModel {
         this.modelType = ModelType.getTypeExternal(model);
         this.isMongoose = this.modelType === "mongoose";
         this.isSequelize = this.modelType === "sequelize";
+        this.transaction = async () => await KaindaTransaction.newTransaction(this.modelType);
+        this.name = this.isMongoose ? model.modelName : this.isSequelize ? model.name : "Unknown";
+        this.modelName = this.name;
+        this.modelId = this.isMongoose ? "_id" : this.isSequelize ? model.primaryKeyAttribute : "Unknown";
 
         /**
          * The passthrough methods for the submodel
@@ -44,7 +49,7 @@ class KaindaModel {
          * The controller methods for the submodel
          * These methods are the functions called by the routes
          */
-        this.#_Controller = generateControllers(this.subModel);
+        this.#_Controller = generateControllers(this);
 
         /**
          * Seeder Options
@@ -105,7 +110,7 @@ class KaindaModel {
      */
     set Controller(newController) {
         this.#_Controller = {
-            ...generateControllers(this.subModel),
+            ...generateControllers(this),
             ...newController,
         };
     }

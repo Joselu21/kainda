@@ -20,7 +20,7 @@ module.exports = {
             [
                 tokenValid
             ],
-            Models.%%$MODEL_NAME_UPPERCASE$%%.Controller.get%%$MODEL_NAME_UPPERCASE$%%
+            Models.%%$MODEL_NAME_UPPERCASE$%%.Controller.get%%$MODEL_NAME_UPPERCASE$%%ById
         );
     },
 
