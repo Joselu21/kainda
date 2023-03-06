@@ -160,8 +160,8 @@ async function processOldRecords(model, data, options = {}) {
 const processOldFunctions = {
     deleteAll: __processOldDeleteAll,
     dontSeedIfRecordsExists: __processOldDontSeedIfRecordsExists,
-    dontSeedIfAnyExists: __processOldDontSeedIfAnyExists,
-    dontSeedIfAllExists: __processOldDontSeedIfAllExists,
+    dontSeedIfAnyExist: __processOldDontSeedIfAnyExist,
+    dontSeedIfAllExist: __processOldDontSeedIfAllExist,
 };
 
 /**
@@ -200,7 +200,7 @@ async function __processOldDontSeedIfRecordsExists(model, data, options = {}) {
  * @deprecated The behavior of this function may vary a lot depending on database structure and the given data, so it is not recommended to use it.
  * @private
  */
-async function __processOldDontSeedIfAnyExists(model, data, options = {}) {
+async function __processOldDontSeedIfAnyExist(model, data, options = {}) {
     let exists = false;
     for (let i = 0; i < data.length; i++) {
         const element = data[i];
@@ -222,7 +222,7 @@ async function __processOldDontSeedIfAnyExists(model, data, options = {}) {
  * @deprecated The behavior of this function may vary a lot depending on database structure and the given data, so it is not recommended to use it.
  * @private
  */
-async function __processOldDontSeedIfAllExists(model, data, options = {}) {
+async function __processOldDontSeedIfAllExist(model, data, options = {}) {
     for (let i = 0; i < data.length; i++) {
         const element = data[i];
         const record = await model.findMany(element, options);

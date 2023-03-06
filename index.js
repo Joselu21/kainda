@@ -1,6 +1,7 @@
 const GenericControllers = require("./src/generic.controllers");
 const Metas = require("./src/meta.class");
 const KaindaModel = require("./src/model");
+const KaindaTransaction = require("./src/model/src/transaction/transaction");
 const Logger = require("./src/logger.class");
 const KaindaUtils = require("./src/utils");
 const { 
@@ -15,6 +16,7 @@ const chalk = require("chalk");
 
 module.exports = {
     KaindaModel,
+    KaindaTransaction,
 
     GenericControllers,
     Metas,
