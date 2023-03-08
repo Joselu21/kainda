@@ -8,7 +8,7 @@
     "deploy": "cross-env NODE_ENV=production node index.js",
     "start:seed": "cross-env NODE_ENV=development node --trace-warnings index.js --seed",
     "test": "cross-env NODE_ENV=test mocha",
-    "coverage": "cross-env NODE_ENV=test nyc npm run test"
+    "coverage": "cross-env NODE_ENV=test nyc --include 'app/**/*controller.js' mocha"
   },
   "author": "",
   "license": "ISC",
@@ -27,8 +27,9 @@
   },
   "devDependencies": {
     "chai": ">=4.2.0",
-    "supertest": ">=6.3.0",
-    "mocha": ">=10.2.0"
+    "mocha": ">=10.2.0",
+    "nyc": ">=15.1.0",
+    "supertest": ">=6.3.0"
   },
   "mocha": {
     "require": [
