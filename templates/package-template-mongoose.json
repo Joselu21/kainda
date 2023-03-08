@@ -6,27 +6,37 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development node --trace-warnings index.js",
     "deploy": "cross-env NODE_ENV=production node index.js",
-    "test": "cross-env NODE_ENV=test mocha --recursive \"./app/test/**/*.test.js\" --exit --timeout 1000000"
+    "start:seed": "cross-env NODE_ENV=development node --trace-warnings index.js --seed",
+    "test": "cross-env NODE_ENV=test mocha",
+    "coverage": "cross-env NODE_ENV=test nyc npm run test"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "config": "*",
-    "cors": "*",
-    "cross-env": "*",
-    "module-alias": "*",
-    "express": "*",
-    "sqlite3": "*",
-    "helmet": "*",
-    "kainda": "*",
-    "mongoose": "*",
-    "@mongodb-js/zstd": "*",
-    "jsonwebtoken": "*"
+    "config": ">=3.0.0",
+    "cors": ">=2.8.5",
+    "cross-env": ">=7.0.0",
+    "module-alias": ">=2.2.2",
+    "express": ">=4.18.1",
+    "helmet": ">=6.0.0",
+    "kainda": ">=5.0.0",
+    "jsonwebtoken": ">=9.0.0",
+    "mongoose": ">=7.0.0",
+    "@mongodb-js/zstd": ">=1.1.0"
   },
   "devDependencies": {
-    "chai": "*",
-    "supertest": "*",
-    "mocha": "*"
+    "chai": ">=4.2.0",
+    "supertest": ">=6.3.0",
+    "mocha": ">=10.2.0"
+  },
+  "mocha": {
+    "require": [
+      "./app/test/mocha.setup.js"
+    ],
+    "spec" : "./app/**/*.test.js",
+    "recursive": true,
+    "timeout": 1000000,
+    "exit": true
   },
   "_moduleAliases": {
     "@" : "./",

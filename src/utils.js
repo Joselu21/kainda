@@ -24,8 +24,13 @@ function exportFiles (searchPath, extension) {
     let exportable = {};
     for (let i = 0; i < files.length; i++) {
         let aux = requireIfExists(files[i].path);
-        if (aux) {
+        if (aux && Object.keys(aux).length > 0) {
             exportable = { ...exportable, ...aux };
+        } else if (aux && typeof aux === "function") {
+            exportable = { 
+                ...exportable, 
+                [files[i].name.substring(0, files[i].name.lastIndexOf("."))]: aux
+            };
         }
     }
     return exportable;
