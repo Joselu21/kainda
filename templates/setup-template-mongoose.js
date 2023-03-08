@@ -195,7 +195,7 @@ async function setupCriticalDatabase() {
 
 async function seedDatabase() {
 
-    if ((process.env.NODE_ENV !== 'production' && process.argv.includes('seed')) || process.env.NODE_ENV === 'test') {
+    if ((process.env.NODE_ENV !== 'production' && process.argv.includes('--seed')) || process.env.NODE_ENV === 'test') {
         let transaction = await mongoose.startSession();
         try {
             transaction.startTransaction();

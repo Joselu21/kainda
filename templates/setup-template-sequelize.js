@@ -219,7 +219,7 @@ async function syncModels() {
 
 async function seedDatabase() {
 
-    if ((process.env.NODE_ENV !== 'production' && process.argv.includes('seed')) || process.env.NODE_ENV === 'test') {
+    if ((process.env.NODE_ENV !== 'production' && process.argv.includes('--seed')) || process.env.NODE_ENV === 'test') {
         let transaction = await sequelize.transaction();
         try {
             console.log(kainda.chalk.blue('[SEED] Seeding database...'));

@@ -99,6 +99,30 @@ function __createModel(name, options) {
 
 }
 
+function __createTest(name, options) {
+
+    mkdirSafe('app/entities/' + name + '/test');
+    copyTemplate(path.join(__dirname, '../../templates/app/entities/test/entity.template.txt'), './app/entities/' + name + '/test/' + name + '.test.js');
+    hydrateFile('./app/entities/' + name + '/test/' + name + '.test.js', { entity_name: name });
+
+    mkdirSafe('app/entities/' + name + '/test/src');
+
+    mkdirSafe('app/entities/' + name + '/test/src/endpoint');
+    mkdirSafe('app/entities/' + name + '/test/src/endpoint/src');
+    copyTemplate(path.join(__dirname, '../../templates/app/entities/test/fragment.template.txt'), './app/entities/' + name + '/test/src/endpoint/index.js');
+    hydrateFile('./app/entities/' + name + '/test/src/endpoint/index.js', { entity_name: name });
+    copyTemplate(path.join(__dirname, '../../templates/app/entities/test/endpoint/create.template.txt'), './app/entities/' + name + '/test/src/endpoint/src/create.test.fragment.js');
+    copyTemplate(path.join(__dirname, '../../templates/app/entities/test/endpoint/get.template.txt'), './app/entities/' + name + '/test/src/endpoint/src/get.test.fragment.js');
+    copyTemplate(path.join(__dirname, '../../templates/app/entities/test/endpoint/update.template.txt'), './app/entities/' + name + '/test/src/endpoint/src/update.test.fragment.js');
+    copyTemplate(path.join(__dirname, '../../templates/app/entities/test/endpoint/delete.template.txt'), './app/entities/' + name + '/test/src/endpoint/src/delete.test.fragment.js');
+
+    mkdirSafe('app/entities/' + name + '/test/src/unit');
+    mkdirSafe('app/entities/' + name + '/test/src/unit/src');
+    copyTemplate(path.join(__dirname, '../../templates/app/entities/test/fragment.template.txt'), './app/entities/' + name + '/test/src/unit/index.js');
+    hydrateFile('./app/entities/' + name + '/test/src/unit/index.js', { entity_name: name });
+
+}
+
 function _createEntityStructure(name, options) {
 
     mkdirSafe('app/entities/' + name);
@@ -112,6 +136,7 @@ function _createEntityStructure(name, options) {
     __createRoutes(name, options);
     __createSeeders(name, options);
     __createModel(name, options);
+    __createTest(name, options);
 
 }
 

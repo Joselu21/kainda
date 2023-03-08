@@ -52,10 +52,8 @@ function initializeStructure(project_name, options = {}) {
         mkdirSafe('app');
         mkdirSafe('app/entities');
         mkdirSafe('app/test');
-        copyTemplate(join(__dirname, '../../templates/app/test/mocha.setup.test.js'), './app/test/mocha.setup.test.js');
+        copyTemplate(join(__dirname, '../../templates/app/test/mocha.setup.js'), './app/test/mocha.setup.js');
         copyTemplate(join(__dirname, '../../templates/app/test/utils.test.js'), './app/test/utils.test.js');
-        mkdirSafe('app/test/endpoints');
-        mkdirSafe('app/test/unit');
     } catch (error) {
         console.log(error.message);
         return;
