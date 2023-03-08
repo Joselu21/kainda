@@ -1,23 +1,38 @@
 {
-  "name": "kainda",
-  "version": "5.1.0",
-  "description": "Opinionated framework for backend APIs that has a CLI that generates a REST API with a CRUD interface for a given model.",
-  "main": "./index.js",
-  "scripts": {},
-  "bin": {
-    "kainda": "./bin/index.js"
-  },
-  "keywords": [
-    "framework",
-    "backend",
-    "api",
-    "structure"
-  ],
-  "author": "Joselu21",
-  "license": "ISC",
-  "dependencies": {
-    "chalk": "4.1.2",
-    "prompt": "*",
-    "jsonwebtoken": "*"
-  }
+    "name": "kainda",
+    "version": "5.1.0",
+    "description": "Opinionated framework for backend APIs that has a CLI that generates a REST API with a CRUD interface for a given model.",
+    "keywords": [
+        "framework",
+        "backend",
+        "api",
+        "structure"
+    ],
+    "homepage": "https://github.com/Joselu21/kainda.git#readme",
+    "bugs": {
+        "url": "https://github.com/Joselu21/kainda/issues",
+        "email": "kainda@jlsg.es"
+    },
+    "license": "ISC",
+    "author": "Joselu21",
+    "contributors": [
+        {
+            "name": "Joselu21",
+            "email": "joseluissilvestregarcia@gmail.com",
+            "url": "https://github.com/Joselu21"
+        }
+    ],
+    "main": "./index.js",
+    "bin": {
+        "kainda": "./bin/index.js"
+    },
+    "dependencies": {
+        "chalk": "4.1.2",
+        "prompt": "*",
+        "jsonwebtoken": "*"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "repository": "https://github.com/Joselu21/kainda.git"
 }
