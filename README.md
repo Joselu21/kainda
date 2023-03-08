@@ -134,7 +134,7 @@ The app folder contains all the application code, whatever are you creating, the
 
 The entities folder contains all the entities of the project and all of their components, mostly generated automatically by the CLI. 
 
-Last, the test folder contains the setup for Mocha, which contains a global beforeAll hook to initialize the app to be tested. You can modify this file to add any other global hooks or configuration for the test suite. Additionally, the utils.setup.js file contains some utility functions to help with the testing of the project, like the creation of certain entities or the login of a user. The test folder is also the place to put any test related file that is not strictly related to a specific entity. More details about the test suite can be found in the [Testing](#testing) section or in the Mocha documentation [here](https://mochajs.org/).
+Last, the test folder contains the setup for Mocha, which contains a global beforeAll hook to initialize the app to be tested. You can modify this file to add any other global hooks or configuration for the test suite. Additionally, the utils.setup.js file contains some utility functions to help with the testing of the project, like the creation of certain entities or the login of a user. The test folder is also the place to put any test related file that is not strictly related to a specific entity. More details about the test suite can be found in the [Tests](#tests) section or in the Mocha documentation [here](https://mochajs.org/).
 
 ## Entity structure
 
