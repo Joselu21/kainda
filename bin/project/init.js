@@ -53,7 +53,7 @@ function initializeStructure(project_name, options = {}) {
         mkdirSafe('app/entities');
         mkdirSafe('app/test');
         copyTemplate(join(__dirname, '../../templates/app/test/mocha.setup.js'), './app/test/mocha.setup.js');
-        copyTemplate(join(__dirname, '../../templates/app/test/utils.test.js'), './app/test/utils.test.js');
+        copyTemplate(join(__dirname, '../../templates/app/test/utils.setup.js'), './app/test/utils.setup.js');
     } catch (error) {
         console.log(error.message);
         return;
