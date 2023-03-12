@@ -1,2 +1,0 @@
-const %%$MODEL_NAME_UPPERCASE$%% = require('./src/%%$MODEL_NAME_URL$%%.model');
-module.exports = %%$MODEL_NAME_UPPERCASE$%%;

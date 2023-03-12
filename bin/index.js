@@ -85,7 +85,7 @@ async function manageProjects(action = null) {
     }
 
     console.clear();
-    console.log(chalk.green('Welcome to the Kainda CLI'));
+    console.log(chalk.green('Welcome to the Kainda CLI v' + require('../package.json').version));
     console.log(chalk.yellow('Please choose an option:'));
     console.log(chalk.blue('1. Create a new project'));
     console.log(chalk.blue('2. List project info'));

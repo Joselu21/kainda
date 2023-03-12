@@ -1,142 +1,82 @@
 const path = require('path');
 const prompt = require('prompt');
+const fs = require('fs');
+const chalk = require('chalk');
 const { copyTemplate, hydrateFile, mkdirSafe } = require('../utils/files.utils');
 
-function __createControllers(name, options) {
-    mkdirSafe('app/entities/' + name + '/controllers');
-    mkdirSafe('app/entities/' + name + '/controllers/src');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/subindex.template.txt'), './app/entities/' + name + '/controllers/index.js');
-    hydrateFile('./app/entities/' + name + '/controllers/index.js', { entity_name: 'controller' });
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/controller/create.controller.txt'), './app/entities/' + name + '/controllers/src/create.controller.js');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/controller/delete.controller.txt'), './app/entities/' + name + '/controllers/src/delete.controller.js');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/controller/get.controller.txt'), './app/entities/' + name + '/controllers/src/get.controller.js');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/controller/update.controller.txt'), './app/entities/' + name + '/controllers/src/update.controller.js');
-    hydrateFile('./app/entities/' + name + '/controllers/src/create.controller.js', { entity_name: name });
-    hydrateFile('./app/entities/' + name + '/controllers/src/delete.controller.js', { entity_name: name });
-    hydrateFile('./app/entities/' + name + '/controllers/src/get.controller.js', { entity_name: name });
-    hydrateFile('./app/entities/' + name + '/controllers/src/update.controller.js', { entity_name: name });
-}
+const templatesPath = path.join(__dirname, '../../templates/');
+const appPath = templatesPath + 'app/';
+const entitiesPath = appPath + 'entities/';
 
-function __createMiddlewares(name, options) {
-    mkdirSafe('app/entities/' + name + '/middlewares');
-    mkdirSafe('app/entities/' + name + '/middlewares/src');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/subindex.template.txt'), './app/entities/' + name + '/middlewares/index.js');
-    hydrateFile('./app/entities/' + name + '/middlewares/index.js', { entity_name: 'middlewares' });
+function __auxiliarRecursiveCreateStructure(name, options, templatePath, destinationPath) {
 
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/middlewares.template.txt'), './app/entities/' + name + '/middlewares/src/checkRequiredKeys.middlewares.js');
-    hydrateFile('./app/entities/' + name + '/middlewares/src/checkRequiredKeys.middlewares.js', { entity_name: name });
+    const files = fs.readdirSync(templatePath);
 
-}
-
-function __createExceptions(name, options) {
-    mkdirSafe('app/entities/' + name + '/exceptions');
-    mkdirSafe('app/entities/' + name + '/exceptions/src');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/subindex.template.txt'), './app/entities/' + name + '/exceptions/index.js');
-    hydrateFile('./app/entities/' + name + '/exceptions/index.js', { entity_name: 'exceptions' });
-
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/exceptions.template.txt'), './app/entities/' + name + '/exceptions/src/all.exceptions.js');
-    hydrateFile('./app/entities/' + name + '/exceptions/src/all.exceptions.js', { entity_name: name });
-
-}
-
-function __createValidators(name, options) {
-    mkdirSafe('app/entities/' + name + '/validators');
-    mkdirSafe('app/entities/' + name + '/validators/src');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/subindex.template.txt'), './app/entities/' + name + '/validators/index.js');
-    hydrateFile('./app/entities/' + name + '/validators/index.js', { entity_name: 'validators' });
-
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/validators.template.txt'), './app/entities/' + name + '/validators/src/all.validators.js');
-    hydrateFile('./app/entities/' + name + '/validators/src/all.validators.js', { entity_name: name });
-
-}
-
-function __createRoutes(name, options) {
-
-    mkdirSafe('app/entities/' + name + '/routes');
-    mkdirSafe('app/entities/' + name + '/routes/src');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/subindex.template.txt'), './app/entities/' + name + '/routes/index.js');
-    hydrateFile('./app/entities/' + name + '/routes/index.js', { entity_name: 'routes' });
-
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/routes/create.routes.txt'), './app/entities/' + name + '/routes/src/create.routes.js');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/routes/delete.routes.txt'), './app/entities/' + name + '/routes/src/delete.routes.js');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/routes/get.routes.txt'), './app/entities/' + name + '/routes/src/get.routes.js');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/routes/update.routes.txt'), './app/entities/' + name + '/routes/src/update.routes.js');
-
-    hydrateFile('./app/entities/' + name + '/routes/src/create.routes.js', { entity_name: name });
-    hydrateFile('./app/entities/' + name + '/routes/src/delete.routes.js', { entity_name: name });
-    hydrateFile('./app/entities/' + name + '/routes/src/get.routes.js', { entity_name: name });
-    hydrateFile('./app/entities/' + name + '/routes/src/update.routes.js', { entity_name: name });
-
-}
-
-function __createSeeders(name, options) {
-
-    mkdirSafe('app/entities/' + name + '/seeders');
-    mkdirSafe('app/entities/' + name + '/seeders/src');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/subindex.template.txt'), './app/entities/' + name + '/seeders/index.js');
-    hydrateFile('./app/entities/' + name + '/seeders/index.js', { entity_name: 'seeders' });
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/seeders.template.txt'), './app/entities/' + name + '/seeders/src/all.seeders.js');
-    hydrateFile('./app/entities/' + name + '/seeders/src/all.seeders.js', { entity_name: name });
-
-}
-
-function __createModel(name, options) {
-
-    mkdirSafe('app/entities/' + name + '/model');
-    mkdirSafe('app/entities/' + name + '/model/src');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/subindex.model.template.txt'), './app/entities/' + name + '/model/index.js');
-    hydrateFile('./app/entities/' + name + '/model/index.js', { entity_name: name });
-
-    if (options.sequelize) {
-        copyTemplate(path.join(__dirname, '../../templates/app/entities/sequelize/model.template.txt'), './app/entities/' + name + '/model/src/' + name + '.model.js');
-    } else if (options.mongoose) {
-        copyTemplate(path.join(__dirname, '../../templates/app/entities/mongoose/model.template.txt'), './app/entities/' + name + '/model/src/' + name + '.model.js');
+    for (const file of files) {
+        // If it is a directory, create it
+        const templateFilePath = templatePath + '/' + file;
+        const destinationFilePath = destinationPath + '/' + file;
+        if (fs.lstatSync(templateFilePath).isDirectory()) {
+            mkdirSafe(destinationFilePath);
+            __auxiliarRecursiveCreateStructure(name, options, templateFilePath, destinationFilePath);
+        } else {
+            copyTemplate(templateFilePath, destinationFilePath);
+            hydrateFile(destinationFilePath, { entity_name: name });
+        }
     }
 
-    hydrateFile('./app/entities/' + name + '/model/src/' + name + '.model.js', {
-        entity_name: name,
-    });
-
 }
 
-function __createTest(name, options) {
+function __genericCreateStructure(name, options) {
 
-    mkdirSafe('app/entities/' + name + '/test');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/test/entity.template.txt'), './app/entities/' + name + '/test/' + name + '.test.js');
-    hydrateFile('./app/entities/' + name + '/test/' + name + '.test.js', { entity_name: name });
+    const urlName = name.toLowerCase().substring(0, 1) + name.substring(1);
 
-    mkdirSafe('app/entities/' + name + '/test/src');
+    const StructureNames = [
+        'controllers',
+        'exceptions',
+        'middlewares',
+        'model',
+        'routes',
+        'seeders',
+        'test',
+        'validators'
+    ];
 
-    mkdirSafe('app/entities/' + name + '/test/src/endpoint');
-    mkdirSafe('app/entities/' + name + '/test/src/endpoint/src');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/test/fragment.template.txt'), './app/entities/' + name + '/test/src/endpoint/index.js');
-    hydrateFile('./app/entities/' + name + '/test/src/endpoint/index.js', { entity_name: name });
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/test/endpoint/create.template.txt'), './app/entities/' + name + '/test/src/endpoint/src/create.test.fragment.js');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/test/endpoint/get.template.txt'), './app/entities/' + name + '/test/src/endpoint/src/get.test.fragment.js');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/test/endpoint/update.template.txt'), './app/entities/' + name + '/test/src/endpoint/src/update.test.fragment.js');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/test/endpoint/delete.template.txt'), './app/entities/' + name + '/test/src/endpoint/src/delete.test.fragment.js');
+    for (const structureName of StructureNames) {
+        mkdirSafe('app/entities/' + name + '/' + structureName);
+        mkdirSafe('app/entities/' + name + '/' + structureName + '/src');
+        copyTemplate(entitiesPath + structureName + '/index.js', './app/entities/' + name + '/' + structureName + '/index.js');
+        hydrateFile('./app/entities/' + name + '/' + structureName + '/index.js', { entity_name: name });
 
-    mkdirSafe('app/entities/' + name + '/test/src/unit');
-    mkdirSafe('app/entities/' + name + '/test/src/unit/src');
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/test/fragment.template.txt'), './app/entities/' + name + '/test/src/unit/index.js');
-    hydrateFile('./app/entities/' + name + '/test/src/unit/index.js', { entity_name: name });
+        if (structureName === 'model') {
+            if (options.sequelize) {
+                copyTemplate(entitiesPath + structureName + '/src/model.sequelize.js', './app/entities/' + name + '/' + structureName + '/src/' + urlName + '.model.js');
+            } else if (options.mongoose) {
+                copyTemplate(entitiesPath + structureName + '/src/model.mongoose.js', './app/entities/' + name + '/' + structureName + '/src/' + urlName + '.model.js');
+            }
+            hydrateFile('./app/entities/' + name + '/' + structureName + '/src/' + urlName + '.model.js', { entity_name: name });
+            continue;
+        }
+
+        __auxiliarRecursiveCreateStructure(name, options, entitiesPath + structureName + '/src', './app/entities/' + name + '/' + structureName + '/src');
+
+        if (structureName === 'test') {
+            // Copy model.test.js to name.test.js
+            copyTemplate(entitiesPath + structureName + '/model.test.js', './app/entities/' + name + '/' + structureName + '/src/' + urlName + '.test.js');
+            hydrateFile('./app/entities/' + name + '/' + structureName + '/src/' + urlName + '.test.js', { entity_name: name });
+        }
+
+    }
 
 }
 
 function _createEntityStructure(name, options) {
 
     mkdirSafe('app/entities/' + name);
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/index.template.txt'), './app/entities/' + name + '/index.js');
+    copyTemplate(path.join(__dirname, '../../templates/app/entities/index.js'), './app/entities/' + name + '/index.js');
     hydrateFile('./app/entities/' + name + '/index.js', { entity_name: name });
 
-    __createControllers(name, options);
-    __createMiddlewares(name, options);
-    __createExceptions(name, options);
-    __createValidators(name, options);
-    __createRoutes(name, options);
-    __createSeeders(name, options);
-    __createModel(name, options);
-    __createTest(name, options);
+    __genericCreateStructure(name, options);
 
 }
 

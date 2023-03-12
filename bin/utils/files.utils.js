@@ -37,7 +37,6 @@ function mkdirSafe(name, overwrite_conflict_mode = null) {
 }
 
 function copyTemplate(from, to, overwrite_conflict_mode = null) {
-    console.log(`Creating ${to} with template ${from}, overwrite_conflict_mode: ${overwrite_conflict_mode}, conflict_mode: ${conflict_mode}`);
     if (!fs.existsSync(from)) {
         console.log(`Template ${from} does not exist`);
         throw new Error(`${from} does not exist`);
@@ -53,11 +52,11 @@ function copyTemplate(from, to, overwrite_conflict_mode = null) {
 function hydrateFile(path, options = {}) {
     let file = fs.readFileSync(path, 'utf8');
     if (options.entity_name) {
-        file = file.replaceAll("%%$MODEL_NAME_UPPERCASE$%%", options.entity_name.charAt(0).toUpperCase() + options.entity_name.slice(1));
-        file = file.replaceAll("%%$MODEL_NAME_LOWERCASE$%%", options.entity_name.toLowerCase());
-        file = file.replaceAll("%%$MODEL_NAME_URL$%%", options.entity_name.toLowerCase().substring(0, 1) + options.entity_name.substring(1));
+        file = file.replaceAll("__KAINDA__MODEL__UPPERCASE__", options.entity_name.charAt(0).toUpperCase() + options.entity_name.slice(1));
+        file = file.replaceAll("__KAINDA__MODEL__LOWERCASE__", options.entity_name.toLowerCase());
+        file = file.replaceAll("__KAINDA__MODEL__URL__", options.entity_name.toLowerCase().substring(0, 1) + options.entity_name.substring(1));
     } else if (options.project_name) {
-        file = file.replaceAll("%%$PROJECT_NAME$%%", options.project_name);
+        file = file.replaceAll("__KAINDA__PROJECT__NAME__", options.project_name);
     }
     fs.writeFileSync(path, file);
 }
