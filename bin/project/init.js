@@ -55,6 +55,7 @@ function initializeStructure(project_name, options = {}) {
         copyTemplate(join(__dirname, '../../templates/app/test/mocha.setup.js'), './app/test/mocha.setup.js');
         copyTemplate(join(__dirname, '../../templates/app/test/utils.setup.js'), './app/test/utils.setup.js');
         mkdirSafe('app/services');
+        copyTemplate(join(__dirname, '../../templates/app/services/auth.service.js'), './app/services/auth.service.js');
     } catch (error) {
         console.log(error.message);
         return;

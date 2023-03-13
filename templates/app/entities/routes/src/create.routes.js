@@ -1,4 +1,4 @@
-const { tokenValid } = require("kainda");
+const { tokenValid } = require("@services/auth.service");
 
 module.exports = { 
     

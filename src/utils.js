@@ -29,7 +29,7 @@ function exportFiles (searchPath, extension) {
         } else if (aux && typeof aux === "function") {
             exportable = { 
                 ...exportable, 
-                [files[i].name.substring(0, files[i].name.lastIndexOf("."))]: aux
+                [files[i].name.substring(0, files[i].name.indexOf("."))]: aux
             };
         }
     }
