@@ -19,7 +19,7 @@ module.exports = {
             "/__KAINDA__MODEL__LOWERCASE__/:__KAINDA__MODEL__LOWERCASE___id",
             [
                 tokenValid,
-                Models.__KAINDA__MODEL__UPPERCASE__.Middlewares.canGetResource,
+                Models.__KAINDA__MODEL__UPPERCASE__.Middlewares.canReadResource,
             ],
             Models.__KAINDA__MODEL__UPPERCASE__.Controller.get__KAINDA__MODEL__UPPERCASE__ById
         );
