@@ -3,6 +3,7 @@ const prompt = require('prompt');
 const chalk = require('chalk');
 const createEntity = require('./entities/create');
 const createProject = require('./project/init');
+const listProjectInfo = require('./project/list');
 const { extractArgument } = require('./utils/args.utils');
 
 loop();
@@ -24,7 +25,7 @@ async function loop() {
 
     do {
         //console.clear();
-        console.log(chalk.green('Welcome to the Kainda CLI'));
+        console.log(chalk.green('Welcome to the Kainda CLI v' + require('../package.json').version));
         console.log(chalk.yellow('Please choose an option:'));
         console.log(chalk.blue('1. Manage projects'));
         console.log(chalk.blue('2. Manage entities'));
@@ -115,7 +116,7 @@ async function manageProjects(action = null) {
             break;
         case '2':
         case 2:
-            await listProjects();
+            await listProjectInfo();
             break;
         case '3':
         case 3:
@@ -150,7 +151,7 @@ async function manageEntities(action = null) {
     }
 
     console.clear();
-    console.log(chalk.green('Welcome to the Kainda CLI'));
+    console.log(chalk.green('Welcome to the Kainda CLI v' + require('../package.json').version));
     console.log(chalk.yellow('Please choose an option:'));
     console.log(chalk.blue('1. Create a new entity'));
     console.log(chalk.blue('2. List entities'));
