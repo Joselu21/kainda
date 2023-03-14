@@ -1,11 +1,22 @@
-const KaindaException = require("./KaindaException")
+const KaindaException = require("./KaindaException");
+
+/**
+ * @imports KaindaException from ./KaindaException
+ */
 
 /**
  * Function that handles all exception types that are thrown by the application.
  * The exception must have a code and a message property. It is recommended to use the kainda standard.
  * @param {Error|KaindaException} error The error object that is thrown by the application, it can be thrown by the application or by Sequelize/Mongoose.
- * @param {*} res The response object. Used to send the response to the client based on the error.
+ * @param {object} res The response object. Used to send the response to the client based on the error.
  * @returns {void} Returns nothing.
+ * @example
+ * const { GenericKaindaExceptionHandler, GenericKaindaExceptions } = require("kainda");
+ * try {
+ *  throw new GenericKaindaExceptions.Kainda400Exception();
+ * } catch (error) {
+ *  ExceptionHandler(error, res);
+ * }
  */
 function ExceptionHandler(error, res) {
 
@@ -137,8 +148,16 @@ function ExceptionHandler(error, res) {
 
 /**
  * Handles KaindaException objects by returning a JSON error response with the exception details.
- * @param {object} error - The KaindaException object to handle.
+ * @param {KaindaException} error - The KaindaException object to handle.
  * @param {object} res - The Express response object to send the error response to.
+ * @returns {void} Returns nothing.
+ * @example
+ * const { GenericKaindaExceptionHandler, GenericKaindaExceptions } = require("kainda");
+ * try {
+ *  throw new GenericKaindaExceptions.Kainda400Exception();
+ * } catch (error) {
+ *  GenericKaindaExceptionHandler(error, res);
+ * }
  */
 function GenericKaindaExceptionHandler(error, res) {
 
