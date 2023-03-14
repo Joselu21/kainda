@@ -1,72 +1,71 @@
+
+/**
+ * Checks if an object has the specified keys.
+ * @param {string|string[]} keys - The key(s) to check for. Can be a string or an array of strings.
+ * @param {object} container - The object to check against.
+ * @param {string[]} [exceptions=[]] - An optional array of keys to exclude from the check.
+ * @returns {(string|boolean)} Returns the first missing field or true if all fields are present.
+ */
 function checkObjectHas(keys, container, exceptions = []) {
 
-    let missingFields = [];
-    if (!keys || !keys.length || keys.length === 0) {
+    if (!keys || !keys.length || !container || typeof container !== "object") {
         return false;
     }
-    if ((Array.isArray(keys) && keys.length > 0)) {
-        keys.forEach(element => {
-            let aux = element.split(".");
-            if (aux.length > 1) {
-                try {
-                    let auxElement = container[aux[0]];
-                    for (let i = 1; i < aux.length; i++) {
-                        auxElement = auxElement[aux[i]];
-                    }
-                    if (!auxElement && !exceptions.includes(element)) {
-                        missingFields.push(element);
-                    }
-                } catch (error) {
-                    if (!exceptions.includes(element)) {
-                        missingFields.push(element);
-                    }
+
+    const missingFields = [];
+
+    function deepCheckField(key) {
+        let value = container;
+        for (let part of key.split(".")) {
+            if (!value[part]) {
+                if (!exceptions.includes(key)) {
+                    missingFields.push(key);
                 }
-            } else if (!container[element] && !exceptions.includes(element)) {
-                missingFields.push(element);
+                break;
             }
-        });
-    } else if (typeof keys === "string") {
-        if(keys.split(".").length > 1) {
-            let aux = keys.split(".");
-            let auxElement = container[aux[0]];
-            for (let i = 1; i < aux.length; i++) {
-                auxElement = auxElement[aux[i]];
-            }
-            if (!auxElement && !exceptions.includes(keys)) {
-                missingFields.push(keys);
-            }
-        } else if (!container[keys] && !exceptions.includes(keys)) {
-            missingFields.push(keys);
+            value = value[part];
         }
     }
 
-    if (missingFields.length && missingFields.length > 0) {
-        return missingFields[0];
+    if ((Array.isArray(keys) && keys.length > 0)) {
+        for (let key of keys) {
+            deepCheckField(key);
+        }
+    } else if (typeof keys === "string") {
+        deepCheckField(keys);
     }
-    return true;
+
+    return missingFields.length ? missingFields[0] : true;
 }
 
-
+/**
+ * Generates a response object indicating missing fields in a given container object.
+ * @param {string[]} arrayOfKeys - An array of keys to check for in the container object.
+ * @param {Object} container - The container object to check for missing fields.
+ * @param {Array} [exceptions=[]] - An optional array of keys to exclude from the check.
+ * @returns {Object} - A response object containing information about any missing fields.
+ */
 function missingFieldsResponse(arrayOfKeys, container, exceptions = []) {
     let response = {}
     for (let i = 0; i < arrayOfKeys.length; i++) {
         let missingFields = checkObjectHas(arrayOfKeys[i], container, exceptions);
-        if (missingFields !== true) {
-            if (JSON.stringify(response) === "{}") {
-                response = {
-                    error_type: "EMPTY_FIELD",
-                    error_message: "Missing " + (Array.isArray(missingFields) ? missingFields[0] : missingFields) + " field",
-                    error_data: {
-                        error_code : "EMPTY_FIELD",
-                        element : Array.isArray(missingFields) ? missingFields[0] : missingFields,
-                        data : container
-                    }
-                }
-            } else {
-                if(!response.allAttributesMissing)
-                    response.allAttributesMissing = [];
-                response.allAttributesMissing.push(missingFields);
-            }
+        if (missingFields === true) {
+            continue;
+        }
+        if (JSON.stringify(response) === "{}") {
+            response = {
+                error_type: "EMPTY_FIELD",
+                error_message: `Missing ${Array.isArray(missingFields) ? missingFields[0] : missingFields} field`,
+                error_data: {
+                    error_code: "EMPTY_FIELD",
+                    element: Array.isArray(missingFields) ? missingFields[0] : missingFields,
+                    data: container,
+                },
+            };
+        } else if (!response.allAttributesMissing) {
+            response.allAttributesMissing = [];
+        } else {
+            response.allAttributesMissing.push(missingFields);
         }
     }
     return response;

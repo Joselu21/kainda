@@ -8,7 +8,13 @@ const templatesPath = path.join(__dirname, '../../templates/');
 const appPath = templatesPath + 'app/';
 const entitiesPath = appPath + 'entities/';
 
-function __auxiliarRecursiveCreateStructure(name, options, templatePath, destinationPath) {
+/**
+ * Creates the basic file structure for a new entity.
+ * @param {string} name - The name of the entity to create.
+ * @param {string} templatePath - The path to the template directory.
+ * @param {string} destinationPath - The path to the destination directory.
+ */
+function __auxiliarRecursiveCreateStructure(name, templatePath, destinationPath) {
 
     const files = fs.readdirSync(templatePath);
 
@@ -18,7 +24,7 @@ function __auxiliarRecursiveCreateStructure(name, options, templatePath, destina
         const destinationFilePath = destinationPath + '/' + file;
         if (fs.lstatSync(templateFilePath).isDirectory()) {
             mkdirSafe(destinationFilePath);
-            __auxiliarRecursiveCreateStructure(name, options, templateFilePath, destinationFilePath);
+            __auxiliarRecursiveCreateStructure(name, templateFilePath, destinationFilePath);
         } else {
             copyTemplate(templateFilePath, destinationFilePath);
             hydrateFile(destinationFilePath, { entity_name: name });
@@ -27,6 +33,13 @@ function __auxiliarRecursiveCreateStructure(name, options, templatePath, destina
 
 }
 
+/**
+ * Creates a new entity with the given name and options.
+ * @param {string} name - The name of the entity to create.
+ * @param {Object} options - Options object.
+ * @param {boolean} options.sequelize - If true, creates a Sequelize entity.
+ * @param {boolean} options.mongoose - If true, creates a Mongoose entity.
+ */
 function __genericCreateStructure(name, options) {
 
     const urlName = name.toLowerCase().substring(0, 1) + name.substring(1);
@@ -58,7 +71,7 @@ function __genericCreateStructure(name, options) {
             continue;
         }
 
-        __auxiliarRecursiveCreateStructure(name, options, entitiesPath + structureName + '/src', './app/entities/' + name + '/' + structureName + '/src');
+        __auxiliarRecursiveCreateStructure(name, entitiesPath + structureName + '/src', './app/entities/' + name + '/' + structureName + '/src');
 
         if (structureName === 'test') {
             // Copy model.test.js to name.test.js
@@ -70,18 +83,29 @@ function __genericCreateStructure(name, options) {
 
 }
 
+/**
+ * Creates an entity structure.
+ * @param {string} name - The entity name.
+ * @param {Object} options - The options object.
+ * @param {boolean} options.sequelize - Whether to use sequelize.
+ * @param {boolean} options.mongoose - Whether to use mongoose.
+ * @returns {void} Nothing.
+ */
 function _createEntityStructure(name, options) {
-
     mkdirSafe('app/entities/' + name);
     copyTemplate(path.join(__dirname, '../../templates/app/entities/index.js'), './app/entities/' + name + '/index.js');
     hydrateFile('./app/entities/' + name + '/index.js', { entity_name: name });
-
     __genericCreateStructure(name, options);
-
 }
 
-async function createEntity(name, options = {}) {
-
+/**
+ * Prompts the user to input an entity name until a valid one is provided.
+ * @async
+ * @private
+ * @param {string} name[null] - The entity name to be validated.
+ * @returns {Promise<string>} The obtained entity name.
+ */
+async function __obtainEntityName(name = null) {
     while (!name || name === '') {
         console.log("Please, choose a name for your entity");
         prompt.start();
@@ -98,40 +122,57 @@ async function createEntity(name, options = {}) {
         const result = await prompt.get(schema);
         name = result.entity_name;
     }
-
     name = name.substring(0, 1).toLowerCase() + name.substring(1);
+    return name;
+}
 
-    // Question the user if he wants to create a new sequelize or mongoose entity
-    if (!options.sequelize && !options.mongoose) {
-        while (!options.sequelize && !options.mongoose) {
-            console.log("Please, choose a database type");
-            prompt.start();
-            const schema = {
-                properties: {
-                    database_type: {
-                        description: 'Database type (sequelize, mongoose)',
-                        type: 'string',
-                        required: true,
-                        message: 'Database type is required'
-                    }
+/**
+ * Obtains options for creating an entity.
+ * @async
+ * @private
+ * @param {Object} options - The options object.
+ * @param {boolean} options.sequelize - Whether to use sequelize.
+ * @param {boolean} options.mongoose - Whether to use mongoose.
+ * @returns {Promise<Object>} A promise that resolves with the options object.
+ */
+async function __obtainOptions(options = {}) {
+    while (!options.sequelize && !options.mongoose) {
+        console.log("Please, choose a database type");
+        prompt.start();
+        const schema = {
+            properties: {
+                database_type: {
+                    description: 'Database type (sequelize, mongoose)',
+                    type: 'string',
+                    required: true,
+                    message: 'Database type is required'
                 }
-            };
-            const result = await prompt.get(schema);
-            options.sequelize = result.database_type === 'sequelize';
-            options.mongoose = result.database_type === 'mongoose';
-            if (!options.sequelize && !options.mongoose) {
-                console.log(chalk.red('Database type must be sequelize or mongoose'));
             }
+        };
+        const result = await prompt.get(schema);
+        const databaseType = result.database_type.toLowerCase();
+        options.sequelize = databaseType === 'sequelize';
+        options.mongoose = databaseType === 'mongoose';
+        if (!options.sequelize && !options.mongoose) {
+            console.log(chalk.red('Database type must be sequelize or mongoose'));
         }
     }
+    return options;
+}
 
-    if (options.sequelize) {
-        _createEntityStructure(name, options);
-    } else if (options.mongoose) {
-        _createEntityStructure(name, options);
-    } else {
-        console.log('No entity type specified');
-    }
+/**
+ * Creates an entity with the given name and options.
+ * @async
+ * @param {string} name - The name of the entity to be created.
+ * @param {Object} options - The options to be used when creating the entity.
+ * @returns {void}
+ */
+async function createEntity(name, options = {}) {
+
+    name = await __obtainEntityName(name);
+    options = await __obtainOptions(options);
+    _createEntityStructure(name, options);
+
 }
 
 module.exports = createEntity;

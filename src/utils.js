@@ -1,43 +1,60 @@
 const fs = require("fs");
-const path = require("path");
 
+/**
+ * Returns an array of file objects with the specified extension found in the given directory and its subdirectories.
+ * @param {string} [searchPath="./app/"] - The directory to search in.
+ * @param {string} [extension="model.js"] - The file extension to look for.
+ * @returns {Array<Object>} An array of file objects with the name, size, and path properties.
+ */
 function getFiles(searchPath = "./app/", extension = "model.js") {
 
     if (!searchPath.endsWith("/")) searchPath += "/";
 
+    const files = [];
     const entries = fs.readdirSync(searchPath, { withFileTypes: true });
 
-    const files = entries
-        .filter((file) => !file.isDirectory() && file.name !== extension && file.name.includes(extension))
-        .map((file) => ({ ...file, path: searchPath + file.name }));
-
-    const folders = entries.filter((folder) => folder.isDirectory());
-
-    for (const folder of folders)
-        files.push(...getFiles(`${searchPath}${folder.name}/`, extension));
+    for (const entry of entries) {
+        if (entry.isDirectory()) {
+            files.push(...getFiles(`${searchPath}${entry.name}/`, extension));
+        } else if (entry.name.endsWith(extension) && entry.name !== extension) {
+            files.push({
+                ...entry,
+                path: `${searchPath}${entry.name}`
+            });
+        }
+    }
 
     return files;
 }
 
-function exportFiles (searchPath, extension) {
+/**
+ * Export files from a directory as an object.
+ * @param {string} searchPath - The path to the directory to search in.
+ * @param {string} extension - The file extension to look for.
+ * @returns {object} - An object containing the exported modules.
+ */
+function exportFiles(searchPath, extension) {
     let files = getFiles(searchPath, extension);
-    let exportable = {};
-    for (let i = 0; i < files.length; i++) {
-        let aux = requireIfExists(files[i].path);
+    return files.reduce((exportable, file) => {
+        let aux = requireIfExists(file.path);
         if (aux && Object.keys(aux).length > 0) {
-            exportable = { ...exportable, ...aux };
+            return { ...exportable, ...aux };
         } else if (aux && typeof aux === "function") {
-            exportable = { 
-                ...exportable, 
-                [files[i].name.substring(0, files[i].name.indexOf("."))]: aux
+            return {
+                ...exportable,
+                [file.name.substring(0, file.name.indexOf("."))]: aux
             };
         }
-    }
-    return exportable;
+    }, {});
 }
 
+/**
+ * Returns an object containing all the model classes found in the application.
+ * @private
+ * @returns {Object} An object containing all the model classes found in the application.
+ */
 function __exportModels() {
-    
+
     let models = {};
     let files = getFiles().map((file) => {
         file.path = file.path.substring(0, file.path.lastIndexOf("/"));
@@ -46,35 +63,47 @@ function __exportModels() {
         return file;
     });
 
-    for (let i = 0; i < files.length; i++) {
-        let model = files[i].name.substring(0, files[i].name.indexOf("."));
-        let pathPreModel = files[i].path.substring(0, files[i].path.lastIndexOf("/" + model));
-        let requirePath = pathPreModel.substring(2) + "/" + model;
-        let modelClass = require("@/" + requirePath);
+    for (const file of files) {
+        const model = file.name.substring(0, file.name.indexOf("."));
+        const pathPreModel = file.path.substring(0, file.path.lastIndexOf(`/${model}`));
+        const requirePath = `${pathPreModel.substring(2)}/${model}`;
+        const modelClass = require(`@/${requirePath}`);
         models[modelClass.modelName ?? model.charAt(0).toUpperCase() + model.slice(1)] = modelClass;
     }
 
     return models;
 }
 
+/**
+ * Returns all exported models.
+ * @returns {Object} Object containing all exported models.
+ */
 function getModels() {
     return __exportModels();
 }
 
+/**
+ * Returns the specified model.
+ * @param {string} model - The name of the model to retrieve.
+ * @returns {*} The specified model.
+ */
 function getModel(model) {
     return __exportModels()[model];
 }
 
+/**
+ * Tries to require a module and returns it if it exists.
+ * @param {string} file_path - The path of the module to require.
+ * @returns {*} - The required module, or null if it doesn't exist.
+ * @throws {Error} - If an error other than "MODULE_NOT_FOUND" occurs.
+ */
 function requireIfExists(file_path) {
     try {
-        const module = require(file_path);
-        return module;
+        return require(file_path);
     }
-    catch (e) {
-        if (e instanceof Error && e.code === "MODULE_NOT_FOUND"){
-            //console.log("Can't load module: " + file_path);
-        } else {
-            throw e;
+    catch (error) {
+        if (error.code !== "MODULE_NOT_FOUND") {
+            throw error;
         }
     }
     return null;
