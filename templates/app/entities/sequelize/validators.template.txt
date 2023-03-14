@@ -1,7 +1,0 @@
-
-
-const %%$MODEL_NAME_UPPERCASE$%%Validators = {
-    
-}
-
-module.exports = %%$MODEL_NAME_UPPERCASE$%%Validators;

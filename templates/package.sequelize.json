@@ -1,0 +1,52 @@
+{
+  "name": "__KAINDA__PROJECT__NAME__",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development node --trace-warnings index.js",
+    "deploy": "cross-env NODE_ENV=production node index.js",
+    "start:seed": "cross-env NODE_ENV=development node --trace-warnings index.js --seed",
+    "test": "cross-env NODE_ENV=test mocha",
+    "coverage": "cross-env NODE_ENV=test nyc --include 'app/**/*controller.js' mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "config": ">=3.0.0",
+    "cors": ">=2.8.5",
+    "cross-env": ">=7.0.0",
+    "module-alias": ">=2.2.2",
+    "express": ">=4.18.1",
+    "helmet": ">=6.0.0",
+    "kainda": ">=5.0.0",
+    "jsonwebtoken": ">=9.0.0",
+    "sequelize": ">=6.29.0",
+    "pg": ">=8.10.0",
+    "sqlite3": ">=5.1.0"
+  },
+  "devDependencies": {
+    "chai": ">=4.2.0",
+    "mocha": ">=10.2.0",
+    "nyc": ">=15.1.0",
+    "supertest": ">=6.3.0"
+  },
+  "mocha": {
+    "require": [
+      "./app/test/mocha.setup.js"
+    ],
+    "spec" : "./app/**/*.test.js",
+    "reporter": "spec",
+    "ui": "bdd",
+    "recursive": true,
+    "timeout": 1000000,
+    "exit": true
+  },
+  "_moduleAliases": {
+    "@" : "./",
+    "@app" : "./app",
+    "@entities": "./app/entities",
+    "@services": "./app/services",
+    "@test" : "./app/test"
+  }
+}

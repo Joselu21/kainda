@@ -3,57 +3,90 @@ const { extractArgument, argsContains } = require('../utils/args.utils');
 const join = require('path').join;
 const prompt = require('prompt');
 const chalk = require('chalk');
+const fs = require('fs');
 
+/**
+ *  Creates a package.json file for a new project with the given name and options.
+ *  @param {string} project_name - The name of the project.
+ *  @param {Object} options - Optional configuration options.
+ *  @param {boolean} [options.sequelize=false] - If true, generates a package.json file for a Sequelize project (mutually exclusive with mongoose).
+ *  @param {boolean} [options.mongoose=false] - If true, generates a package.json file for a Mongoose project (mutually exclusive with sequelize).
+ */
 function createPackageJson(project_name, options = {}) {
-
     console.log(chalk.yellow('Creating project with name: ' + project_name));
     console.log(chalk.blue('Creating package.json... with options: ' + JSON.stringify(options)));
-    if(options.sequelize) {
-        copyTemplate(join(__dirname, '../../templates/package-template-sequelize.json'), './package.json');
-    } else if (options.mongoose) {
-        copyTemplate(join(__dirname, '../../templates/package-template-mongoose.json'), './package.json');
+    if (options.sequelize || options.mongoose) {
+        const template = options.sequelize
+            ? join(__dirname, '../../templates/package.sequelize.json')
+            : join(__dirname, '../../templates/package.mongoose.json');
+        copyTemplate(template, './package.json');
+        hydrateFile('./package.json', { project_name });
     }
-    hydrateFile('./package.json', { project_name });
     console.log(chalk.green('package.json created'));
-
 }
 
+/**
+ * Creates a package.json file and index.js for a given project name and options.
+ * @param {string} project_name - The name of the project to create.
+ * @param {Object} options - Options object.
+ * @param {boolean} options.sequelize - If true, creates a package.json and index.js for Sequelize.
+ * @param {boolean} options.mongoose - If true, creates a package.json and index.js for Mongoose.
+ */
 function createIndexJs(project_name, options = {}) {
-
     createPackageJson(project_name, options);
-
     console.log(chalk.blue('Creating index.js and setup.js...'));
-    if (options.sequelize) {
-        console.log(chalk.blue('Creating sequelize files...'));
-        copyTemplate(join(__dirname, '../../templates/setup-template-sequelize.js'), './setup.js');
-    } else if (options.mongoose) {
-        console.log(chalk.blue('Creating mongoose files...'));
-        copyTemplate(join(__dirname, '../../templates/setup-template-mongoose.js'), './setup.js');
-    }
-
-    copyTemplate(join(__dirname, '../../templates/index-template.js'), './index.js');
-
+    const template = options.sequelize
+        ? join(__dirname, '../../templates/setup.sequelize.js')
+        : join(__dirname, '../../templates/setup.mongoose.js');
+    copyTemplate(template, './setup.js');
     hydrateFile('./setup.js', { project_name });
-
+    copyTemplate(join(__dirname, '../../templates/index.js'), './index.js');
     console.log(chalk.green('index.js and setup.js created'));
-
 }
 
+/**
+ * Creates the basic file structure for a new project.
+ * @param {string} project_name - The name of the project.
+ * @param {object} [options={}] - Additional options for project setup.
+ * @param {boolean} [options.sequelize=false] - Whether to set up the project with Sequelize ORM.
+ * @param {boolean} [options.mongoose=false] - Whether to set up the project with Mongoose ORM.
+ */
 function initializeStructure(project_name, options = {}) {
 
     try {
         createIndexJs(project_name, options);
-        mkdirSafe('config');
-        copyTemplate(join(__dirname, '../../templates/config/default-config-template.json'), './config/default.json');
-        copyTemplate(join(__dirname, '../../templates/config/development-config-template.json'), './config/development.json');
-        copyTemplate(join(__dirname, '../../templates/config/production-config-template.json'), './config/production.json');
-        copyTemplate(join(__dirname, '../../templates/config/test-config-template.json'), './config/test.json');
-        copyTemplate(join(__dirname, '../../templates/gitignore.template.txt'), './.gitignore');
-        mkdirSafe('app');
-        mkdirSafe('app/entities');
-        mkdirSafe('app/test');
-        copyTemplate(join(__dirname, '../../templates/app/test/mocha.setup.js'), './app/test/mocha.setup.js');
-        copyTemplate(join(__dirname, '../../templates/app/test/utils.setup.js'), './app/test/utils.setup.js');
+
+        // Array of source-destination pairs for copying files and creating directories
+        const dirsAndFiles = [
+            ['config', ''],
+            ['config', 'default.json'],
+            ['config', 'development.json'],
+            ['config', 'production.json'],
+            ['config', 'test.json'],
+            ['app', ''],
+            ['app/entities', ''],
+            ['app/test', ''],
+            ['app/test', 'mocha.setup.js'],
+            ['app/test', 'utils.setup.js'],
+            ['app/services', ''],
+            ['app/services', 'auth.service.js']
+        ];
+
+        for (const [source, destination] of dirsAndFiles) {
+            const sourcePath = join(__dirname, '../../templates', source, destination);
+            const destPath = join('.', source, destination);
+            if (fs.existsSync(sourcePath)) {
+                if (fs.lstatSync(sourcePath).isDirectory()) {
+                    mkdirSafe(destPath);
+                } else {
+                    copyTemplate(sourcePath, destPath);
+                }
+            }
+        }
+
+        // Gitignore
+        copyTemplate(join(__dirname, '../../templates/gitignore'), './.gitignore');
+
     } catch (error) {
         console.log(error.message);
         return;
@@ -61,14 +94,20 @@ function initializeStructure(project_name, options = {}) {
 
 }
 
-async function createProject(name = null) {
-
+/**
+ * Obtain project name.
+ * @async
+ * @param {string} [name=null] - The name of the project.
+ * @returns {Promise<string>} - The project name promise.
+ */
+async function __obtainProjectName(name = null) {
     let project_name =
         name ??
         extractArgument('--project_name') ??
         extractArgument('-p') ??
         extractArgument('create') ??
         extractArgument('init');
+
     while (!project_name) {
         console.log("Please, introduce a project name");
         prompt.start();
@@ -90,7 +129,16 @@ async function createProject(name = null) {
         }
     }
 
-    options = {
+    return project_name;
+}
+
+/**
+ * Async function to obtain options from the user about database type
+ * @async
+ * @returns {Promise} Returns a promise that resolves with an object containing Sequelize and Mongoose options.
+*/
+async function __obtainOptions() {
+    const options = {
         sequelize: argsContains('--sequelize') || argsContains('--relational') || argsContains('-sql') || argsContains('--sql'),
         mongoose: argsContains('--mongoose') || argsContains('--non-relational') || argsContains('-nosql') || argsContains('--nosql'),
     }
@@ -111,11 +159,22 @@ async function createProject(name = null) {
         const result = await prompt.get(schema);
         options.sequelize = result.database_type === 'sequelize';
         options.mongoose = result.database_type === 'mongoose';
-        if (!options.sequelize && !options.mongoose) {
-            console.log(chalk.red('Database type must be sequelize or mongoose'));
-        }
     }
 
+    return options;
+}
+
+/**
+ * Asynchronously creates a new project with the given name and options.
+ * @async
+ * @function createProject
+ * @param {string} [name=null] - The name of the project to create. If not provided, will try to obtain it through various channels.
+ * @returns {Promise} A Promise that resolves when the project has been successfully created.
+*/
+async function createProject(name = null) {
+
+    const project_name = await __obtainProjectName(name);
+    const options = await __obtainOptions();
     initializeStructure(project_name, options);
 
 }
