@@ -75,8 +75,8 @@ function __genericCreateStructure(name, options) {
 
         if (structureName === 'test') {
             // Copy model.test.js to name.test.js
-            copyTemplate(entitiesPath + structureName + '/model.test.js', './app/entities/' + name + '/' + structureName + '/src/' + urlName + '.test.js');
-            hydrateFile('./app/entities/' + name + '/' + structureName + '/src/' + urlName + '.test.js', { entity_name: name });
+            copyTemplate(entitiesPath + structureName + '/model.test.js', './app/entities/' + name + '/' + structureName + '/' + urlName + '.test.js');
+            hydrateFile('./app/entities/' + name + '/' + structureName + '/' + urlName + '.test.js', { entity_name: name });
         }
 
     }
