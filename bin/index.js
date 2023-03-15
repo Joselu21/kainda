@@ -2,6 +2,7 @@
 const prompt = require('prompt');
 const chalk = require('chalk');
 const createEntity = require('./entities/create');
+const listEntities = require('./entities/list');
 const createProject = require('./project/init');
 const listProjectInfo = require('./project/list');
 const { extractArgument } = require('./utils/args.utils');
