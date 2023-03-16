@@ -9,7 +9,7 @@ const {
     GenericKaindaExceptionHandler,
     GenericKaindaExceptions,
 } = require("./src/exceptions");
-const KaindaMiddlewareUtils = require("./src/middlewares.utils");
+const { KaindaMiddlewares, KaindaMiddlewareUtils} = require("./src/middlewares.utils");
 const AuthFunctions = require("./src/auth.functions");
 const chalk = require("chalk");
 
@@ -27,6 +27,7 @@ module.exports = {
     GenericKaindaExceptions,
     
     ...KaindaMiddlewareUtils,
+    ...KaindaMiddlewares,
     ...AuthFunctions,
     chalk
 };
