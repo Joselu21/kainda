@@ -1,3 +1,19 @@
 {
-
+    "databases": [
+        {
+            "description": "critical",
+            "username": "",
+            "password": "",
+            "host": "",
+            "port": 0,
+            "dialect": "",
+            "database_name": "",
+            "pool": {
+                "max": 5,
+                "min": 0,
+                "acquire": 10000,
+                "idle": 30000
+            }
+        }
+    ]
 }
