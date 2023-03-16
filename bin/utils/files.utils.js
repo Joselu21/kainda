@@ -1,5 +1,6 @@
 const { extractArgument } = require('./args.utils');
 const fs = require('fs');
+const path = require('path');
 
 let conflict_mode = extractArgument('--conflict_mode') ?? extractArgument('-c') ?? 'stop';
 
@@ -61,11 +62,29 @@ function hydrateFile(path, options = {}) {
     fs.writeFileSync(path, file);
 }
 
+async function getFilesRecursively(directoryPath, fileExtension, fileList = []) {
+    const files = await fs.promises.readdir(directoryPath);
+
+    for (const file of files) {
+        const filePath = path.join(directoryPath, file);
+        const fileStat = await fs.promises.stat(filePath);
+
+        if (fileStat.isDirectory()) {
+            await getFilesRecursively(filePath, fileExtension, fileList);
+        } else if (filePath.endsWith(fileExtension)) {
+            fileList.push(filePath);
+        }
+    }
+
+    return fileList;
+}
+
 module.exports = {
     mkdirSafe,
     copyTemplate,
     hydrateFile,
     _backupFile,
     conflict,
+    getFilesRecursively,
     conflict_mode
 };
