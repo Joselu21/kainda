@@ -6,6 +6,7 @@ const listEntities = require('./entities/list');
 const createProject = require('./project/init');
 const listProjectInfo = require('./project/list');
 const { extractArgument } = require('./utils/args.utils');
+const entityDetails = require('./entities/details');
 
 loop();
 
@@ -156,8 +157,9 @@ async function manageEntities(action = null) {
     console.log(chalk.yellow('Please choose an option:'));
     console.log(chalk.blue('1. Create a new entity'));
     console.log(chalk.blue('2. List entities'));
-    console.log(chalk.blue('3. Go back'));
-    console.log(chalk.blue('4. Exit'));
+    console.log(chalk.blue('3. Entity details'));
+    console.log(chalk.blue('4. Go back'));
+    console.log(chalk.blue('5. Exit'));
 
     var schema = {
         properties: {
@@ -185,9 +187,13 @@ async function manageEntities(action = null) {
             break;
         case '3':
         case 3:
+            await entityDetails();
             break;
         case '4':
         case 4:
+            break;
+        case '5':
+        case 5:
             process.exit(0);
         default:
             console.log(chalk.red('Invalid option'));
