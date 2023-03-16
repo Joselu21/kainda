@@ -1,4 +1,5 @@
 const { tokenValid } = require("@services/auth.service");
+const { deactivateRoute } = require("kainda");
 
 module.exports = { 
     
@@ -7,6 +8,7 @@ module.exports = {
         app.post(
             "/__KAINDA__MODEL__LOWERCASE__",
             [
+                deactivateRoute,
                 tokenValid,
                 Models.__KAINDA__MODEL__UPPERCASE__.Middlewares.canCreateResource,
                 Models.__KAINDA__MODEL__UPPERCASE__.Middlewares.checkRequiredKeys

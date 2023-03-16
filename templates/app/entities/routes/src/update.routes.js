@@ -1,4 +1,5 @@
 const { tokenValid } = require("@services/auth.service");
+const { deactivateRoute } = require("kainda");
 
 module.exports = {
     
@@ -7,6 +8,7 @@ module.exports = {
         app.put(
             "/__KAINDA__MODEL__LOWERCASE__/:__KAINDA__MODEL__LOWERCASE___id", 
             [
+                deactivateRoute,
                 tokenValid
             ], 
             Models.__KAINDA__MODEL__UPPERCASE__.Controller.update__KAINDA__MODEL__UPPERCASE__

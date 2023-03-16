@@ -71,9 +71,33 @@ function missingFieldsResponse(arrayOfKeys, container, exceptions = []) {
     return response;
 }
 
-const KaindaMiddlewareUtils = {
-    checkObjectHas,
-    missingFieldsResponse
+/**
+ * A middleware function that deactivates a route.
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next function.
+ * @returns {void}
+ */
+function deactivateRoute(req, res, next) {
+    res.status(404).json({
+        error_type: "ROUTE_DEACTIVATED",
+        error_message: "This route has been deactivated",
+        error_data: {
+            error_code: "ROUTE_DEACTIVATED",
+        },
+    });
 }
 
-module.exports = KaindaMiddlewareUtils;
+const KaindaMiddlewareUtils = {
+    checkObjectHas,
+    missingFieldsResponse,
+};
+
+const KaindaMiddlewares = {
+    deactivateRoute,
+};
+
+module.exports = {
+    KaindaMiddlewareUtils,
+    KaindaMiddlewares,
+};

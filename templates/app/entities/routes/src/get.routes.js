@@ -1,4 +1,5 @@
 const { tokenValid } = require("@services/auth.service");
+const { deactivateRoute } = require("kainda");
 
 module.exports = {
     
@@ -7,6 +8,7 @@ module.exports = {
         app.get(
             "/__KAINDA__MODEL__LOWERCASE__/",
             [
+                deactivateRoute,
                 tokenValid,
             ],
             Models.__KAINDA__MODEL__UPPERCASE__.Controller.getAll__KAINDA__MODEL__UPPERCASE__s
@@ -18,6 +20,7 @@ module.exports = {
         app.get(
             "/__KAINDA__MODEL__LOWERCASE__/:__KAINDA__MODEL__LOWERCASE___id",
             [
+                deactivateRoute,
                 tokenValid,
                 Models.__KAINDA__MODEL__UPPERCASE__.Middlewares.canReadResource,
             ],
@@ -25,4 +28,4 @@ module.exports = {
         );
     },
 
-}
+};
