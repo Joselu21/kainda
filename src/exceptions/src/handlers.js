@@ -20,10 +20,18 @@ const KaindaException = require("./KaindaException");
  */
 function ExceptionHandler(error, res) {
 
-    // If error is an array, extract the first element, it can happen on validation errors from Sequelize
-    if (Array.isArray(error)) {
-        error = error[0];
+    // If the logs are active, log the error to the console
+    if (config.get("logging")) {
+        if (Logger) {
+            Logger.log("exceptions", error);
+        } else {
+            console.log(error);
+        }
     }
+
+    // If error is an array, extract the first element, it can happen on validation errors from Sequelize
+    if (Array.isArray(error))
+        error = error[0];
 
     // If the error is a user-defined exception or a kainda generated exception
     if (error instanceof KaindaException) {
