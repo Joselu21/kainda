@@ -1,3 +1,5 @@
+const { ExceptionHandler } = require('kainda');
+
 async function create__KAINDA__MODEL__UPPERCASE__(req, res) {
     let transaction = await Models.__KAINDA__MODEL__UPPERCASE__.transaction();
     try {

@@ -1,3 +1,5 @@
+const { ExceptionHandler } = require('kainda');
+
 async function getAll__KAINDA__MODEL__UPPERCASE__s(req, res) {
     try {
         const __KAINDA__MODEL__LOWERCASE__s = await Models.__KAINDA__MODEL__UPPERCASE__.Controller.__getAll__KAINDA__MODEL__UPPERCASE__s();

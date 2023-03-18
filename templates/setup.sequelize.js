@@ -1,7 +1,8 @@
 /**
 * IMPORTS 
 */
-require('module-alias/register');   
+require('module-alias/register');
+const LogService = require('@services/log.service');
 const Sequelize = require('sequelize');
 const kainda = require('kainda');
 const express = require("express");
@@ -19,18 +20,12 @@ async function main() {
     // Setup the middlewares
     await setupMiddlewares(app);
 
-    // Logger 
-    const Logger = await setupLogger();
-    global.Logger = Logger;
-
     // Critical database
     const sequelize = await setupCriticalDatabase();
 
     // Make some configuration and utils globally available
     global.sequelize = sequelize;
     global.Models = kainda.getModels();
-    global.config = config;
-    global.ExceptionHandler = kainda.ExceptionHandler;
 
     // Sync models if needed
     await syncModels();
@@ -57,7 +52,7 @@ async function main() {
             console.log(kainda.chalk.red(err));
             process.exit(1);
         }
-        Logger.log('__KAINDA__PROJECT__NAME___server_starts', `__KAINDA__PROJECT__NAME__ is running on ${host}:${port}`);
+        LogService.log('__KAINDA__PROJECT__NAME___server_starts', `__KAINDA__PROJECT__NAME__ is running on ${host}:${port}`);
         poll = false;
     });
 
@@ -115,7 +110,7 @@ async function setupMiddlewares(app) {
     app.use((req, res, next) => {
         let oldSend = res.send
         res.send = function (data) {
-            Logger.log('__KAINDA__PROJECT__NAME___requests', {
+            LogService.log('__KAINDA__PROJECT__NAME___requests', {
                 req: {
                     method: req.method,
                     headers: req.headers,
@@ -136,47 +131,6 @@ async function setupMiddlewares(app) {
         }
         next()
     });
-
-}
-
-async function setupLogger() {
-
-    // Get the logging database
-    const logging_config = config.get('databases').filter(db => db.description === 'logging')[0];
-
-    if (!logging_config) {
-
-        console.log(kainda.chalk.yellow("[CONFIG] Your configuration file is incorrect, you must specify a logging database or disable database logging"));
-
-        // Log only to file and console
-        const Logger = new kainda.Logger("file", {
-            full_path: path.join(__dirname + "/logs/"),
-            loggers: [
-                new kainda.Logger("console", {})
-            ]
-        });
-
-        return Logger;
-
-    }
-
-    const logging_uri = "mongodb://" + logging_config.username + ":" + encodeURIComponent(logging_config.password) + "@"
-        + logging_config.host + ":" + logging_config.port
-        + "/" + logging_config.database_name;
-
-    // We start the logger database
-    const Logger = new kainda.Logger("mongodb", {
-        uri: logging_uri,
-        options: logging_config.options ?? {},
-        loggers: [
-            new kainda.Logger("file", {
-                full_path: path.join(__dirname + "/logs/"),
-            }),
-            new kainda.Logger("console", {})
-        ]
-    });
-
-    return Logger;
 
 }
 
@@ -224,11 +178,11 @@ async function seedDatabase() {
         try {
             console.log(kainda.chalk.blue('[SEED] Seeding database...'));
             for (let model of Object.keys(Models)) {
-                if(Models[model].Seeders.seed && typeof Models[model].Seeders.seed === 'function'){
+                if (Models[model].Seeders.seed && typeof Models[model].Seeders.seed === 'function') {
                     await Models[model].Seeders.seed(transaction);
-                } else if (Models[model].seed && typeof Models[model].seed === 'function'){
+                } else if (Models[model].seed && typeof Models[model].seed === 'function') {
                     await Models[model].seed(null, { transaction });
-                }            
+                }
             }
             await transaction.commit();
             console.log(kainda.chalk.green('[SEED] Database seeded successfully'));
