@@ -1,7 +1,6 @@
 const GenericControllers = require("./src/generic.controllers");
 const KaindaModel = require("./src/model");
 const KaindaTransaction = require("./src/model/src/transaction/transaction");
-const Logger = require("./src/logger.class");
 const KaindaUtils = require("./src/utils");
 const { 
     ExceptionHandler, 
@@ -18,7 +17,6 @@ module.exports = {
     KaindaTransaction,
 
     GenericControllers,
-    Logger,
     ...KaindaUtils,
 
     KaindaException,
