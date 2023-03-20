@@ -1,6 +1,13 @@
 const { ExceptionHandler } = require('kainda');
 const LogService = require("@services/log.service");
 
+/**
+ * Delete __KAINDA__MODEL__LOWERCASE__ by id
+ * @async
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @returns {void}
+ */
 async function delete__KAINDA__MODEL__UPPERCASE__(req, res) {
     let transaction = await Models.__KAINDA__MODEL__UPPERCASE__.transaction();
     try {
