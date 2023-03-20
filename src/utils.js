@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 
 /**
  * Returns an array of file objects with the specified extension found in the given directory and its subdirectories.
@@ -66,8 +67,11 @@ function __exportModels() {
     for (const file of files) {
         const model = file.name.substring(0, file.name.indexOf("."));
         const pathPreModel = file.path.substring(0, file.path.lastIndexOf(`/${model}`));
-        const requirePath = `${pathPreModel.substring(2)}/${model}`;
-        const modelClass = require(`@/${requirePath}`);
+        let requirePath = `${pathPreModel.substring(2)}/${model}`;
+        if (requirePath.startsWith("@")) requirePath = requirePath.substring(1);
+        if (requirePath.startsWith("#")) requirePath = requirePath.substring(1);
+        if (requirePath.startsWith("/")) requirePath = requirePath.substring(1);
+        let modelClass = require(path.join(process.cwd(), requirePath));
         models[modelClass.modelName ?? model.charAt(0).toUpperCase() + model.slice(1)] = modelClass;
     }
 
