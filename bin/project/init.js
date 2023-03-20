@@ -62,6 +62,7 @@ function initializeStructure(project_name, options = {}) {
             ['app/entities', ''],
             ['app/services', ''],
             ['app/services', 'auth.service.js'],
+            ['app/services', 'log.service.js'],
             ['app/test', ''],
             ['app/test', 'mocha.setup.js'],
             ['app/test', 'utils.setup.js'],

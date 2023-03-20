@@ -23,7 +23,8 @@
         "kainda": "^6.0.0",
         "jsonwebtoken": "^9.0.0",
         "mongoose": "^7.0.2",
-        "@mongodb-js/zstd": "^1.1.0"
+        "@mongodb-js/zstd": "^1.1.0",
+        "winston": "^3.8.2"
     },
     "devDependencies": {
         "chai": "^4.2.0",
