@@ -1,5 +1,7 @@
-const { ExceptionHandler } = require('kainda');
+const ModelsService = require("@services/models.service");
 const LogService = require("@services/log.service");
+const DbService = require("@services/db.service");
+const { ExceptionHandler } = require('kainda');
 
 /**
  * Create new __KAINDA__MODEL__LOWERCASE__
@@ -9,9 +11,10 @@ const LogService = require("@services/log.service");
  * @returns {void}
  */
 async function create__KAINDA__MODEL__UPPERCASE__(req, res) {
-    let transaction = await Models.__KAINDA__MODEL__UPPERCASE__.transaction();
+    const __KAINDA__MODEL__UPPERCASE__ = ModelsService.Models.__KAINDA__MODEL__UPPERCASE__;
+    let transaction = await __KAINDA__MODEL__UPPERCASE__.transaction(DbService.get());
     try {
-        const __KAINDA__MODEL__LOWERCASE__ = await Models.__KAINDA__MODEL__UPPERCASE__.Controller.__create__KAINDA__MODEL__UPPERCASE__(req.body, { transaction });
+        const __KAINDA__MODEL__LOWERCASE__ = await __KAINDA__MODEL__UPPERCASE__.Controller.__create__KAINDA__MODEL__UPPERCASE__(req.body, { transaction });
         await transaction.commit();
         return res.status(201).json(__KAINDA__MODEL__LOWERCASE__.toJSON());
     } catch (error) {
@@ -24,5 +27,5 @@ async function create__KAINDA__MODEL__UPPERCASE__(req, res) {
 }
 
 module.exports = {
-    create__KAINDA__MODEL__UPPERCASE__,
+    create__KAINDA__MODEL__UPPERCASE__
 };

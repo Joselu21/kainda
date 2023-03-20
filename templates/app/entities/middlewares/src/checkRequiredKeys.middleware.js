@@ -1,4 +1,6 @@
+const ModelsService = require("@services/models.service");
 const { missingFieldsResponse } = require("kainda");
+
 
 /**
  * Check if the required keys are present in the request body
@@ -9,7 +11,7 @@ const { missingFieldsResponse } = require("kainda");
  * @param {Array} required_keys
  * @returns {void}
  */
-async function checkRequiredKeys(req, res, next, required_keys = Models.__KAINDA__MODEL__UPPERCASE__.create_required_keys) {
+async function checkRequiredKeys(req, res, next, required_keys = ModelsService.Models.__KAINDA__MODEL__UPPERCASE__.create_required_keys) {
     if(required_keys.length === 0) {
         return next();
     }

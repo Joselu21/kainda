@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const kainda = require("kainda");
 
 /**
  * Middleware to check if the token is present and valid.
@@ -37,11 +38,11 @@ async function tokenHas(req, res, next, conditions) {
     try {
         const decoded = await __getAndVerifyToken(req);
         if (!decoded) {
-            throw new Models.Admin.Exceptions.AdminInvalidTokenException();
+            throw kainda.GenericKaindaExceptions.Kainda401Exception().fromTemplate();
         }
         for (const condition of conditions) {
             if(!decoded[condition.key] || (condition.value && decoded[condition.key] !== condition.value)) {
-                throw new Models.Admin.Exceptions.AdminInvalidTokenException();
+                throw kainda.GenericKaindaExceptions.Kainda401Exception().fromTemplate();
             }
         }
         next();
