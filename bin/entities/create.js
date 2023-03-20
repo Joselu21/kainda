@@ -64,10 +64,13 @@ function __genericCreateStructure(name, options) {
         if (structureName === 'model') {
             if (options.sequelize) {
                 copyTemplate(entitiesPath + structureName + '/src/model.sequelize.js', './app/entities/' + name + '/' + structureName + '/src/' + urlName + '.model.js');
+                copyTemplate(entitiesPath + structureName + '/model.sequelize.json', './app/entities/' + name + '/' + structureName + '/model.json');
             } else if (options.mongoose) {
                 copyTemplate(entitiesPath + structureName + '/src/model.mongoose.js', './app/entities/' + name + '/' + structureName + '/src/' + urlName + '.model.js');
+                copyTemplate(entitiesPath + structureName + '/model.mongoose.json', './app/entities/' + name + '/' + structureName + '/model.json');
             }
             hydrateFile('./app/entities/' + name + '/' + structureName + '/src/' + urlName + '.model.js', { entity_name: name });
+            hydrateFile('./app/entities/' + name + '/' + structureName + '/model.json', { entity_name: name });
             continue;
         }
 
@@ -77,6 +80,16 @@ function __genericCreateStructure(name, options) {
             // Copy model.test.js to name.test.js
             copyTemplate(entitiesPath + structureName + '/model.test.js', './app/entities/' + name + '/' + structureName + '/' + urlName + '.test.js');
             hydrateFile('./app/entities/' + name + '/' + structureName + '/' + urlName + '.test.js', { entity_name: name });
+        }
+
+        if (structureName === 'routes') {
+            // Copy routes.sequelize|mongoose.json to routes.json
+            if (options.sequelize) {
+                copyTemplate(entitiesPath + structureName + '/routes.sequelize.json', './app/entities/' + name + '/' + structureName + '/routes.json');
+            } else if (options.mongoose) {
+                copyTemplate(entitiesPath + structureName + '/routes.mongoose.json', './app/entities/' + name + '/' + structureName + '/routes.json');
+            }
+            hydrateFile('./app/entities/' + name + '/' + structureName + '/routes.json', { entity_name: name });
         }
 
     }

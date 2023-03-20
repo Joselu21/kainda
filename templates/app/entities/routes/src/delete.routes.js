@@ -6,7 +6,7 @@ module.exports = {
     delete : function (app) {
         // Delete __KAINDA__MODEL__LOWERCASE__ by id
         app.delete(
-            "/__KAINDA__MODEL__LOWERCASE__/:__KAINDA__MODEL__LOWERCASE___id", 
+            "/__KAINDA__MODEL__LOWERCASE__/:__KAINDA__MODEL__LOWERCASE___id/", 
             [
                 deactivateRoute,
                 tokenValid,

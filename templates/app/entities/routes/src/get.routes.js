@@ -18,7 +18,7 @@ module.exports = {
     get : function (app) {
         // Get __KAINDA__MODEL__LOWERCASE__ by id
         app.get(
-            "/__KAINDA__MODEL__LOWERCASE__/:__KAINDA__MODEL__LOWERCASE___id",
+            "/__KAINDA__MODEL__LOWERCASE__/:__KAINDA__MODEL__LOWERCASE___id/",
             [
                 deactivateRoute,
                 tokenValid,
@@ -26,6 +26,6 @@ module.exports = {
             ],
             Models.__KAINDA__MODEL__UPPERCASE__.Controller.get__KAINDA__MODEL__UPPERCASE__ById
         );
-    },
+    }
 
 };

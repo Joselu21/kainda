@@ -1,0 +1,260 @@
+{
+    "paths": {
+        "/__KAINDA__MODEL__LOWERCASE__/": {
+            "post": {
+                "summary": "Create a new __KAINDA__MODEL__LOWERCASE__",
+                "operationId": "create__KAINDA__MODEL__UPPERCASE__",
+                "tags": [
+                    "__KAINDA__MODEL__UPPERCASE__s"
+                ],
+                "requestBody": {
+                    "description": "__KAINDA__MODEL__UPPERCASE__ object to be created",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/__KAINDA__MODEL__UPPERCASE__"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "__KAINDA__MODEL__UPPERCASE__ created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/__KAINDA__MODEL__UPPERCASE__"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "409": {
+                        "description": "__KAINDA__MODEL__UPPERCASE__ already exists"
+                    },
+                    "418" : {
+                        "$ref": "#/components/responses/TeapotError"
+                    },
+                    "429" : {
+                        "$ref": "#/components/responses/TooManyRequestsError"
+                    },
+                    "500" : {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "get": {
+                "summary": "Get all __KAINDA__MODEL__LOWERCASE__s",
+                "operationId": "getAll__KAINDA__MODEL__UPPERCASE__s",
+                "tags": [
+                    "__KAINDA__MODEL__UPPERCASE__s"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/Limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/Sort"
+                    },
+                    {
+                        "$ref": "#/components/parameters/Filter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of __KAINDA__MODEL__LOWERCASE__s",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/__KAINDA__MODEL__UPPERCASE__"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "418" : {
+                        "$ref": "#/components/responses/TeapotError"
+                    },
+                    "429" : {
+                        "$ref": "#/components/responses/TooManyRequestsError"
+                    },
+                    "500" : {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/__KAINDA__MODEL__LOWERCASE__/{__KAINDA__MODEL__LOWERCASE___id}/": {
+            "get": {
+                "summary": "Get a __KAINDA__MODEL__LOWERCASE__ by id",
+                "operationId": "get__KAINDA__MODEL__UPPERCASE__ById",
+                "tags": [
+                    "__KAINDA__MODEL__UPPERCASE__s"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/MongoId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "__KAINDA__MODEL__UPPERCASE__ found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/__KAINDA__MODEL__UPPERCASE__"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "description": "__KAINDA__MODEL__UPPERCASE__ not found"
+                    },
+                    "418" : {
+                        "$ref": "#/components/responses/TeapotError"
+                    },
+                    "429" : {
+                        "$ref": "#/components/responses/TooManyRequestsError"
+                    },
+                    "500" : {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "summary": "Update a __KAINDA__MODEL__LOWERCASE__ by id",
+                "operationId": "update__KAINDA__MODEL__UPPERCASE__",
+                "tags": [
+                    "__KAINDA__MODEL__UPPERCASE__s"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/MongoId"
+                    }
+                ],
+                "requestBody": {
+                    "description": "__KAINDA__MODEL__UPPERCASE__ object to be updated",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/__KAINDA__MODEL__UPPERCASE__"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "__KAINDA__MODEL__UPPERCASE__ updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/__KAINDA__MODEL__UPPERCASE__"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "description": "__KAINDA__MODEL__UPPERCASE__ not found"
+                    },
+                    "418" : {
+                        "$ref": "#/components/responses/TeapotError"
+                    },
+                    "429" : {
+                        "$ref": "#/components/responses/TooManyRequestsError"
+                    },
+                    "500" : {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Delete a __KAINDA__MODEL__LOWERCASE__ by id",
+                "operationId": "delete__KAINDA__MODEL__UPPERCASE__",
+                "tags": [
+                    "__KAINDA__MODEL__UPPERCASE__s"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/MongoId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "__KAINDA__MODEL__UPPERCASE__ deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/__KAINDA__MODEL__UPPERCASE__"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "description": "__KAINDA__MODEL__UPPERCASE__ not found"
+                    },
+                    "418" : {
+                        "$ref": "#/components/responses/TeapotError"
+                    },
+                    "429" : {
+                        "$ref": "#/components/responses/TooManyRequestsError"
+                    },
+                    "500" : {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    }
+}

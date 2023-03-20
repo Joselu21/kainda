@@ -2,6 +2,7 @@
 * IMPORTS 
 */
 require('module-alias/register');
+const serveDocumentation = require('./doc/doc-serve');
 const LogService = require('@services/log.service');
 const mongoose = require('mongoose');
 const kainda = require('kainda');
@@ -58,6 +59,8 @@ async function main() {
 
     console.log(kainda.chalk.green("[SERVER] Server started on " + host + ":" + port));
 
+    // Serve the documentation
+    serveDocumentation(app, '/doc', path.join(__dirname, '/doc/openapi.json'));
 
     return app;
 
@@ -144,9 +147,9 @@ async function setupCriticalDatabase() {
     }
 
     const uri = critical.uri ?? `mongodb://${critical.username}:${encodeURIComponent(critical.password)}@${critical.host}:${critical.port}/${critical.database_name}`;
-    const options = critical.options ?? { 
-        useNewUrlParser: true, 
-        compressors: ['zstd'] ,
+    const options = critical.options ?? {
+        useNewUrlParser: true,
+        compressors: ['zstd'],
         maxPoolSize: critical.pool?.max ?? 100,
         minPoolSize: critical.pool?.min ?? 10,
         serverSelectionTimeoutMS: critical.pool?.acquire ?? 5000,

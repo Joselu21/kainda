@@ -1,0 +1,26 @@
+{
+    "components": {
+        "schemas": {
+            "__KAINDA__MODEL__UPPERCASE__": {
+                "type": "object",
+                "properties": {
+                    "__KAINDA__MODEL__LOWERCASE___id": {
+                        "type": "number",
+                        "description": "The __KAINDA__MODEL__LOWERCASE__ id",
+                        "example": 1,
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                ]
+            }
+        },
+        "examples": {
+            "__KAINDA__MODEL__UPPERCASE__": {
+                "value": {
+                    "__KAINDA__MODEL__LOWERCASE___id": 1
+                }
+            }
+        }
+    }
+}
