@@ -29,7 +29,7 @@ function setupMiddlewares(app) {
     app.use(function (req, res, next) {
         const ip = req.headers['origin'];
         if (!kainda.blockByIP(ip, { whitelist: whitelist })) {
-            console.log(kainda.chalk.red("[SECURITY] IP blocked: " + ip));
+            LogService.ServerLogger.info("[SECURITY] IP blocked: " + ip);
             return res.status(403).send({ message: 'Forbidden' });
         }
         next();
