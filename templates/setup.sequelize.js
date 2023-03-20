@@ -2,6 +2,7 @@
 * IMPORTS 
 */
 require('module-alias/register');
+const serveDocumentation = require('./doc/doc-serve');
 const LogService = require('@services/log.service');
 const Sequelize = require('sequelize');
 const kainda = require('kainda');
@@ -61,6 +62,9 @@ async function main() {
     }
 
     console.log(kainda.chalk.green("[SERVER] Server started on " + host + ":" + port));
+
+    // Serve the documentation
+    serveDocumentation(app, '/doc', path.join(__dirname, '/doc/openapi.json'));
 
     return app;
 

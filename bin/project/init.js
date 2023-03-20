@@ -58,18 +58,27 @@ function initializeStructure(project_name, options = {}) {
 
         // Array of source-destination pairs for copying files and creating directories
         const dirsAndFiles = [
+            ['app', ''],
+            ['app/entities', ''],
+            ['app/services', ''],
+            ['app/services', 'auth.service.js'],
+            ['app/test', ''],
+            ['app/test', 'mocha.setup.js'],
+            ['app/test', 'utils.setup.js'],
             ['config', ''],
             ['config', 'default.json'],
             ['config', 'development.json'],
             ['config', 'production.json'],
             ['config', 'test.json'],
-            ['app', ''],
-            ['app/entities', ''],
-            ['app/test', ''],
-            ['app/test', 'mocha.setup.js'],
-            ['app/test', 'utils.setup.js'],
-            ['app/services', ''],
-            ['app/services', 'auth.service.js']
+            ['doc', ''],
+            ['doc', 'openapi.json'],
+            ['doc', 'doc-serve.js'],
+            ['doc', 'generate-docs.js'],
+            ['doc/src', ''],
+            ['doc/src', 'components.json'],
+            ['doc/src', 'index.json'],
+            ['doc/src', 'paths.json'],
+            ['doc/src', 'tags.json'],
         ];
 
         for (const [source, destination] of dirsAndFiles) {
@@ -80,6 +89,7 @@ function initializeStructure(project_name, options = {}) {
                     mkdirSafe(destPath);
                 } else {
                     copyTemplate(sourcePath, destPath);
+                    hydrateFile(destPath, { project_name });
                 }
             }
         }

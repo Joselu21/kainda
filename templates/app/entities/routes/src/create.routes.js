@@ -6,7 +6,7 @@ module.exports = {
     create : function (app) {
         // Create new __KAINDA__MODEL__LOWERCASE__
         app.post(
-            "/__KAINDA__MODEL__LOWERCASE__",
+            "/__KAINDA__MODEL__LOWERCASE__/",
             [
                 deactivateRoute,
                 tokenValid,

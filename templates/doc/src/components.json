@@ -1,0 +1,170 @@
+{
+    "components" : {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "parameters": {
+            "MongoId" : {
+                "name": "id",
+                "in": "path",
+                "description": "Mongo Id",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "format": "ObjectId",
+                    "example": "5e9b9b9b9b9b9b9b9b9b9b9b"
+                }
+            },
+            "SequelizeId" : {
+                "name": "id",
+                "in": "path",
+                "description": "Sequelize Id",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 1
+                }
+            },
+            "Offset": {
+                "name": "offset",
+                "in": "query",
+                "description": "Number of items to skip",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 0
+                }
+            },
+            "Limit": {
+                "name": "limit",
+                "in": "query",
+                "description": "Max records to return. 0 to return all records.",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 0
+                }
+            },
+            "Sort" : {
+                "name": "sort",
+                "in": "query",
+                "description": "Sort order. Format: field_name,asc|desc",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "Filter" : {
+                "name": "filter",
+                "in": "query",
+                "description": "Filter. Format: field_name,operator,value",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        "responses": {
+            "UnauthorizedError": {
+                "description": "Invalid or missing token",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error_type": {
+                                    "type": "string",
+                                    "example": "UNAUTHORIZED"
+
+                                },
+                                "error_message": {
+                                    "type": "string",
+                                    "example": "Invalid or missing token"
+                                },
+                                "error_data": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "TeapotError" : {
+                "description": "I'm a teapot. Should never happen and means there is a bug in the code.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error_type": {
+                                    "type": "string",
+                                    "example": "GENERIC_ERROR"
+                                },
+                                "error_message": {
+                                    "type": "string",
+                                    "example": "I'm a teapot"
+                                },
+                                "error_data": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "TooManyRequestsError": {
+                "description": "Too many requests",
+                "content": {
+                    "application/json": {
+                        "schema" : {
+                            "type": "object",
+                            "properties": {
+                                "error_type": {
+                                    "type": "string",
+                                    "example": "TOO_MANY_REQUESTS"
+                                },
+                                "error_message": {
+                                    "type": "string",
+                                    "example": "Too many requests"
+                                },
+                                "error_data": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "InternalServerError" : {
+                "description": "Internal server error",
+                "content": {
+                    "application/json": {
+                        "schema" : {
+                            "type": "object",
+                            "properties": {
+                                "error_type": {
+                                    "type": "string",
+                                    "example": "INTERNAL_SERVER_ERROR"
+                                },
+                                "error_message": {
+                                    "type": "string",
+                                    "example": "Internal server error"
+                                },
+                                "error_data": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
