@@ -89,6 +89,8 @@ class KaindaModel {
         this.getByPk = passthrough.get.findById;
         this.findAndCountAll = passthrough.get.findAndCountAll;
         this.getAndCountAll = passthrough.get.findAndCountAll;
+        this.findPaginated = passthrough.get.findPaginated;
+        this.getPaginated = passthrough.get.findPaginated;
 
         this.updateOne = passthrough.update.updateOne;
         this.updateMany = passthrough.update.updateMany;

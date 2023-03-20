@@ -66,6 +66,21 @@ async function main() {
 
     console.log(kainda.chalk.green("[SERVER] Server started on " + host + ":" + port));
 
+    // Export the routes 
+    app.get("/routes", (req, res) => {
+        let routes = [];
+        app._router.stack.forEach(function (r) {
+            if (r.route && r.route.path) {
+                routes.push(kainda.exportRoute(r));
+            } else if (r.name === 'router' && r.handle.stack) {
+                r.handle.stack.forEach(function (r) {
+                    routes.push(kainda.exportRoute(r));
+                });
+            }
+        });
+        res.status(200).json(routes);
+    });
+
     // Serve the documentation
     serveDocumentation(app, '/doc', path.join(__dirname, '/doc/openapi.json'));
 

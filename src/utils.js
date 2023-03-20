@@ -109,12 +109,37 @@ function requireIfExists(file_path) {
     return null;
 }
 
+/**
+ * Exports a route object. Calculates if the route is secure or not.
+ * @param {Object} r - The route object to export.
+ * @param {string} [secureMiddleware="tokenValid"] - The name of the middleware that checks if the request is secure.
+ * @returns {Object} - The exported route object.
+ */
+function exportRoute(r, secureMiddleware = "tokenValid") {
+    let exportable = {};
+    if (r.route && r.route.path) {
+        if (r.route.stack) {
+            if (r.route.stack.length > 0) {
+                for (let i = 0; i < r.route.stack.length; i++) {
+                    if (r.route.stack[i].name === secureMiddleware) {
+                        exportable.secure = true;
+                    }
+                }
+            }
+        }
+        exportable.path = r.route.path;
+        exportable.methods = Object.keys(r.route.methods);
+    }
+    return exportable === {} ? null : exportable;
+}
+
 const KaindaUtils = {
     getFiles,
     getModels,
     getModel,
     exportFiles,
-    requireIfExists
+    requireIfExists,
+    exportRoute
 };
 
 module.exports = KaindaUtils;
