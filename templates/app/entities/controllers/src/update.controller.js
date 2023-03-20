@@ -1,5 +1,12 @@
 const { ExceptionHandler } = require('kainda');
 
+/**
+ * Update __KAINDA__MODEL__LOWERCASE__
+ * @async
+ * @param {Express.Request} req 
+ * @param {Express.Response} res
+ * @returns {void}
+ */
 async function update__KAINDA__MODEL__UPPERCASE__(req, res) {
     let transaction = await Models.__KAINDA__MODEL__UPPERCASE__.transaction();
     try {

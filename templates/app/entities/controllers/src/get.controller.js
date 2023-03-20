@@ -1,5 +1,12 @@
 const { ExceptionHandler } = require('kainda');
 
+/**
+ * Get all __KAINDA__MODEL__LOWERCASE__s
+ * @async
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @returns {void}
+ */
 async function getAll__KAINDA__MODEL__UPPERCASE__s(req, res) {
     try {
         const __KAINDA__MODEL__LOWERCASE__s = await Models.__KAINDA__MODEL__UPPERCASE__.Controller.__getAll__KAINDA__MODEL__UPPERCASE__s();
@@ -11,6 +18,13 @@ async function getAll__KAINDA__MODEL__UPPERCASE__s(req, res) {
     }
 }
 
+/**
+ * Get __KAINDA__MODEL__LOWERCASE__ by id
+ * @async
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @returns {void}
+ */
 async function get__KAINDA__MODEL__UPPERCASE__ById(req, res) {
     try {
         const __KAINDA__MODEL__LOWERCASE__ = await Models.__KAINDA__MODEL__UPPERCASE__.Controller.__get__KAINDA__MODEL__UPPERCASE__ById(req.params.__KAINDA__MODEL__LOWERCASE___id);
