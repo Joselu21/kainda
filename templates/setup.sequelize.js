@@ -18,6 +18,9 @@ async function main() {
     // We run express which will provide us an execution environment
     let app = express();
 
+    // Setup the logger
+    LogService.init(config.get('logs'));
+
     // Setup the middlewares
     await setupMiddlewares(app);
 
@@ -50,10 +53,10 @@ async function main() {
     const server = https.createServer(app);
     server.listen(port, host, (err) => {
         if (err) {
-            console.log(kainda.chalk.red(err));
+            LogService.StartLogger.error('__KAINDA__PROJECT__NAME___server_starts', err);
             process.exit(1);
         }
-        LogService.log('__KAINDA__PROJECT__NAME___server_starts', `__KAINDA__PROJECT__NAME__ is running on ${host}:${port}`);
+        LogService.StartLogger.info('__KAINDA__PROJECT__NAME___server_starts', `__KAINDA__PROJECT__NAME__ is running on ${host}:${port}`);
         poll = false;
     });
 
@@ -114,7 +117,7 @@ async function setupMiddlewares(app) {
     app.use((req, res, next) => {
         let oldSend = res.send
         res.send = function (data) {
-            LogService.log('__KAINDA__PROJECT__NAME___requests', {
+            LogService.RequestLogger.info('__KAINDA__PROJECT__NAME___requests', {
                 req: {
                     method: req.method,
                     headers: req.headers,
