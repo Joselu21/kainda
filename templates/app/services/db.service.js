@@ -1,3 +1,4 @@
+const LogService = require('@services/log.service');
 const kainda = require('kainda');
 
 /**
@@ -40,7 +41,7 @@ class SeedService {
         let transaction = externalTransaction ?? await DbService.mongoose.startSession();
         try {
             transaction.startTransaction();
-            console.log(kainda.chalk.blue('[SEED] Seeding database...'));
+            LogService.ServerLogger.info('[SEED] Seeding database...');
             for (let model of Object.keys(Models)) {
                 if (Models[model].Seeders.seed && typeof Models[model].Seeders.seed === 'function') {
                     await Models[model].Seeders.seed(transaction);
@@ -49,10 +50,10 @@ class SeedService {
                 }
             }
             await transaction.commitTransaction();
-            console.log(kainda.chalk.green('[SEED] Database seeded successfully'));
+            LogService.ServerLogger.verbose('[SEED] Database seeded successfully');
         } catch (error) {
             await transaction.abortTransaction();
-            console.log(kainda.chalk.red('[SEED] Error seeding database. Rolled back'));
+            LogService.ServerLogger.error('[SEED] Error seeding database. Rolled back');
         }
     }
 
@@ -70,7 +71,7 @@ class SeedService {
     static async seedSequelize(Models, externalTransaction) {
         let transaction = externalTransaction ?? await DbService.sequelize.transaction();
         try {
-            console.log(kainda.chalk.blue('[SEED] Seeding database...'));
+            LogService.ServerLogger.info('[SEED] Seeding database...');
             for (let model of Object.keys(Models)) {
                 if (Models[model].Seeders.seed && typeof Models[model].Seeders.seed === 'function') {
                     await Models[model].Seeders.seed(transaction);
@@ -79,10 +80,10 @@ class SeedService {
                 }
             }
             await transaction.commit();
-            console.log(kainda.chalk.green('[SEED] Database seeded successfully'));
+            LogService.ServerLogger.verbose(kainda.chalk.green('[SEED] Database seeded successfully'));
         } catch (error) {
             await transaction.rollback();
-            console.log(kainda.chalk.red('[SEED] Error seeding database. Rolled back'));
+            LogService.ServerLogger.error('[SEED] Error seeding database. Rolled back');
         }
     }
 
@@ -130,7 +131,7 @@ class DbService {
             await DbService.initSequelize(critical);
             return DbService.sequelize;
         } else {
-            console.log(kainda.chalk.red("[CONFIG] Your configuration file is incorrect, you must specify a valid database configuration"));
+            LogService.ServerLogger.error("[CONFIG] Your configuration file is incorrect, you must specify a valid database configuration");
             throw new Error('Invalid dialect');
         }
     }
@@ -150,7 +151,7 @@ class DbService {
         const mongoose = require('mongoose');
 
         if (!critical || (!critical.uri && (!critical.host || !critical.port || !critical.database_name))) {
-            console.log(kainda.chalk.red("[CONFIG] Your configuration file is incorrect, you must specify a critical database"));
+            LogService.ServerLogger.error("[CONFIG] Your configuration file is incorrect, you must specify a critical database");
             process.exit(1);
         }
 
@@ -185,7 +186,7 @@ class DbService {
 
         // TODO: Add support for sqlite3
         if (!critical || !critical.host || !critical.port || !critical.database_name) {
-            console.log(kainda.chalk.red("[CONFIG] Your configuration file is incorrect, you must specify a critical database"));
+            LogService.ServerLogger.error("[CONFIG] Your configuration file is incorrect, you must specify a critical database");
             process.exit(1);
         }
 
@@ -200,13 +201,13 @@ class DbService {
 
         // if env is not production, we run the migrations
         if (process.env.NODE_ENV !== 'production' && !process.argv.includes('--force')) {
-            console.log(kainda.chalk.blue('[SYNC] Syncing models with database...'));
+            LogService.ServerLogger.info('[SYNC] Syncing models with database...');
             await sequelize.sync({ match: /-pruebas$/ });
         }
 
         // If it is executed with param '--force', we force the migrations
         if ((process.env.NODE_ENV !== 'production' && process.argv.includes('--force')) || process.env.NODE_ENV === 'test') {
-            console.log(kainda.chalk.blue('[SYNC] Forced syncing models with database...'));
+            LogService.ServerLogger.info('[SYNC] Forced syncing models with database...');
             await sequelize.sync({ force: true, match: /-pruebas$/ });
         }
 

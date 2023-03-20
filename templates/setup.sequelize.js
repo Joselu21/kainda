@@ -46,18 +46,16 @@ async function main() {
     const server = https.createServer(app);
     server.listen(port, host, (err) => {
         if (err) {
-            LogService.StartLogger.error('__KAINDA__PROJECT__NAME___server_starts', err);
+            LogService.StartLogger.error(err);
             process.exit(1);
         }
-        LogService.StartLogger.info('__KAINDA__PROJECT__NAME___server_starts', `__KAINDA__PROJECT__NAME__ is running on ${host}:${port}`);
+        LogService.StartLogger.info(`__KAINDA__PROJECT__NAME__ is running on ${host}:${port}`);
         poll = false;
     });
 
     while (poll) {
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
-
-    console.log(kainda.chalk.green("[SERVER] Server started on " + host + ":" + port));
 
     return app;
 
