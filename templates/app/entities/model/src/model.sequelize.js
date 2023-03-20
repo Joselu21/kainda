@@ -1,5 +1,8 @@
 const { DataTypes, Model } = require('sequelize');
+const DbService = require('@services/db.service');
 const { KaindaModel } = require('kainda');
+
+const sequelize = DbService.get();
 
 class __KAINDA__MODEL__UPPERCASE__ extends Model {}
 

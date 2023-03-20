@@ -26,7 +26,7 @@ function createPackageJson(project_name, options = {}) {
 }
 
 /**
- * Creates a package.json file and index.js for a given project name and options.
+ * Creates package.json file, index.js, middlewares.js and a setup.js for a given project name and options.
  * @param {string} project_name - The name of the project to create.
  * @param {Object} options - Options object.
  * @param {boolean} options.sequelize - If true, creates a package.json and index.js for Sequelize.
@@ -40,6 +40,8 @@ function createIndexJs(project_name, options = {}) {
         : join(__dirname, '../../templates/setup.mongoose.js');
     copyTemplate(template, './setup.js');
     hydrateFile('./setup.js', { project_name });
+    copyTemplate(join(__dirname, '../../templates/middlewares.js'), './middlewares.js');
+    hydrateFile('./middlewares.js', { project_name });
     copyTemplate(join(__dirname, '../../templates/index.js'), './index.js');
     console.log(chalk.green('index.js and setup.js created'));
 }
@@ -58,18 +60,30 @@ function initializeStructure(project_name, options = {}) {
 
         // Array of source-destination pairs for copying files and creating directories
         const dirsAndFiles = [
+            ['app', ''],
+            ['app/entities', ''],
+            ['app/services', ''],
+            ['app/services', 'auth.service.js'],
+            ['app/services', 'log.service.js'],
+            ['app/services', 'db.service.js'],
+            ['app/services', 'models.service.js'],
+            ['app/test', ''],
+            ['app/test', 'mocha.setup.js'],
+            ['app/test', 'utils.setup.js'],
             ['config', ''],
             ['config', 'default.json'],
             ['config', 'development.json'],
             ['config', 'production.json'],
             ['config', 'test.json'],
-            ['app', ''],
-            ['app/entities', ''],
-            ['app/test', ''],
-            ['app/test', 'mocha.setup.js'],
-            ['app/test', 'utils.setup.js'],
-            ['app/services', ''],
-            ['app/services', 'auth.service.js']
+            ['doc', ''],
+            ['doc', 'openapi.json'],
+            ['doc', 'doc-serve.js'],
+            ['doc', 'generate-docs.js'],
+            ['doc/src', ''],
+            ['doc/src', 'components.json'],
+            ['doc/src', 'index.json'],
+            ['doc/src', 'paths.json'],
+            ['doc/src', 'tags.json'],
         ];
 
         for (const [source, destination] of dirsAndFiles) {
@@ -80,6 +94,7 @@ function initializeStructure(project_name, options = {}) {
                     mkdirSafe(destPath);
                 } else {
                     copyTemplate(sourcePath, destPath);
+                    hydrateFile(destPath, { project_name });
                 }
             }
         }

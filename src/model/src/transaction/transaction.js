@@ -1,21 +1,21 @@
 class KaindaTransaction {
 
-    static async #MongooseTransaction() {
+    static async #MongooseTransaction(mongoose) {
         let transaction = await mongoose.startSession();
         transaction.startTransaction();
         return new KaindaTransaction(transaction, "mongoose");
     }
 
-    static async #SequelizeTransaction() {
+    static async #SequelizeTransaction(sequelize) {
         let transaction = await sequelize.transaction();
         return new KaindaTransaction(transaction, "sequelize");
     }
 
-    static async newTransaction(modelType) {
+    static async newTransaction(modelType, instance) {
         if (modelType === "mongoose") {
-            return await this.#MongooseTransaction();
+            return await this.#MongooseTransaction(instance);
         } else if (modelType === "sequelize") {
-            return await this.#SequelizeTransaction();
+            return await this.#SequelizeTransaction(instance);
         } else {
             throw new Error("Invalid Model Type");
         }

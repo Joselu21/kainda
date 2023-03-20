@@ -34,7 +34,7 @@ class KaindaModel {
         this.modelType = ModelType.getTypeExternal(model);
         this.isMongoose = this.modelType === "mongoose";
         this.isSequelize = this.modelType === "sequelize";
-        this.transaction = async () => await KaindaTransaction.newTransaction(this.modelType);
+        this.transaction = async (instance) => await KaindaTransaction.newTransaction(this.modelType, instance);
         this.name = this.isMongoose ? model.modelName : this.isSequelize ? model.name : "Unknown";
         this.modelName = this.name;
         this.modelId = this.isMongoose ? "_id" : this.isSequelize ? model.primaryKeyAttribute : "Unknown";
@@ -89,6 +89,8 @@ class KaindaModel {
         this.getByPk = passthrough.get.findById;
         this.findAndCountAll = passthrough.get.findAndCountAll;
         this.getAndCountAll = passthrough.get.findAndCountAll;
+        this.findPaginated = passthrough.get.findPaginated;
+        this.getPaginated = passthrough.get.findPaginated;
 
         this.updateOne = passthrough.update.updateOne;
         this.updateMany = passthrough.update.updateMany;

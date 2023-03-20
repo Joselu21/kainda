@@ -15,5 +15,9 @@
                 "idle": 30000
             }
         }
-    ]
+    ],
+    "logs" : {
+        "console" : true,
+        "file" : true
+    }
 }
