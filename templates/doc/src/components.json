@@ -72,6 +72,35 @@
             }
         },
         "responses": {
+            "ValidationError": {
+                "description": "Validation error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error_type": {
+                                    "type": "string",
+                                    "example": "VALIDATION_ERROR"
+                                },
+                                "error_message": {
+                                    "type": "string",
+                                    "example": "Validation error"
+                                },
+                                "error_data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "field_name": {
+                                            "type": "string",
+                                            "example": "This field is required"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "UnauthorizedError": {
                 "description": "Invalid or missing token",
                 "content": {
@@ -87,6 +116,75 @@
                                 "error_message": {
                                     "type": "string",
                                     "example": "Invalid or missing token"
+                                },
+                                "error_data": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "ForbiddenError": {
+                "description": "Forbidden",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error_type": {
+                                    "type": "string",
+                                    "example": "FORBIDDEN"
+                                },
+                                "error_message": {
+                                    "type": "string",
+                                    "example": "You don't have permission to access this resource"
+                                },
+                                "error_data": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "NotFoundError": {
+                "description": "Not found",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error_type": {
+                                    "type": "string",
+                                    "example": "NOT_FOUND"
+                                },
+                                "error_message": {
+                                    "type": "string",
+                                    "example": "The resource you are looking for does not exist"
+                                },
+                                "error_data": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "ConflictError": {
+                "description": "Conflict",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error_type": {
+                                    "type": "string",
+                                    "example": "CONFLICT"
+                                },
+                                "error_message": {
+                                    "type": "string",
+                                    "example": "The resource you are trying to create already exists"
                                 },
                                 "error_data": {
                                     "type": "object"

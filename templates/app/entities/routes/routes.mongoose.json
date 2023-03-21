@@ -30,13 +30,13 @@
                         }
                     },
                     "400": {
-                        "description": "Invalid input"
+                        "$ref": "#/components/responses/ValidationError"
                     },
                     "401": {
                         "$ref": "#/components/responses/UnauthorizedError"
                     },
                     "409": {
-                        "description": "__KAINDA__MODEL__UPPERCASE__ already exists"
+                        "$ref": "#/components/responses/ConflictError"
                     },
                     "418" : {
                         "$ref": "#/components/responses/TeapotError"
@@ -135,7 +135,7 @@
                         "$ref": "#/components/responses/UnauthorizedError"
                     },
                     "404": {
-                        "description": "__KAINDA__MODEL__UPPERCASE__ not found"
+                        "$ref": "#/components/responses/NotFoundError"
                     },
                     "418" : {
                         "$ref": "#/components/responses/TeapotError"
@@ -193,7 +193,7 @@
                         "$ref": "#/components/responses/UnauthorizedError"
                     },
                     "404": {
-                        "description": "__KAINDA__MODEL__UPPERCASE__ not found"
+                        "$ref": "#/components/responses/NotFoundError"
                     },
                     "418" : {
                         "$ref": "#/components/responses/TeapotError"
@@ -237,7 +237,7 @@
                         "$ref": "#/components/responses/UnauthorizedError"
                     },
                     "404": {
-                        "description": "__KAINDA__MODEL__UPPERCASE__ not found"
+                        "$ref": "#/components/responses/NotFoundError"
                     },
                     "418" : {
                         "$ref": "#/components/responses/TeapotError"
