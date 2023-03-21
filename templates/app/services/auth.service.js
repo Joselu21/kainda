@@ -10,20 +10,20 @@ const kainda = require("kainda");
  * @returns {void} Nothing
  */
 async function tokenValid(req, res, next) {
-    let token = getTokenFromHeaders(req);
-    if (!token) {
-        return res.status(401).json({
-            message: "No token provided!"
-        });
+    try {
+        let token = getTokenFromHeaders(req);
+        if (!token) {
+            throw kainda.GenericKaindaExceptions.Kainda401Exception().fromTemplate();
+        }
+        const secret = config.get("jwt.secret");
+        let decoded = await verifyToken(secret, token);
+        if (!decoded) {
+            throw kainda.GenericKaindaExceptions.Kainda401Exception().fromTemplate();
+        }
+        next();
+    } catch (error) {
+        kainda.ExceptionHandler(error, res);
     }
-    const secret = config.get("jwt.secret");
-    let decoded = await verifyToken(secret, token);
-    if (!decoded) {
-        return res.status(401).json({
-            message: "Invalid token!"
-        });
-    }
-    next();
 }
 
 /**
@@ -47,7 +47,7 @@ async function tokenHas(req, res, next, conditions) {
         }
         next();
     } catch (error) {
-        ExceptionHandler(error, res);
+        kainda.ExceptionHandler(error, res);
     }
 }
 
@@ -60,13 +60,15 @@ async function tokenHas(req, res, next, conditions) {
  * @returns {void} Nothing
  */
 function tokenProvided(req, res, next) {
-    let token = getTokenFromHeaders(req, res);
-    if (!token) {
-        return res.status(401).json({
-            message: "No token provided!"
-        });
+    try {
+        let token = getTokenFromHeaders(req, res);
+        if (!token) {
+            throw kainda.GenericKaindaExceptions.Kainda401Exception.fromTemplate("Token not found");
+        }
+        next(); 
+    } catch (error) {
+        kainda.ExceptionHandler(error, res);
     }
-    next();
 }
 
 /**

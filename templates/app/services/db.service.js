@@ -178,13 +178,11 @@ class DbService {
      * @memberof DbService
      * @returns {Promise<void>}
      * @private
-     * @todo Add support for sqlite3
      */
     static async initSequelize(critical) {
 
         const Sequelize = require('sequelize');
 
-        // TODO: Add support for sqlite3
         if (!critical || !critical.host || !critical.port || !critical.database_name) {
             LogService.ServerLogger.error("[CONFIG] Your configuration file is incorrect, you must specify a critical database");
             process.exit(1);

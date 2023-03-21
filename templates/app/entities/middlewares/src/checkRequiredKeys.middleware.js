@@ -1,5 +1,5 @@
 const ModelsService = require("@services/models.service");
-const { missingFieldsResponse } = require("kainda");
+const { KaindaMiddlewareUtils } = require("kainda");
 
 
 /**
@@ -18,7 +18,7 @@ async function checkRequiredKeys(req, res, next, required_keys = ModelsService.M
     let arrayOfKeys = [
         required_keys
     ];
-    let response = missingFieldsResponse(arrayOfKeys, req.body);
+    let response = KaindaMiddlewareUtils.missingFieldsResponse(arrayOfKeys, req.body);
     if(Object.keys(response).length > 0){
         return res.status(400).json(response);
     }
