@@ -1,4 +1,4 @@
-const { missingFieldsResponse } = require("./middlewares.utils");
+const { KaindaMiddlewareUtils } = require("./middlewares.utils");
 const { GenericKaindaExceptions } = require("./exceptions");
 
 /**
@@ -37,7 +37,7 @@ async function __genericCreate(model, data, transaction = null, options = {}) {
     }
 
     // Check if the required keys are present in the data
-    const missing_fields = missingFieldsResponse(required_keys, data);
+    const missing_fields = KaindaMiddlewareUtils.missingFieldsResponse(required_keys, data);
 
     // If there are missing fields, throw an exception
     if (Object.keys(missing_fields).length > 0 && missing_fields.error_type) {
