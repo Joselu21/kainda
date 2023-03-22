@@ -60,15 +60,6 @@
                 "schema": {
                     "type": "string"
                 }
-            },
-            "Filter" : {
-                "name": "filter",
-                "in": "query",
-                "description": "Filter. Format: field_name,operator,value",
-                "required": false,
-                "schema": {
-                    "type": "string"
-                }
             }
         },
         "responses": {
