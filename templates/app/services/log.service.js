@@ -9,54 +9,74 @@ class LogService {
     static #serverLogger;
 
     static init(options) {
-        LogService.#requestLogger = winston.createLogger({
-            level: 'info',
-            transports: [
-                options.console ? new winston.transports.Console({
-                    format: winston.format.combine(
-                        winston.format.timestamp(),
-                        winston.format.printf(info => consoleColorizer('REQUEST', info))
-                    ),
-                }) : null,
-                options.file ? new winston.transports.File({ filename: 'logs/request.log' }) : null
-            ]
-        });
-        LogService.#errorLogger = winston.createLogger({
-            level: 'error',
-            transports: [
-                options.console ? new winston.transports.Console({
-                    format: winston.format.combine(
-                        winston.format.timestamp(),
-                        winston.format.printf(info => consoleColorizer('ERROR', info))
-                    ),
-                }) : null,
-                options.file ? new winston.transports.File({ filename: 'logs/error.log' }) : null
-            ]
-        });
-        LogService.#startLogger = winston.createLogger({
-            level: 'info',
-            transports: [
-                options.console ? new winston.transports.Console({
-                    format: winston.format.combine(
-                        winston.format.timestamp(),
-                        winston.format.printf(info => consoleColorizer('START', info))
-                    )
-                }) : null,
-                options.file ? new winston.transports.File({ filename: 'logs/starts.log' }) : null
-            ]
-        });
-        LogService.#serverLogger = winston.createLogger({
-            level: 'info',
-            transports: [
-                options.console ? new winston.transports.Console({
-                    format: winston.format.combine(
-                        winston.format.timestamp(),
-                        winston.format.printf(info => consoleColorizer('SERVER', info))
-                    )
-                }) : null,
-                options.file ? new winston.transports.File({ filename: 'logs/server.log' }) : null
-            ]
-        });
+        LogService.initRequestLogger(options);
+        LogService.initErrorLogger(options);
+        LogService.initStartLogger(options);
+        LogService.initServerLogger(options);
+    }
+
+    static initRequestLogger(options) {
+        const transports = [];
+        if (options.console !== false) {
+            transports.push(new winston.transports.Console({
+                format: winston.format.combine(
+                    winston.format.timestamp(),
+                    winston.format.printf(requestConsoleFormatter)
+                ),
+            }));
+        }
+        if (options.file !== false) {
+            transports.push(new winston.transports.File({ filename: 'logs/request.log' }));
+        }
+        LogService.#requestLogger = winston.createLogger({ level: 'info', transports });
+    }
+
+    static initErrorLogger(options) {
+        const transports = [];
+        if (options.console !== false) {
+            transports.push(new winston.transports.Console({
+                format: winston.format.combine(
+                    winston.format.timestamp(),
+                    winston.format.printf(info => consoleColorizer('ERROR', info))
+                ),
+            }));
+        }
+        if (options.file !== false) {
+            transports.push(new winston.transports.File({ filename: 'logs/error.log' }));
+        }
+        LogService.#errorLogger = winston.createLogger({ level: 'error', transports });
+    }
+
+    static initStartLogger(options) {
+        const transports = [];
+        if (options.console !== false) {
+            transports.push(new winston.transports.Console({
+                format: winston.format.combine(
+                    winston.format.timestamp(),
+                    winston.format.printf(info => consoleColorizer('START', info))
+                )
+            }));
+        }
+        if (options.file !== false) {
+            transports.push(new winston.transports.File({ filename: 'logs/starts.log' }));
+        }
+        LogService.#startLogger = winston.createLogger({ level: 'info', transports });
+    }
+
+    static initServerLogger(options) {
+        const transports = [];
+        if (options.console !== false) {
+            transports.push(new winston.transports.Console({
+                format: winston.format.combine(
+                    winston.format.timestamp(),
+                    winston.format.printf(info => consoleColorizer('SERVER', info))
+                )
+            }));
+        }
+        if (options.file !== false) {
+            transports.push(new winston.transports.File({ filename: 'logs/server.log' }));
+        }
+        LogService.#serverLogger = winston.createLogger({ level: 'info', transports });
     }
 
     static get ErrorLogger() {
@@ -75,6 +95,25 @@ class LogService {
         return LogService.#serverLogger;
     }
 
+}
+
+function requestConsoleFormatter(info) {
+    let message = `[REQUEST] [${info.message.req.method}] [${info.message.req.originalUrl}] [${info.message.res.statusCode}]`;
+    let color = chalk.blue;
+    if (info.message.res.statusCode >= 200 && info.message.res.statusCode < 300) {
+        color = chalk.green;
+    } else if (info.message.res.statusCode >= 300 && info.message.res.statusCode < 400) {
+        color = chalk.blue;
+    } else if (info.message.res.statusCode >= 400 && info.message.res.statusCode < 500 && info.message.res.statusCode !== 418) {
+        color = chalk.yellow;
+    } else if (info.message.res.statusCode >= 500 && info.message.res.statusCode < 600 || info.message.res.statusCode === 418) {
+        color = chalk.red;
+    }
+    // Whenever the status code is 4xx or 5xx, we log the request body
+    if (info.message.req.body && (color === chalk.red || color === chalk.yellow)) {
+        message += `\n${JSON.stringify(info.message.req.body, null, 4)}`;
+    }
+    return color(message);
 }
 
 function consoleColorizer(prefix, info) {
@@ -102,7 +141,8 @@ function consoleColorizer(prefix, info) {
             color = chalk.white;
             break;
     }
-    return color(`[${prefix}] [${info.level.toUpperCase()}] [${info.timestamp}]: ${info.message}`);
+    let message = info.message ?? info._message;
+    return color(`[${prefix}] [${info.level.toUpperCase()}] [${info.timestamp}]: ${Object.keys(message).length > 0 ? JSON.stringify(message, null, 4) : message}`);
 }
 
 module.exports = LogService;
