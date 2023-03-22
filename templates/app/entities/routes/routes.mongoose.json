@@ -38,13 +38,13 @@
                     "409": {
                         "$ref": "#/components/responses/ConflictError"
                     },
-                    "418" : {
+                    "418": {
                         "$ref": "#/components/responses/TeapotError"
                     },
-                    "429" : {
+                    "429": {
                         "$ref": "#/components/responses/TooManyRequestsError"
                     },
-                    "500" : {
+                    "500": {
                         "$ref": "#/components/responses/InternalServerError"
                     }
                 },
@@ -71,7 +71,7 @@
                         "$ref": "#/components/parameters/Sort"
                     },
                     {
-                        "$ref": "#/components/parameters/Filter"
+                        "description": "TODO: Define filter parameters for __KAINDA__MODEL__UPPERCASE__"
                     }
                 ],
                 "responses": {
@@ -91,13 +91,13 @@
                     "401": {
                         "$ref": "#/components/responses/UnauthorizedError"
                     },
-                    "418" : {
+                    "418": {
                         "$ref": "#/components/responses/TeapotError"
                     },
-                    "429" : {
+                    "429": {
                         "$ref": "#/components/responses/TooManyRequestsError"
                     },
-                    "500" : {
+                    "500": {
                         "$ref": "#/components/responses/InternalServerError"
                     }
                 },
@@ -137,13 +137,13 @@
                     "404": {
                         "$ref": "#/components/responses/NotFoundError"
                     },
-                    "418" : {
+                    "418": {
                         "$ref": "#/components/responses/TeapotError"
                     },
-                    "429" : {
+                    "429": {
                         "$ref": "#/components/responses/TooManyRequestsError"
                     },
-                    "500" : {
+                    "500": {
                         "$ref": "#/components/responses/InternalServerError"
                     }
                 },
@@ -187,7 +187,7 @@
                         }
                     },
                     "400": {
-                        "description": "Invalid input"
+                        "$ref": "#/components/responses/ValidationError"
                     },
                     "401": {
                         "$ref": "#/components/responses/UnauthorizedError"
@@ -195,13 +195,13 @@
                     "404": {
                         "$ref": "#/components/responses/NotFoundError"
                     },
-                    "418" : {
+                    "418": {
                         "$ref": "#/components/responses/TeapotError"
                     },
-                    "429" : {
+                    "429": {
                         "$ref": "#/components/responses/TooManyRequestsError"
                     },
-                    "500" : {
+                    "500": {
                         "$ref": "#/components/responses/InternalServerError"
                     }
                 },
@@ -239,13 +239,13 @@
                     "404": {
                         "$ref": "#/components/responses/NotFoundError"
                     },
-                    "418" : {
+                    "418": {
                         "$ref": "#/components/responses/TeapotError"
                     },
-                    "429" : {
+                    "429": {
                         "$ref": "#/components/responses/TooManyRequestsError"
                     },
-                    "500" : {
+                    "500": {
                         "$ref": "#/components/responses/InternalServerError"
                     }
                 },
