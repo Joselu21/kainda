@@ -49,7 +49,7 @@ function setupMiddlewares(app) {
     app.use((req, res, next) => {
         let oldSend = res.send
         res.send = function (data) {
-            LogService.RequestLogger.info('__KAINDA__PROJECT__NAME___requests', {
+            LogService.RequestLogger.info({
                 req: {
                     method: req.method,
                     headers: req.headers,
