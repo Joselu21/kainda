@@ -13,12 +13,12 @@ async function tokenValid(req, res, next) {
     try {
         let token = getTokenFromHeaders(req);
         if (!token) {
-            throw kainda.GenericKaindaExceptions.Kainda401Exception().fromTemplate();
+            throw kainda.GenericKaindaExceptions.Kainda401Exception.fromTemplate();
         }
         const secret = config.get("jwt.secret");
         let decoded = await verifyToken(secret, token);
         if (!decoded) {
-            throw kainda.GenericKaindaExceptions.Kainda401Exception().fromTemplate();
+            throw kainda.GenericKaindaExceptions.Kainda401Exception.fromTemplate();
         }
         next();
     } catch (error) {
@@ -38,11 +38,11 @@ async function tokenHas(req, res, next, conditions) {
     try {
         const decoded = await __getAndVerifyToken(req);
         if (!decoded) {
-            throw kainda.GenericKaindaExceptions.Kainda401Exception().fromTemplate();
+            throw kainda.GenericKaindaExceptions.Kainda401Exception.fromTemplate();
         }
         for (const condition of conditions) {
             if(!decoded[condition.key] || (condition.value && decoded[condition.key] !== condition.value)) {
-                throw kainda.GenericKaindaExceptions.Kainda401Exception().fromTemplate();
+                throw kainda.GenericKaindaExceptions.Kainda401Exception.fromTemplate();
             }
         }
         next();
