@@ -58,24 +58,26 @@ async function __findByIdSequelize(id, options) {
     });
 }
 
-async function __findByIdMongoose(id, options) {
-    let mongoose_id;
+function ToObjectId(id) {
     try {
-        mongoose_id = new global.mongoose.Types.ObjectId(id);
+        const mongoose = require("mongoose");
+        return new mongoose.Types.ObjectId(id);
     } catch (error) {
-        throw new GenericKaindaExceptions.Kainda404Exception({
-            error_type: "NOT_FOUND",
-            error_message: "Error finding " + this.name + " with id: " + id,
+        throw new GenericKaindaExceptions.Kainda400Exception({
+            error_type: "INVALID_ID",
+            error_message: "Error trying to convert id to ObjectId",
             error_data: {
                 model_name: this.name,
                 id: id,
-                options: {
-                    ...options,
-                    transaction: !!options?.transaction,
-                },
-                error: error,
             }
         })
+    }
+}
+
+async function __findByIdMongoose(id, options) {
+    let mongoose_id = id;
+    if(options?.castId === true) {
+        mongoose_id = ToObjectId(id);
     }
     return await this.subModel.findById(mongoose_id, null, {
         session: (options?.transaction?.isKaindaTransaction ? options.transaction.transaction : options?.transaction),
