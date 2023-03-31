@@ -73,11 +73,11 @@ async function seedDependencies(model, options = {}) {
     if (model.seed_options.dependencies && model.seed_options.dependencies.length > 0) {
         for (let dependency of model.seed_options.dependencies) {
             if (shouldSeed(dependency)) {
-                __validSeeder(model.seed_options[dependency]);
-                if (model.seed_options[dependency].Seeders && model.seed_options[dependency].Seeders.seed && typeof model.seed_options[dependency].Seeders.seed === "function") {
-                    await model.seed_options[dependency].Seeders.seed(null, options);
-                } else if (model.seed_options[dependency].seed && typeof model.seed_options[dependency].seed === "function") {
-                    await model.seed_options[dependency].seed(null, options);
+                __validSeeder(dependency);
+                if (dependency.Seeders && dependency.Seeders.seed && typeof dependency.Seeders.seed === "function") {
+                    await dependency.Seeders.seed(null, options);
+                } else if (dependency.seed && typeof dependency.seed === "function") {
+                    await dependency.seed(null, options);
                 }
             }
         }
