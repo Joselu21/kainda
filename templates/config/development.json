@@ -18,6 +18,7 @@
     ],
     "logs" : {
         "console" : true,
-        "file" : true
+        "file" : true,
+        "stopOnUncaughtException" : true
     }
 }

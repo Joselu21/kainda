@@ -7,12 +7,14 @@ class LogService {
     static #errorLogger;
     static #startLogger;
     static #serverLogger;
+    static #uncaughtExceptionLogger;
 
     static init(options) {
         LogService.initRequestLogger(options);
         LogService.initErrorLogger(options);
         LogService.initStartLogger(options);
         LogService.initServerLogger(options);
+        LogService.initUncaughtExceptionLogger(options);
     }
 
     static initRequestLogger(options) {
@@ -79,6 +81,42 @@ class LogService {
         LogService.#serverLogger = winston.createLogger({ level: 'info', transports });
     }
 
+    static initUncaughtExceptionLogger(options) {
+        const transports = [];
+        if (options.console !== false) {
+            transports.push(new winston.transports.Console({
+                format: winston.format.combine(
+                    winston.format.timestamp(),
+                    winston.format.printf(info => consoleColorizer('UNCAUGHT', info))
+                )
+            }));
+        }
+        if (options.file !== false) {
+            transports.push(new winston.transports.File({ filename: 'logs/uncaughtException.log' }));
+        }
+        LogService.#uncaughtExceptionLogger = winston.createLogger({
+            level: 'error',
+            format: winston.format.combine(
+                winston.format.timestamp(),
+                winston.format.errors({ stack: true }),
+                winston.format.splat(),
+                winston.format.json()
+            ),
+            transports
+        });
+
+        // Report and log unhandled exceptions
+        process.on("uncaughtExceptionMonitor", (err, origin) => {
+            LogService.#uncaughtExceptionLogger.error(err);
+        });
+
+        // Avoid the process to exit when an unhandled exception occurs
+        if (options.stopOnUncaughtException !== true) {
+            process.on("uncaughtException", () => { });
+        }
+    }
+
+
     static get ErrorLogger() {
         return LogService.#errorLogger;
     }
@@ -141,8 +179,9 @@ function consoleColorizer(prefix, info) {
             color = chalk.white;
             break;
     }
-    let message = info.message ?? info._message;
-    return color(`[${prefix}] [${info.level.toUpperCase()}] [${info.timestamp}]: ${Object.keys(message).length > 0 ? JSON.stringify(message, null, 4) : message}`);
+    let message = info.message ?? info._message ?? {};
+    message = (typeof message === "object" || Object.keys(message).length > 0) ? JSON.stringify(message, null, 4) : message;
+    return color(`[${prefix}] [${info.level.toUpperCase()}] [${info.timestamp}]: ${message}`);
 }
 
 module.exports = LogService;
