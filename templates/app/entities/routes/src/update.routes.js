@@ -13,7 +13,8 @@ module.exports = {
             "/__KAINDA__MODEL__LOWERCASE__/:__KAINDA__MODEL__LOWERCASE___id/", 
             [
                 deactivateRoute,
-                tokenValid
+                tokenValid,
+                __KAINDA__MODEL__UPPERCASE__.Middlewares.canUpdateResource,
             ], 
             __KAINDA__MODEL__UPPERCASE__.Controller.update__KAINDA__MODEL__UPPERCASE__
         );

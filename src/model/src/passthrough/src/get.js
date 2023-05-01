@@ -110,11 +110,14 @@ async function __findPaginatedMongoose(conditions, options) {
     let offset = options.offset ?? (page - 1) * limit;
     offset = offset < 0 ? 0 : offset;
     const query = {};
-
+    
     // Convert the conditions to a query
     for (const key in conditions) {
         const element = conditions[key];
-        const splitted = element.split(",");
+        let splitted = [];
+        if(typeof element === "string") {
+            splitted = element.split(",");
+        }
         if (splitted.length > 1) {
             query[key] = {
                 $in: splitted,
