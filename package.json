@@ -1,6 +1,6 @@
 {
     "name": "kainda",
-    "version": "7.0.5",
+    "version": "7.0.6",
     "description": "Opinionated framework for backend APIs that has a CLI that generates a REST API with a CRUD interface for a given model.",
     "keywords": [
         "framework",

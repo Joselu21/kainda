@@ -16,16 +16,27 @@ function generatePaths() {
     let paths = pregeneratedPaths.paths;
     for (let filePath of filePaths) {
         const modelPaths = require(filePath.path);
+        const processedPaths = {};
+        for (let path in modelPaths.paths) {
+            // Exclude the path methods that are marked as private or deactivated
+            const pathMethods = {};
+            for (let method in modelPaths.paths[path]) {
+                if (!modelPaths.paths[path][method].private && !modelPaths.paths[path][method].deactivated) {
+                    pathMethods[method] = modelPaths.paths[path][method];
+                }
+            }
+            processedPaths[path] = pathMethods;
+        }
         paths = {
             ...paths,
-            ...modelPaths.paths
+            ...processedPaths
         };
     }
 
     if (!fs.existsSync(path.join(__dirname, "tmp"))) {
         fs.mkdirSync(path.join(__dirname, "tmp"));
     }
-    fs.writeFileSync(path.join(__dirname, "tmp/paths.json"), JSON.stringify({paths}, null, 4));
+    fs.writeFileSync(path.join(__dirname, "tmp/paths.json"), JSON.stringify({ paths }, null, 4));
 
 }
 
@@ -44,39 +55,39 @@ function generateComponents() {
     for (let filePath of filePaths) {
         const modelComponents = require(filePath.path);
         components = {
-            schemas : {
+            schemas: {
                 ...components?.schemas,
                 ...modelComponents?.components?.schemas
             },
-            parameters : {
+            parameters: {
                 ...components?.parameters,
                 ...modelComponents?.components?.parameters
             },
-            responses : {
+            responses: {
                 ...components?.responses,
                 ...modelComponents?.components?.responses
             },
-            securitySchemes : {
+            securitySchemes: {
                 ...components?.securitySchemes,
                 ...modelComponents?.components?.securitySchemes
             },
-            examples : {
+            examples: {
                 ...components?.examples,
                 ...modelComponents?.components?.examples
             },
-            requestBodies : {
+            requestBodies: {
                 ...components?.requestBodies,
                 ...modelComponents?.components?.requestBodies
             },
-            headers : {
+            headers: {
                 ...components?.headers,
                 ...modelComponents?.components?.headers
             },
-            links : {
+            links: {
                 ...components?.links,
                 ...modelComponents?.components?.links
             },
-            callbacks : {
+            callbacks: {
                 ...components?.callbacks,
                 ...modelComponents?.components?.callbacks
             },
@@ -86,7 +97,7 @@ function generateComponents() {
     if (!fs.existsSync(path.join(__dirname, "tmp"))) {
         fs.mkdirSync(path.join(__dirname, "tmp"));
     }
-    fs.writeFileSync(path.join(__dirname, "tmp/components.json"), JSON.stringify({components}, null, 4));
+    fs.writeFileSync(path.join(__dirname, "tmp/components.json"), JSON.stringify({ components }, null, 4));
 
 }
 
@@ -125,14 +136,14 @@ function generateFinalFile() {
  * @returns {void}
  */
 function generateDoc(options = {}) {
-    if (!!options.paths)        generatePaths();
-    if (!!options.components)   generateComponents();
+    if (!!options.paths) generatePaths();
+    if (!!options.components) generateComponents();
     generateFinalFile();
 }
 
 // If we are in the documentation environment, we generate the documentation.
 // This is done by executing the script "npm run documentation" in the package.json file
-if(process.env.NODE_ENV === "documentation") {
+if (process.env.NODE_ENV === "documentation") {
     generateDoc({
         paths: true,
         components: true
