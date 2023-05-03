@@ -95,9 +95,11 @@ async function __findPaginatedSequelize(conditions, options) {
         order,
         transaction: (options?.transaction?.isKaindaTransaction ? options.transaction.transaction : options?.transaction),
     });
+
     return {
         data: rows,
-        count,
+        total : count,
+        count: rows.length,
         offset,
         page,
         limit,
@@ -137,9 +139,11 @@ async function __findPaginatedMongoose(conditions, options) {
         limit,
     });
     const count = rows.length;
+    const total = await this.subModel.countDocuments(query);
     return {
         data: rows,
         count,
+        total,
         offset,
         page,
         limit,
