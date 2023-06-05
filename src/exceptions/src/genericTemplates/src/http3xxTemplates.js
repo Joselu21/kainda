@@ -13,7 +13,8 @@ const onlyReason = require("./onlyReasonTemplate");
  * console.log(error); // {error_type: 'MULTIPLE_CHOICES', error_message: 'The request has multiple choices.', error_data: {reason: 'multiple choices'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/300|MDN}
  */
-function Kainda300Template(params = {}) {
+function Kainda300Template(params = {}) 
+{
     return onlyReason(params, "The request has multiple choices.", "MULTIPLE_CHOICES");
 }
 
@@ -30,7 +31,8 @@ function Kainda300Template(params = {}) {
  * console.log(error); // {error_type: 'MOVED_PERMANENTLY', error_message: 'The requested resource has been permanently moved.', error_data: {reason: 'moved permanently'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/301|MDN}
  */
-function Kainda301Template(params = {}) {
+function Kainda301Template(params = {}) 
+{
     return onlyReason(params, "The requested resource has been permanently moved.", "MOVED_PERMANENTLY");
 }
 
@@ -47,7 +49,8 @@ function Kainda301Template(params = {}) {
  * console.log(error); // {error_type: 'FOUND', error_message: 'The requested resource has been found.', error_data: {reason: 'found'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302|MDN}
  */
-function Kainda302Template(params = {}) {
+function Kainda302Template(params = {}) 
+{
     return onlyReason(params, "The requested resource has been found.", "FOUND");
 }
 
@@ -64,7 +67,8 @@ function Kainda302Template(params = {}) {
  * console.log(error); // {error_type: 'SEE_OTHER', error_message: 'The requested resource is located at a different URI and should be accessed through a GET method to that URI.', error_data: {reason: 'see other'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/303|MDN}
  */
-function Kainda303Template(params = {}) {
+function Kainda303Template(params = {}) 
+{
     return onlyReason(params, "The requested resource is located at a different URI and should be accessed through a GET method to that URI.", "SEE_OTHER");
 }
 
@@ -81,7 +85,8 @@ function Kainda303Template(params = {}) {
  * console.log(error); // {error_type: 'NOT_MODIFIED', error_message: 'The requested resource has not been modified since the last request.', error_data: {reason: 'not modified'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/304|MDN}
  */
-function Kainda304Template(params = {}) {
+function Kainda304Template(params = {}) 
+{
     return onlyReason(params, "The requested resource has not been modified since the last request.", "NOT_MODIFIED");
 }
 
@@ -98,7 +103,8 @@ function Kainda304Template(params = {}) {
  * console.log(error); // {error_type: 'SWITCH_PROXY', error_message: 'The requested resource must be accessed through a proxy on the specified proxy server.', error_data: {reason: 'switch proxy'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/306|MDN}
  */
-function Kainda306Template(params = {}) {
+function Kainda306Template(params = {}) 
+{
     return onlyReason(params, "The requested resource must be accessed through a proxy on the specified proxy server.", "SWITCH_PROXY");
 }
 
@@ -115,7 +121,8 @@ function Kainda306Template(params = {}) {
  * console.log(error); // {error_type: 'TEMPORARY_REDIRECT', error_message: 'The requested resource has been temporarily moved to a different URI.', error_data: {reason: 'temporary redirect'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/307|MDN}
  */
-function Kainda307Template(params = {}) {
+function Kainda307Template(params = {}) 
+{
     return onlyReason(params, "The requested resource has been temporarily moved to a different URI.", "TEMPORARY_REDIRECT");
 }
 
@@ -132,7 +139,8 @@ function Kainda307Template(params = {}) {
  * console.log(error); // {error_type: 'PERMANENT_REDIRECT', error_message: 'The requested resource has been permanently moved to a different URI.', error_data: {reason: 'permanent redirect'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/308|MDN}
  */
-function Kainda308Template(params = {}) {
+function Kainda308Template(params = {}) 
+{
     return onlyReason(params, "The requested resource has been permanently moved to a different URI.", "PERMANENT_REDIRECT");
 }
 

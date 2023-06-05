@@ -17,13 +17,18 @@ const onlyReason = require("./onlyReasonTemplate");
  * console.log(error); // {error_type: 'BAD_REQUEST', error_message: 'The resource name value 123 is invalid. The name must be a string.', error_data: {key: 'name', value: '123', resource: 'name', reason: 'The name must be a string.'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400}
  */
-function Kainda400Template(params = {}) {
+function Kainda400Template(params = {}) 
+{
     let message = "The request is invalid.";
-    if (params.key && typeof params.key === "string" && !params.value) {
+    if (params.key && typeof params.key === "string" && !params.value) 
+    {
         message = `The resource ${params.resource} is required.`;
-    } else if (params.key && typeof params.key === "string" && params.value) {
+    }
+    else if (params.key && typeof params.key === "string" && params.value) 
+    {
         message = `The resource ${params.resource} value ${params.value} is invalid.`;
-        if (params.reason && typeof params.reason === "string") {
+        if (params.reason && typeof params.reason === "string") 
+        {
             message += ` ${params.reason}`;
         }
     }
@@ -31,7 +36,7 @@ function Kainda400Template(params = {}) {
         error_type: params.error_type ?? "BAD_REQUEST",
         error_message: params.error_message ?? message,
         error_data: params.error_data ?? { ...params }
-    }
+    };
 }
 
 /**
@@ -48,21 +53,26 @@ function Kainda400Template(params = {}) {
  * console.log(error); // {error_type: 'UNAUTHORIZED', error_message: 'The token invalid-token is invalid. expired', error_data: {token: 'invalid-token', reason: 'expired'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401}
  */
-function Kainda401Template(params = {}) {
+function Kainda401Template(params = {}) 
+{
     let message = "The request is unauthorized.";
-    if (params.token && typeof params.token === "string") {
+    if (params.token && typeof params.token === "string") 
+    {
         message = `The token ${params.token} is invalid.`;
-        if (params.reason && typeof params.reason === "string") {
+        if (params.reason && typeof params.reason === "string") 
+        {
             message += ` ${params.reason}`;
         }
-    } else {
+    }
+    else 
+    {
         message = "No token was provided. Remember to include the token in the Authorization header.";
     }
     return {
         error_type: params.error_type ?? "UNAUTHORIZED",
         error_message: params.error_message ?? message,
         error_data: params.error_data ?? { ...params }
-    }
+    };
 }
 
 /**
@@ -78,7 +88,8 @@ function Kainda401Template(params = {}) {
  * console.log(error); // {error_type: 'PAYMENT_REQUIRED', error_message: 'The request cannot be processed until the client pays the balance.', error_data: {reason: 'payment required'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402}
  */
-function Kainda402Template(params = {}) {
+function Kainda402Template(params = {}) 
+{
     return onlyReason(params, "The request cannot be processed until the client pays the balance.", "PAYMENT_REQUIRED");
 }
 
@@ -96,11 +107,14 @@ function Kainda402Template(params = {}) {
  * console.log(error); // {error_type: 'FORBIDDEN', error_message: 'The resource user cannot be accessed with your authorization level or with any level at all. not allowed', error_data: {resource: 'user', reason: 'not allowed'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403}
  */
-function Kainda403Template(params = {}) {
-    message = "The request is forbidden.";
-    if (params.resource && typeof params.resource === "string") {
+function Kainda403Template(params = {}) 
+{
+    let message = "The request is forbidden.";
+    if (params.resource && typeof params.resource === "string") 
+    {
         message = `The resource ${params.resource} cannot be accessed with your authorization level or with any level at all.`;
-        if (params.reason && typeof params.reason === "string") {
+        if (params.reason && typeof params.reason === "string") 
+        {
             message += ` ${params.reason}`;
         }
     }
@@ -108,7 +122,7 @@ function Kainda403Template(params = {}) {
         error_type: params.error_type ?? "FORBIDDEN",
         error_message: params.error_message ?? message,
         error_data: params.error_data ?? { ...params }
-    }
+    };
 }
 
 /**
@@ -125,11 +139,14 @@ function Kainda403Template(params = {}) {
  * console.log(error); // {error_type: 'NOT_FOUND', error_message: 'The resource user was not found. not found', error_data: {resource: 'user', reason: 'not found'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404}
  */
-function Kainda404Template(params = {}) {
+function Kainda404Template(params = {}) 
+{
     let message = "The resource was not found.";
-    if (params.resource && typeof params.resource === "string") {
+    if (params.resource && typeof params.resource === "string") 
+    {
         message = `The resource ${params.resource} was not found.`;
-        if (params.reason && typeof params.reason === "string") {
+        if (params.reason && typeof params.reason === "string") 
+        {
             message += ` ${params.reason}`;
         }
     }
@@ -137,7 +154,7 @@ function Kainda404Template(params = {}) {
         error_type: params.error_type ?? "NOT_FOUND",
         error_message: params.error_message ?? message,
         error_data: params.error_data ?? { ...params }
-    }
+    };
 }
 
 /**
@@ -153,7 +170,8 @@ function Kainda404Template(params = {}) {
  * console.log(error); // {error_type: 'METHOD_NOT_ALLOWED', error_message: 'The requested method is not allowed.', error_data: {reason: 'The requested method is not allowed.'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/405}
  */
-function Kainda405Template(params = {}) {
+function Kainda405Template(params = {}) 
+{
     return onlyReason(params, "The requested method is not allowed.", "METHOD_NOT_ALLOWED");
 }
 
@@ -170,7 +188,8 @@ function Kainda405Template(params = {}) {
  * console.log(error); // {error_type: 'NOT_ACCEPTABLE', error_message: 'The requested resource is not capable of generating content of the requested type.', error_data: {reason: 'The requested resource is not capable of generating content of the requested type.'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/406}
  */
-function Kainda406Template(params = {}) {
+function Kainda406Template(params = {}) 
+{
     return onlyReason(params, "The requested resource is not capable of generating content of the requested type.", "NOT_ACCEPTABLE");
 }
 
@@ -187,7 +206,8 @@ function Kainda406Template(params = {}) {
  * console.log(error); // {error_type: 'PROXY_AUTHENTICATION_REQUIRED', error_message: 'The client must first authenticate itself with the proxy.', error_data: {reason: 'The client must first authenticate itself with the proxy.'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/407}
  */
-function Kainda407Template(params = {}) {
+function Kainda407Template(params = {}) 
+{
     return onlyReason(params, "The client must first authenticate itself with the proxy.", "PROXY_AUTHENTICATION_REQUIRED");
 }
 
@@ -204,7 +224,8 @@ function Kainda407Template(params = {}) {
  * console.log(error); // {error_type: 'REQUEST_TIMEOUT', error_message: 'The request timed out.', error_data: {reason: 'client did not produce a request within the time that the server was prepared to wait'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408}
  */
-function Kainda408Template(params = {}) {
+function Kainda408Template(params = {}) 
+{
     return onlyReason(params, "The request timed out.", "REQUEST_TIMEOUT");
 }
 
@@ -223,14 +244,18 @@ function Kainda408Template(params = {}) {
  * console.log(error); // {error_type: 'CONFLICT', error_message: 'The resource user is in conflict with email. already exists.', error_data: {resource: 'user', conflict: 'email', reason: 'already exists'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/409}
  */
-function Kainda409Template(params = {}) {
+function Kainda409Template(params = {}) 
+{
     let message = "The request is in conflict with the current state of the resource.";
-    if (params.resource && typeof params.resource === "string") {
+    if (params.resource && typeof params.resource === "string") 
+    {
         message = `The resource ${params.resource} is in conflict`;
-        if (params.conflict && typeof params.conflict === "string") {
+        if (params.conflict && typeof params.conflict === "string") 
+        {
             message += ` with ${params.conflict}`;
         }
-        if (params.reason && typeof params.reason === "string") {
+        if (params.reason && typeof params.reason === "string") 
+        {
             message += `. ${params.reason}.`;
         }
     }
@@ -238,7 +263,7 @@ function Kainda409Template(params = {}) {
         error_type: params.error_type ?? "CONFLICT",
         error_message: params.error_message ?? message,
         error_data: params.error_data ?? { ...params }
-    }
+    };
 }
 
 /**
@@ -254,7 +279,8 @@ function Kainda409Template(params = {}) {
  * console.log(error); // {error_type: 'RESOURCE_GONE', error_message: 'The resource requested is no longer available.', error_data: {reason: 'the resource requested is no longer available'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/410}
  */
-function Kainda410Template(params = {}) {
+function Kainda410Template(params = {}) 
+{
     return onlyReason(params, "The resource requested is no longer available.", "RESOURCE_GONE");
 }
 
@@ -271,7 +297,8 @@ function Kainda410Template(params = {}) {
  * console.log(error); // {error_type: 'LENGTH_REQUIRED', error_message: 'The server requires a Content-Length header.', error_data: {reason: 'the server refuses to accept the request without a defined Content-Length'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/411}
  */
-function Kainda411Template(params = {}) {
+function Kainda411Template(params = {}) 
+{
     return onlyReason(params, "The server requires a Content-Length header.", "LENGTH_REQUIRED");
 }
 
@@ -288,7 +315,8 @@ function Kainda411Template(params = {}) {
  * console.log(error); // {error_type: 'PRECONDITION_FAILED', error_message: 'The request did not meet the preconditions.', error_data: {reason: 'precondition failed'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/412}
  */
-function Kainda412Template(params = {}) {
+function Kainda412Template(params = {}) 
+{
     return onlyReason(params, "The request did not meet the preconditions.", "PRECONDITION_FAILED");
 }
 
@@ -305,7 +333,8 @@ function Kainda412Template(params = {}) {
  * console.log(error); // {error_type: 'REQUEST_ENTITY_TOO_LARGE', error_message: 'The request entity is too large.', error_data: {reason: 'request entity too large'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/413}
  */
-function Kainda413Template(params = {}) {
+function Kainda413Template(params = {}) 
+{
     return onlyReason(params, "The request entity is too large.", "REQUEST_ENTITY_TOO_LARGE");
 }
 
@@ -322,7 +351,8 @@ function Kainda413Template(params = {}) {
  * console.log(error); // {error_type: 'REQUEST_URI_TOO_LONG', error_message: 'The request URI is too long.', error_data: {reason: 'request uri too long'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/414}
  */
-function Kainda414Template(params = {}) {
+function Kainda414Template(params = {}) 
+{
     return onlyReason(params, "The request URI is too long.", "REQUEST_URI_TOO_LONG");
 }
 
@@ -339,7 +369,8 @@ function Kainda414Template(params = {}) {
  * console.log(error); // {error_type: 'UNSUPPORTED_MEDIA_TYPE', error_message: 'The media type is not supported.', error_data: {reason: 'unsupported media type'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/415}
  */
-function Kainda415Template(params = {}) {
+function Kainda415Template(params = {}) 
+{
     return onlyReason(params, "The media type is not supported.", "UNSUPPORTED_MEDIA_TYPE");
 }
 
@@ -356,7 +387,8 @@ function Kainda415Template(params = {}) {
  * console.log(error); // {error_type: 'RANGE_NOT_SATISFIABLE', error_message: 'The requested range is not satisfiable.', error_data: {reason: 'requested range not satisfiable'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/416}
  */
-function Kainda416Template(params = {}) {
+function Kainda416Template(params = {}) 
+{
     return onlyReason(params, "The requested range is not satisfiable.", "RANGE_NOT_SATISFIABLE");
 }
 
@@ -373,7 +405,8 @@ function Kainda416Template(params = {}) {
  * console.log(error); // {error_type: 'EXPECTATION_FAILED', error_message: 'The server could not meet the expectation(s) specified in the Expect header.', error_data: {reason: 'failed expectation'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/417}
  */
-function Kainda417Template(params = {}) {
+function Kainda417Template(params = {}) 
+{
     return onlyReason(params, "The server could not meet the expectation(s) specified in the Expect header.", "EXPECTATION_FAILED");
 }
 
@@ -390,7 +423,8 @@ function Kainda417Template(params = {}) {
  * console.log(error); // {error_type: 'I_AM_A_TEAPOT', error_message: 'I am a teapot', error_data: {reason: 'I am a teapot'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/418}
  */
-function Kainda418Template(params = {}) {
+function Kainda418Template(params = {}) 
+{
     return onlyReason(params, "I am a teapot", "I_AM_A_TEAPOT");
 }
 
@@ -407,7 +441,8 @@ function Kainda418Template(params = {}) {
  * console.log(error); // {error_type: 'MISDIRECTED_REQUEST', error_message: 'The request was directed at a server that is not able to produce a response.', error_data: {reason: 'The request was directed at a server that is not able to produce a response'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/421}
  */
-function Kainda421Template(params = {}) {
+function Kainda421Template(params = {}) 
+{
     return onlyReason(params, "The request was directed at a server that is not able to produce a response.", "MISDIRECTED_REQUEST");
 }
 
@@ -425,7 +460,8 @@ function Kainda421Template(params = {}) {
  * console.log(error); // {error_type: 'UNPROCESSABLE_ENTITY', error_message: 'Unprocessable Entity', error_data: {reason: 'Unprocessable Entity'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/422}
  */
-function Kainda422Template(params = {}) {
+function Kainda422Template(params = {}) 
+{
     return onlyReason(params, "Unprocessable Entity", "UNPROCESSABLE_ENTITY");
 }
 
@@ -442,7 +478,8 @@ function Kainda422Template(params = {}) {
  * console.log(error); // {error_type: 'LOCKED', error_message: 'The resource that is being accessed is locked.', error_data: {reason: 'The resource that is being accessed is locked'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/423}
  */
-function Kainda423Template(params = {}) {
+function Kainda423Template(params = {}) 
+{
     return onlyReason(params, "The resource that is being accessed is locked.", "LOCKED");
 }
 
@@ -459,7 +496,8 @@ function Kainda423Template(params = {}) {
  * console.log(error); // {error_type: 'FAILED_DEPENDENCY', error_message: 'The request failed because it depended on another request that failed.', error_data: {reason: 'The request failed because it depended on another request that failed'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/424}
  */
-function Kainda424Template(params = {}) {
+function Kainda424Template(params = {}) 
+{
     return onlyReason(params, "The request failed because it depended on another request that failed.", "FAILED_DEPENDENCY");
 }
 
@@ -476,7 +514,8 @@ function Kainda424Template(params = {}) {
  * console.log(error); // {error_type: 'TOO_EARLY', error_message: 'The resource was accessed too early.', error_data: {reason: 'resource was accessed too early'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/425}
  */
-function Kainda425Template(params = {}) {
+function Kainda425Template(params = {}) 
+{
     return onlyReason(params, "The resource was accessed too early.", "TOO_EARLY");
 }
 
@@ -493,7 +532,8 @@ function Kainda425Template(params = {}) {
  * console.log(error); // {error_type: 'UPGRADE_REQUIRED', error_message: 'The server refuses to perform the request using the current protocol but might be willing to do so after the client upgrades to a different protocol.', error_data: {reason: 'upgrade required'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/426}
  */
-function Kainda426Template(params = {}) {
+function Kainda426Template(params = {}) 
+{
     return onlyReason(params, "The server refuses to perform the request using the current protocol but might be willing to do so after the client upgrades to a different protocol.", "UPGRADE_REQUIRED");
 }
 
@@ -510,7 +550,8 @@ function Kainda426Template(params = {}) {
  * console.log(error); // {error_type: 'PRECONDITION_REQUIRED', error_message: 'The server requires the request to be conditional.', error_data: {reason: 'precondition required'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/428}
  */
-function Kainda428Template(params = {}) {
+function Kainda428Template(params = {}) 
+{
     return onlyReason(params, "The server requires the request to be conditional.", "PRECONDITION_REQUIRED");
 }
 
@@ -527,7 +568,8 @@ function Kainda428Template(params = {}) {
  * console.log(error); // {error_type: 'TOO_MANY_REQUESTS', error_message: 'The user has sent too many requests in a given amount of time.', error_data: {reason: 'too many requests'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429}
  */
-function Kainda429Template(params = {}) {
+function Kainda429Template(params = {}) 
+{
     return onlyReason(params, "The user has sent too many requests in a given amount of time.", "TOO_MANY_REQUESTS");
 }
 
@@ -544,7 +586,8 @@ function Kainda429Template(params = {}) {
  * console.log(error); // {error_type: 'REQUEST_HEADER_FIELDS_TOO_LARGE', error_message: 'The server is unwilling to process the request because either an individual header field, or all the header fields collectively, are too large.', error_data: {reason: 'request header fields too large'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/431}
  */
-function Kainda431Template(params = {}) {
+function Kainda431Template(params = {}) 
+{
     return onlyReason(params, "The server is unwilling to process the request because either an individual header field, or all the header fields collectively, are too large.", "REQUEST_HEADER_FIELDS_TOO_LARGE");
 }
 
@@ -561,7 +604,8 @@ function Kainda431Template(params = {}) {
  * console.log(error); // {error_type: 'UNAVAILABLE_FOR_LEGAL_REASONS', error_message: 'The server is denying access to the resource as a consequence of a legal demand.', error_data: {reason: 'unavailable for legal reasons'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451}
  */
-function Kainda451Template(params = {}) {
+function Kainda451Template(params = {}) 
+{
     return onlyReason(params, "The server is denying access to the resource as a consequence of a legal demand.", "UNAVAILABLE_FOR_LEGAL_REASONS");
 }
 
@@ -595,4 +639,4 @@ module.exports = {
     Kainda429Template,
     Kainda431Template,
     Kainda451Template,
-}
+};

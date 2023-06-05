@@ -1,6 +1,6 @@
-const HTTP300Exceptions = require('./src/http3xxExceptions');
-const HTTP400Exceptions = require('./src/http4xxExceptions');
-const HTTP500Exceptions = require('./src/http5xxExceptions');
+const HTTP300Exceptions = require("./src/http3xxExceptions");
+const HTTP400Exceptions = require("./src/http4xxExceptions");
+const HTTP500Exceptions = require("./src/http5xxExceptions");
 
 const GenericKaindaExceptions = {
     ...HTTP300Exceptions,

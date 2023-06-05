@@ -1,21 +1,22 @@
-const LogService = require('@services/log.service');
+const LogService = require("@services/log.service");
 const express = require("express");
-const kainda = require('kainda');
+const kainda = require("kainda");
 const helmet = require("helmet");
-const config = require('config');
+const config = require("config");
 const cors = require("cors");
 
-function setupMiddlewares(app) {
+function setupMiddlewares(app) 
+{
 
-    app.disable('x-powered-by');
+    app.disable("x-powered-by");
 
     /**
      * We extract from the config file the cors options, where we specify which domains can cross request the api and which http methods can be used. 
      */
-    let whitelist = config.get('cors.origin') ?? [];
+    let whitelist = config.get("cors.origin") ?? [];
     let corsOptions = {
         origin: whitelist,
-        methods: config.get('cors.methods')
+        methods: config.get("cors.methods")
     };
 
     /**
@@ -26,11 +27,13 @@ function setupMiddlewares(app) {
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
-    app.use(function (req, res, next) {
-        const ip = req.headers['origin'];
-        if (!kainda.blockByIP(ip, { whitelist: whitelist })) {
+    app.use(function (req, res, next) 
+    {
+        const ip = req.headers["origin"];
+        if (!kainda.blockByIP(ip, { whitelist: whitelist })) 
+        {
             LogService.ServerLogger.info("[SECURITY] IP blocked: " + ip);
-            return res.status(403).send({ message: 'Forbidden' });
+            return res.status(403).send({ message: "Forbidden" });
         }
         next();
     });
@@ -38,7 +41,8 @@ function setupMiddlewares(app) {
     /**
      * Additional built-in middleware added for the express app
      */
-    app.use(function (req, res, next) {
+    app.use(function (req, res, next) 
+    {
         res.header(
             "Access-Control-Allow-Headers",
             "x-access-token, Origin, Content-Type, Accept"
@@ -46,9 +50,11 @@ function setupMiddlewares(app) {
         next();
     });
 
-    app.use((req, res, next) => {
-        let oldSend = res.send
-        res.send = function (data) {
+    app.use((req, res, next) => 
+    {
+        let oldSend = res.send;
+        res.send = function (data) 
+        {
             LogService.RequestLogger.info({
                 req: {
                     method: req.method,
@@ -65,10 +71,10 @@ function setupMiddlewares(app) {
                     body: data,
                 }
             });
-            res.send = oldSend
-            return res.send(data)
-        }
-        next()
+            res.send = oldSend;
+            return res.send(data);
+        };
+        next();
     });
 
 }

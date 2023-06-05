@@ -7,7 +7,8 @@
  * @param {Function} next
  * @returns {void}
  */
-async function canReadResource(req, res, next) {
+async function canReadResource(req, res, next) 
+{
 
     console.warn("canReadResource middleware is not implemented yet");
     next();

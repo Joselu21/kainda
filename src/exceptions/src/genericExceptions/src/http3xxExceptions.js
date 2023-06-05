@@ -1,5 +1,5 @@
 const KaindaException = require("./../../KaindaException");
-const GenericKaindaExceptionTemplates = require('./../../genericTemplates');
+const GenericKaindaExceptionTemplates = require("./../../genericTemplates");
 
 /**
  * Represents an exception for multiple choices errors.
@@ -15,7 +15,8 @@ const GenericKaindaExceptionTemplates = require('./../../genericTemplates');
  * @example throw new Kainda300Exception("This is a message", 300);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/300|MDN Web Docs}
  */
-class Kainda300Exception extends KaindaException {
+class Kainda300Exception extends KaindaException 
+{
     name = "KaindaMultipleChoicesException";
     response_code = 300;
     template = GenericKaindaExceptionTemplates.Kainda300Template;
@@ -35,7 +36,8 @@ class Kainda300Exception extends KaindaException {
  * @example throw new Kainda301Exception("This is a message", 301);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/301|MDN Web Docs}
  */
-class Kainda301Exception extends KaindaException {
+class Kainda301Exception extends KaindaException 
+{
     name = "KaindaMovedPermanentlyException";
     response_code = 301;
     template = GenericKaindaExceptionTemplates.Kainda301Template;
@@ -55,7 +57,8 @@ class Kainda301Exception extends KaindaException {
  * @example throw new Kainda302Exception("This is a message", 302);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302|MDN Web Docs}
  */
-class Kainda302Exception extends KaindaException {
+class Kainda302Exception extends KaindaException 
+{
     name = "KaindaFoundException";
     response_code = 302;
     template = GenericKaindaExceptionTemplates.Kainda302Template;
@@ -75,7 +78,8 @@ class Kainda302Exception extends KaindaException {
  * @example throw new Kainda303Exception("This is a message", 303);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/303|MDN Web Docs}
  */
-class Kainda303Exception extends KaindaException {
+class Kainda303Exception extends KaindaException 
+{
     name = "KaindaSeeOtherException";
     response_code = 303;
     template = GenericKaindaExceptionTemplates.Kainda303Template;
@@ -95,7 +99,8 @@ class Kainda303Exception extends KaindaException {
  * @example throw new Kainda304Exception("This is a message", 304);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/304|MDN Web Docs}
  */
-class Kainda304Exception extends KaindaException {
+class Kainda304Exception extends KaindaException 
+{
     name = "KaindaNotModifiedException";
     response_code = 304;
     template = GenericKaindaExceptionTemplates.Kainda304Template;
@@ -115,7 +120,8 @@ class Kainda304Exception extends KaindaException {
  * @example throw new Kainda307Exception("This is a message", 307);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/307|MDN Web Docs}
  */
-class Kainda307Exception extends KaindaException {
+class Kainda307Exception extends KaindaException 
+{
     name = "KaindaTemporaryRedirectException";
     response_code = 307;
     template = GenericKaindaExceptionTemplates.Kainda307Template;
@@ -135,7 +141,8 @@ class Kainda307Exception extends KaindaException {
  * @example throw new Kainda308Exception("This is a message", 308);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/308|MDN Web Docs}
  */
-class Kainda308Exception extends KaindaException {
+class Kainda308Exception extends KaindaException 
+{
     name = "KaindaPermanentRedirectException";
     response_code = 308;
     template = GenericKaindaExceptionTemplates.Kainda308Template;

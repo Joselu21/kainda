@@ -1,7 +1,7 @@
 const ModelType = require("../../modelType");
-const { KaindaException, GenericKaindaExceptions } = require("../../../../exceptions");
 
-async function __findOneSequelize(conditions, options) {
+async function __findOneSequelize(conditions, options) 
+{
     return await this.subModel.findOne({
         where: conditions,
         ...options,
@@ -9,14 +9,16 @@ async function __findOneSequelize(conditions, options) {
     });
 }
 
-async function __findOneMongoose(conditions, options) {
+async function __findOneMongoose(conditions, options) 
+{
     return await this.subModel.findOne(conditions, null, {
         session: (options?.transaction?.isKaindaTransaction ? options.transaction.transaction : options?.transaction),
         ...options,
     });
 }
 
-async function __findManySequelize(conditions, options) {
+async function __findManySequelize(conditions, options) 
+{
     return await this.subModel.findAll({
         where: conditions,
         ...options,
@@ -24,14 +26,16 @@ async function __findManySequelize(conditions, options) {
     });
 }
 
-async function __findManyMongoose(conditions, options) {
+async function __findManyMongoose(conditions, options) 
+{
     return await this.subModel.find(conditions, null, {
         session: (options?.transaction?.isKaindaTransaction ? options.transaction.transaction : options?.transaction),
         ...options,
     });
 }
 
-async function __findAndCountAllSequelize(conditions, options) {
+async function __findAndCountAllSequelize(conditions, options) 
+{
     return await this.subModel.findAndCountAll({
         where: conditions,
         ...options,
@@ -39,7 +43,8 @@ async function __findAndCountAllSequelize(conditions, options) {
     });
 }
 
-async function __findAndCountAllMongoose(conditions, options) {
+async function __findAndCountAllMongoose(conditions, options) 
+{
     const rows = await this.subModel.find(conditions, null, {
         session: (options?.transaction?.isKaindaTransaction ? options.transaction.transaction : options?.transaction),
         ...options,
@@ -51,14 +56,16 @@ async function __findAndCountAllMongoose(conditions, options) {
     };
 }
 
-async function __findByIdSequelize(id, options) {
+async function __findByIdSequelize(id, options) 
+{
     return await this.subModel.findByPk(id, {
         ...options,
         transaction: (options?.transaction?.isKaindaTransaction ? options.transaction.transaction : options?.transaction),
     });
 }
 
-async function __findByIdMongoose(id, options) {
+async function __findByIdMongoose(id, options) 
+{
     let mongoose_id = id;
     return await this.subModel.findById(mongoose_id, null, {
         session: (options?.transaction?.isKaindaTransaction ? options.transaction.transaction : options?.transaction),
@@ -66,22 +73,28 @@ async function __findByIdMongoose(id, options) {
     });
 }
 
-async function __findPaginatedSequelize(conditions, options) {
+async function __findPaginatedSequelize(conditions, options) 
+{
     const page = options.page ?? 0;
     const limit = options.limit ?? 10;
     let offset = options.offset ?? (page - 1) * limit;
     offset = offset < 0 ? 0 : offset;
     // Set the default sort column and direction
-    let order = [['createdAt', 'DESC']];
+    let order = [["createdAt", "DESC"]];
 
     // Update the sort column and direction if provided
-    if (options?.sort) {
+    if (options?.sort) 
+    {
         order = [];
-        for (const key in options.sort) {
+        for (const key in options.sort) 
+        {
             let element = options.sort[key];
-            if (element === 1) {
+            if (element === 1) 
+            {
                 element = "ASC";
-            } else if (element === -1) {
+            }
+            else if (element === -1) 
+            {
                 element = "DESC";
             }
             order.push([key, element]);
@@ -106,7 +119,8 @@ async function __findPaginatedSequelize(conditions, options) {
     };
 }
 
-async function __findPaginatedMongoose(conditions, options) {
+async function __findPaginatedMongoose(conditions, options) 
+{
     const page = options.page ?? 0;
     const limit = options.limit ?? 10;
     let offset = options.offset ?? (page - 1) * limit;
@@ -114,17 +128,22 @@ async function __findPaginatedMongoose(conditions, options) {
     const query = {};
     
     // Convert the conditions to a query
-    for (const key in conditions) {
+    for (const key in conditions) 
+    {
         const element = conditions[key];
         let splitted = [];
-        if(typeof element === "string") {
+        if(typeof element === "string") 
+        {
             splitted = element.split(",");
         }
-        if (splitted.length > 1) {
+        if (splitted.length > 1) 
+        {
             query[key] = {
                 $in: splitted,
             };
-        } else {
+        }
+        else 
+        {
             query[key] = element;
         }
     }
@@ -150,12 +169,15 @@ async function __findPaginatedMongoose(conditions, options) {
     };
 }
 
-function generateGetPassThrough(model) {
-    if (!model) {
+function generateGetPassThrough(model) 
+{
+    if (!model) 
+    {
         throw new Error("No model found for this submodel");
     }
     const type = ModelType.getTypeExternal(model);
-    if (type === "sequelize") {
+    if (type === "sequelize") 
+    {
         return {
             findOne: __findOneSequelize,
             findMany: __findManySequelize,
@@ -163,7 +185,9 @@ function generateGetPassThrough(model) {
             findById: __findByIdSequelize,
             findPaginated: __findPaginatedSequelize,
         };
-    } else if (type === "mongoose") {
+    }
+    else if (type === "mongoose") 
+    {
         return {
             findOne: __findOneMongoose,
             findMany: __findManyMongoose,

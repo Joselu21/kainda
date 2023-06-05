@@ -1,10 +1,11 @@
-const { DataTypes, Model } = require('sequelize');
-const DbService = require('@services/db.service');
-const { KaindaModel } = require('kainda');
+const { DataTypes, Model } = require("sequelize");
+const DbService = require("@services/db.service");
+const { KaindaModel } = require("kainda");
 
 const sequelize = DbService.get();
 
-class __KAINDA__MODEL__UPPERCASE__ extends Model {}
+class __KAINDA__MODEL__UPPERCASE__ extends Model 
+{}
 
 __KAINDA__MODEL__UPPERCASE__.init({
     __KAINDA__MODEL__LOWERCASE___id: {
@@ -16,8 +17,8 @@ __KAINDA__MODEL__UPPERCASE__.init({
     // TODO: Create more fields for the model
 }, {
     sequelize,
-    modelName: '__KAINDA__MODEL__UPPERCASE__',
-    tableName: '__KAINDA__MODEL__LOWERCASE__s', // TODO: Check if the table name is correct
+    modelName: "__KAINDA__MODEL__UPPERCASE__",
+    tableName: "__KAINDA__MODEL__LOWERCASE__s", // TODO: Check if the table name is correct
     timestamps: true,
     paranoid: false,
 });

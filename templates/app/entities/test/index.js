@@ -1,5 +1,5 @@
-const EndpointTests = require('./src/endpoint');
-const UnitTests = require('./src/unit');
+const EndpointTests = require("./src/endpoint");
+const UnitTests = require("./src/unit");
 
 const Tests = {
     UnitTests,

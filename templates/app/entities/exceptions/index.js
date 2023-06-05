@@ -1,4 +1,4 @@
-const { exportFiles } = require('kainda');
+const { exportFiles } = require("kainda");
 
-const Exceptions = exportFiles(__dirname, 'exceptions.js');
+const Exceptions = exportFiles(__dirname, "exceptions.js");
 module.exports = Exceptions;

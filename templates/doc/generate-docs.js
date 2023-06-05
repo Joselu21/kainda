@@ -7,21 +7,27 @@ const path = require("path");
  * @returns {void} Nothing.
  * @private
  */
-function generatePaths() {
+function generatePaths() 
+{
 
-    const filePaths = getFiles(path.join(__dirname, "./../app/entities"), ".json").filter(filePath => {
+    const filePaths = getFiles(path.join(__dirname, "./../app/entities"), ".json").filter(filePath => 
+    {
         return filePath.name.indexOf("routes.json") > -1;
     });
     let pregeneratedPaths = require("./src/paths.json");
     let paths = pregeneratedPaths.paths;
-    for (let filePath of filePaths) {
+    for (let filePath of filePaths) 
+    {
         const modelPaths = require(filePath.path);
         const processedPaths = {};
-        for (let path in modelPaths.paths) {
+        for (let path in modelPaths.paths) 
+        {
             // Exclude the path methods that are marked as private or deactivated
             const pathMethods = {};
-            for (let method in modelPaths.paths[path]) {
-                if (!modelPaths.paths[path][method].private && !modelPaths.paths[path][method].deactivated) {
+            for (let method in modelPaths.paths[path]) 
+            {
+                if (!modelPaths.paths[path][method].private && !modelPaths.paths[path][method].deactivated) 
+                {
                     pathMethods[method] = modelPaths.paths[path][method];
                 }
             }
@@ -33,7 +39,8 @@ function generatePaths() {
         };
     }
 
-    if (!fs.existsSync(path.join(__dirname, "tmp"))) {
+    if (!fs.existsSync(path.join(__dirname, "tmp"))) 
+    {
         fs.mkdirSync(path.join(__dirname, "tmp"));
     }
     fs.writeFileSync(path.join(__dirname, "tmp/paths.json"), JSON.stringify({ paths }, null, 4));
@@ -45,14 +52,17 @@ function generatePaths() {
  * @returns {void} Nothing.
  * @private
  */
-function generateComponents() {
+function generateComponents() 
+{
 
-    const filePaths = getFiles(path.join(__dirname, "./../app/entities"), ".json").filter(filePath => {
+    const filePaths = getFiles(path.join(__dirname, "./../app/entities"), ".json").filter(filePath => 
+    {
         return filePath.name.indexOf("model.json") > -1;
     });
     let pregeneratedComponents = require("./src/components.json");
     let components = pregeneratedComponents.components;
-    for (let filePath of filePaths) {
+    for (let filePath of filePaths) 
+    {
         const modelComponents = require(filePath.path);
         components = {
             schemas: {
@@ -91,10 +101,11 @@ function generateComponents() {
                 ...components?.callbacks,
                 ...modelComponents?.components?.callbacks
             },
-        }
+        };
     }
 
-    if (!fs.existsSync(path.join(__dirname, "tmp"))) {
+    if (!fs.existsSync(path.join(__dirname, "tmp"))) 
+    {
         fs.mkdirSync(path.join(__dirname, "tmp"));
     }
     fs.writeFileSync(path.join(__dirname, "tmp/components.json"), JSON.stringify({ components }, null, 4));
@@ -106,7 +117,8 @@ function generateComponents() {
  * @returns {void}
  * @private
  */
-function generateFinalFile() {
+function generateFinalFile() 
+{
 
     const index = require("./src/index.json");
     const tags = require("./src/tags.json");
@@ -135,15 +147,23 @@ function generateFinalFile() {
  * @param {boolean} options.components - Generate the components
  * @returns {void}
  */
-function generateDoc(options = {}) {
-    if (!!options.paths) generatePaths();
-    if (!!options.components) generateComponents();
+function generateDoc(options = {}) 
+{
+    if (options.paths) 
+    {
+        generatePaths();
+    }
+    if (options.components) 
+    {
+        generateComponents();
+    }
     generateFinalFile();
 }
 
 // If we are in the documentation environment, we generate the documentation.
 // This is done by executing the script "npm run documentation" in the package.json file
-if (process.env.NODE_ENV === "documentation") {
+if (process.env.NODE_ENV === "documentation") 
+{
     generateDoc({
         paths: true,
         components: true

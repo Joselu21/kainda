@@ -1,6 +1,7 @@
 
 
-async function generateToken(options) {
+async function generateToken() 
+{
 
 
 

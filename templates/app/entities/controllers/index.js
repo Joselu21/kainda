@@ -1,4 +1,4 @@
-const { exportFiles } = require('kainda');
+const { exportFiles } = require("kainda");
 
-const Controllers = exportFiles(__dirname, 'controller.js');
+const Controllers = exportFiles(__dirname, "controller.js");
 module.exports = Controllers;

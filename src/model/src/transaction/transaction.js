@@ -1,71 +1,91 @@
-class KaindaTransaction {
+class KaindaTransaction 
+{
 
-    static async #MongooseTransaction(mongoose) {
+    static async #MongooseTransaction(mongoose) 
+    {
         let transaction = await mongoose.startSession();
         transaction.startTransaction();
         return new KaindaTransaction(transaction, "mongoose");
     }
 
-    static async #SequelizeTransaction(sequelize) {
+    static async #SequelizeTransaction(sequelize) 
+    {
         let transaction = await sequelize.transaction();
         return new KaindaTransaction(transaction, "sequelize");
     }
 
-    static async newTransaction(modelType, instance) {
-        if (modelType === "mongoose") {
+    static async newTransaction(modelType, instance) 
+    {
+        if (modelType === "mongoose") 
+        {
             return await this.#MongooseTransaction(instance);
-        } else if (modelType === "sequelize") {
+        }
+        else if (modelType === "sequelize") 
+        {
             return await this.#SequelizeTransaction(instance);
-        } else {
+        }
+        else 
+        {
             throw new Error("Invalid Model Type");
         }
     }
 
-    constructor (transaction, modelType) {
+    constructor (transaction, modelType) 
+    {
         this.isKaindaTransaction = true;
         this.transaction = transaction;
         this.modelType = modelType;
         this.state = "active";
-        if (this.modelType === "mongoose") {
+        if (this.modelType === "mongoose") 
+        {
             this.commit = this.#commitMongoose;
             this.rollback = this.#rollbackMongoose;
-        } else if (this.modelType === "sequelize") {
+        }
+        else if (this.modelType === "sequelize") 
+        {
             this.commit = this.#commitSequelize;
             this.rollback = this.#rollbackSequelize;
         }
     }
 
-    async #commitSequelize() {
+    async #commitSequelize() 
+    {
         this.state = "commited";
         await this.transaction.commit();
     }
 
-    async #commitMongoose() {
+    async #commitMongoose() 
+    {
         this.state = "commited";
         await this.transaction.commitTransaction();
         this.transaction.endSession();
     }
 
-    async #rollbackMongoose() {
+    async #rollbackMongoose() 
+    {
         this.state = "rolledBack";
         await this.transaction.abortTransaction();
         this.transaction.endSession();
     }
 
-    async #rollbackSequelize() {
+    async #rollbackSequelize() 
+    {
         this.state = "rolledBack";
         await this.transaction.rollback();
     }
 
-    get isActive () {
+    get isActive () 
+    {
         return this.state === "active";
     }
 
-    get isCommited () {
+    get isCommited () 
+    {
         return this.state === "commited";
     }
 
-    get isRolledBack () {
+    get isRolledBack () 
+    {
         return this.state === "rolledBack";
     }
 

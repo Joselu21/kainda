@@ -1,4 +1,4 @@
-const { KaindaException } = require('../../../../exceptions');
+const { KaindaException } = require("../../../../exceptions");
 const { validate } = require("./seedOptions");
 
 /**
@@ -23,8 +23,10 @@ const { validate } = require("./seedOptions");
  * @throws {KaindaException} if the model does not have seed options
  * @private
  */
-function __validModel(model) {
-    if (!model || !model.seed_options) {
+function __validModel(model) 
+{
+    if (!model || !model.seed_options) 
+    {
         throw new KaindaException({
             error_type: "INVALID_MODEL",
             error_message: "The model does not have seed options.",
@@ -43,7 +45,8 @@ function __validModel(model) {
  * @throws {KaindaException} if the model does not have seeders
  * @private
  */
-function __validSeeder(model) {
+function __validSeeder(model) 
+{
     __validModel(model);
     validate(model.seed_options);
 }
@@ -55,7 +58,8 @@ function __validSeeder(model) {
  * @throws {KaindaException} if the model does not have seed options
  * @returns {boolean} whether this model should be seeded
  */
-function shouldSeed(model) {
+function shouldSeed(model) 
+{
     __validModel(model);
     return model.seed_options.seed === true && model.seed_options.is_seeded !== true;
 }
@@ -68,15 +72,22 @@ function shouldSeed(model) {
  * @throws {KaindaException} if the model does not have seed options or correctly defined seeders
  * @private
  */
-async function seedDependencies(model, options = {}) {
+async function seedDependencies(model, options = {}) 
+{
     __validModel(model);
-    if (model.seed_options.dependencies && model.seed_options.dependencies.length > 0) {
-        for (let dependency of model.seed_options.dependencies) {
-            if (shouldSeed(dependency)) {
+    if (model.seed_options.dependencies && model.seed_options.dependencies.length > 0) 
+    {
+        for (let dependency of model.seed_options.dependencies) 
+        {
+            if (shouldSeed(dependency)) 
+            {
                 __validSeeder(dependency);
-                if (dependency.Seeders && dependency.Seeders.seed && typeof dependency.Seeders.seed === "function") {
+                if (dependency.Seeders && dependency.Seeders.seed && typeof dependency.Seeders.seed === "function") 
+                {
                     await dependency.Seeders.seed(null, options);
-                } else if (dependency.seed && typeof dependency.seed === "function") {
+                }
+                else if (dependency.seed && typeof dependency.seed === "function") 
+                {
                     await dependency.seed(null, options);
                 }
             }
@@ -93,7 +104,8 @@ async function seedDependencies(model, options = {}) {
  * @returns {Promise<boolean>} whether the data was seeded successfully
  * @private
  */
-async function __seed(model, data, options = {}) {
+async function __seed(model, data, options = {}) 
+{
     __validModel(model);
     await model.insertMany(data, options);
     return model.seed_options.is_seeded = true;
@@ -107,27 +119,36 @@ async function __seed(model, data, options = {}) {
  * @throws {KaindaException} if the model does not have seed options or correctly defined seeders or if there was an error seeding the data
  * @returns {Promise<void>}
  */
-async function seed(data = null, options = {}) {
+async function seed(data = null, options = {}) 
+{
     __validModel(this);
-    if (!shouldSeed(this)) {
+    if (!shouldSeed(this)) 
+    {
         return;
     }
     __validSeeder(this);
-    if (this.seed_options.dependencies && this.seed_options.dependencies.length > 0 && !options.ignoreDependencies) {
-        if (options.override && options.override.seedDependencies) {
+    if (this.seed_options.dependencies && this.seed_options.dependencies.length > 0 && !options.ignoreDependencies) 
+    {
+        if (options.override && options.override.seedDependencies) 
+        {
             await options.override.seedDependencies(this, options);
-        } else {
+        }
+        else 
+        {
             await seedDependencies(this, options);
         }
     }
-    if (!data || data.length === 0) {
+    if (!data || data.length === 0) 
+    {
         data = this.seed_options.data;
     }
     let need_to_seed = true;
-    if (this.seed_options.oldRecords && this.seed_options.oldRecords !== "") {
+    if (this.seed_options.oldRecords && this.seed_options.oldRecords !== "") 
+    {
         need_to_seed = await processOldRecords(this, data, options);
     }
-    if (need_to_seed) {
+    if (need_to_seed) 
+    {
         await __seed(this, data, options);
     }
 }
@@ -142,15 +163,21 @@ async function seed(data = null, options = {}) {
  * @returns {Promise<boolean>} whether the old records were processed successfully
  * @private
  */
-async function processOldRecords(model, data, options = {}) {
+async function processOldRecords(model, data, options = {}) 
+{
     __validModel(model);
-    if (!model.seed_options.oldRecords || model.seed_options.oldRecords === "") {
+    if (!model.seed_options.oldRecords || model.seed_options.oldRecords === "") 
+    {
         return;
     }
-    if (model.seed_options.oldRecords) {
-        if (options.override && options.override[model.seed_options.oldRecords]) {
+    if (model.seed_options.oldRecords) 
+    {
+        if (options.override && options.override[model.seed_options.oldRecords]) 
+        {
             await options.override[model.seed_options.oldRecords](model, data, options);
-        } else {
+        }
+        else 
+        {
             return await processOldFunctions[model.seed_options.oldRecords](model, data, options);
         }
     }
@@ -174,7 +201,8 @@ const processOldFunctions = {
  * @returns {Promise<boolean>} whether the old records were deleted successfully
  * @private
  */
-async function __processOldDeleteAll(model, data, options = {}) {
+async function __processOldDeleteAll(model, data, options = {}) 
+{
     await model.deleteMany({}, options);
     return true;
 }
@@ -188,7 +216,8 @@ async function __processOldDeleteAll(model, data, options = {}) {
  * @returns {Promise<boolean>} whether the old records were ignored successfully
  * @private
  */
-async function __processOldIgnore(model, data, options = {}) {
+async function __processOldIgnore() 
+{
     return true;
 }
 
@@ -201,7 +230,8 @@ async function __processOldIgnore(model, data, options = {}) {
  * @returns {Promise<boolean>} whether the model was seeded successfully
  * @private
  */
-async function __processOldDontSeedIfRecordsExists(model, data, options = {}) {
+async function __processOldDontSeedIfRecordsExists(model, data, options = {}) 
+{
     const { count } = await model.findAndCountAll({}, { transaction: options.transaction });
     return count === 0;
 }
@@ -215,12 +245,15 @@ async function __processOldDontSeedIfRecordsExists(model, data, options = {}) {
  * @deprecated The behavior of this function may vary a lot depending on database structure and the given data, so it is not recommended to use it.
  * @private
  */
-async function __processOldDontSeedIfAnyExist(model, data, options = {}) {
+async function __processOldDontSeedIfAnyExist(model, data, options = {}) 
+{
     let exists = false;
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) 
+    {
         const element = data[i];
         const record = await model.findMany(element, options);
-        if (record && record.length > 0) {
+        if (record && record.length > 0) 
+        {
             exists = true;
             break;
         }
@@ -237,11 +270,14 @@ async function __processOldDontSeedIfAnyExist(model, data, options = {}) {
  * @deprecated The behavior of this function may vary a lot depending on database structure and the given data, so it is not recommended to use it.
  * @private
  */
-async function __processOldDontSeedIfAllExist(model, data, options = {}) {
-    for (let i = 0; i < data.length; i++) {
+async function __processOldDontSeedIfAllExist(model, data, options = {}) 
+{
+    for (let i = 0; i < data.length; i++) 
+    {
         const element = data[i];
         const record = await model.findMany(element, options);
-        if (!record || record.length > 0) {
+        if (!record || record.length > 0) 
+        {
             return false;
         }
     }

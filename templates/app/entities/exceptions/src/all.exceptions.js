@@ -13,4 +13,4 @@ module.exports = {
     __KAINDA__MODEL__UPPERCASE__NotUpdatedException : GenericKaindaExceptions.Kainda500Exception,
     __KAINDA__MODEL__UPPERCASE__NotDeletedException : GenericKaindaExceptions.Kainda500Exception,
     __KAINDA__MODEL__UPPERCASE__ExceptionHandler: GenericKaindaExceptionHandler
-}
+};
