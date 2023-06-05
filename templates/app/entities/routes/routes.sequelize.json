@@ -38,9 +38,6 @@
                     "409": {
                         "$ref": "#/components/responses/ConflictError"
                     },
-                    "418": {
-                        "$ref": "#/components/responses/TeapotError"
-                    },
                     "429": {
                         "$ref": "#/components/responses/TooManyRequestsError"
                     },
@@ -91,9 +88,6 @@
                     "401": {
                         "$ref": "#/components/responses/UnauthorizedError"
                     },
-                    "418": {
-                        "$ref": "#/components/responses/TeapotError"
-                    },
                     "429": {
                         "$ref": "#/components/responses/TooManyRequestsError"
                     },
@@ -136,9 +130,6 @@
                     },
                     "404": {
                         "$ref": "#/components/responses/NotFoundError"
-                    },
-                    "418": {
-                        "$ref": "#/components/responses/TeapotError"
                     },
                     "429": {
                         "$ref": "#/components/responses/TooManyRequestsError"
@@ -195,9 +186,6 @@
                     "404": {
                         "$ref": "#/components/responses/NotFoundError"
                     },
-                    "418": {
-                        "$ref": "#/components/responses/TeapotError"
-                    },
                     "429": {
                         "$ref": "#/components/responses/TooManyRequestsError"
                     },
@@ -238,9 +226,6 @@
                     },
                     "404": {
                         "$ref": "#/components/responses/NotFoundError"
-                    },
-                    "418": {
-                        "$ref": "#/components/responses/TeapotError"
                     },
                     "429": {
                         "$ref": "#/components/responses/TooManyRequestsError"

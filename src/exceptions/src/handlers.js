@@ -42,7 +42,7 @@ function ExceptionHandler(error, res) {
 
     let error_type = "GENERIC_ERROR";
     let error_message = "An unknown error has occurred";
-    let error_code = 418;
+    let error_code = 500;
     let error_data = error;
 
     return res.status(error_code).json({
