@@ -5,11 +5,12 @@
     "main": "index.js",
     "scripts": {
         "start": "cross-env NODE_ENV=development node --trace-warnings index.js",
-        "deploy": "cross-env NODE_ENV=production node index.js",
+        "production": "cross-env NODE_ENV=production node index.js",
         "start:seed": "cross-env NODE_ENV=development node --trace-warnings index.js --seed",
         "test": "cross-env NODE_ENV=test mocha --seed",
         "coverage": "cross-env NODE_ENV=test nyc --include 'app/**/*controller.js' mocha",
-        "documentation" : "cross-env NODE_ENV=documentation node doc/generate-docs.js"
+        "documentation" : "cross-env NODE_ENV=documentation node doc/generate-docs.js",
+        "pm2" : "cross-env NODE_ENV=production pm2 start index.js --name __KAINDA__PROJECT__NAME__"
     },
     "author": "",
     "license": "ISC",
