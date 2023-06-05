@@ -116,7 +116,8 @@ The project structure is as follows:
     │       ├── auth.service.js
     │       ├── db.service.js
     |       ├── log.service.js
-    |       └── models.service.js
+    |       ├── models.service.js
+    |       └── seed.service.js
     │
     ├── config
     │   ├── default.json
@@ -153,6 +154,7 @@ The auth.service.js file contains a function to verify the JWT token and add the
 The db.service.js file contains a class with a function to initialize the database connection, it is compatible by default with mongoose and sequelize, but you can override it to use any other database or ORM/ODM. Also contains a function to seed the database and a method to get the database connection.
 The log.service.js file contains a class with a function to initialize the loggers created with the winston package, and by default creates loggers in console and in files for requests, errors, server starts and server info. Check the [winston](https://github.com/winstonjs/winston#readme) documentation for more information. Also there you can find different transports to use, like the MongoDB, Redis or SQlite transports for saving the logs in a database.
 The models.service.js file contains a class with a function to initialize the models, this class is called everywhere in the project to get the models without having to declare them globally, you can override it as you want or remove it and make the Models global, but this is discouraged.
+Finally, the seed service contains the necessary functions to 
 
 Last, the test folder contains the setup for Mocha, which contains a global beforeAll hook to initialize the app to be tested. You can modify this file to add any other global hooks or configuration for the test suite. Additionally, the utils.setup.js file contains some utility functions to help with the testing of the project, like the creation of certain entities or the login of a user. The test folder is also the place to put any test related file that is not strictly related to a specific entity. More details about the test suite can be found in the [Tests](#tests) section or in the Mocha documentation [here](https://mochajs.org/).
 
@@ -221,13 +223,13 @@ All of this information will be expanded in the following sections.
 
 Projects generated with Kainda are designed to be used with the Kainda framework toolset, but every one of these options can be used independently in your project.
 
-The only mandatory requirement (at least for now) is that your project must make the Models available globally for the framework to use them. This can be achieved by the following code line ubicated in the setup.js file at the root of your project:
+The only mandatory requirement was that your project must have made the Models available globally for the framework to use them. This was achieved by the following code line ubicated in the setup.js file at the root of your project:
 
 ```javascript
     global.Models = kainda.exportModels();
 ```
 
-Even though this is the only mandatory requirement, the base project is generated also making available the sequelize/mongoose instance, the config instance and the ExceptionHandler function for now, but in the future is planned to abandon the use of global variables and use dependency injection instead.
+Now this requirement is not necessary anymore, due to the fact that the models.service can be imported anywhere and makes the models available. If you want the old behaviour you only need to add that line to the setup,js file and remove any reference to the ModelsService.
 
 ### Setup file
 
@@ -480,12 +482,14 @@ The seed_options attribute is defined directly inside the KaindaModel just after
 - **dependencies**: Array of KaindaModels that contains the entities that are dependencied by the entity. The seed function will seed the dependencies first. By default it is an empty array.
 - **data**: Array of objects that contains the data that will be used to seed the entity. This data can be modified by the user programatically or directly in the file to add or remove data from the seeders. By default it is the data that is defined in the seeders file.
 - **is_seeded**: Boolean that indicates if the entity has been seeded or not. It is set to true by default, so the seed function will not be executed again if the modified entity is dependencied by another entity. It is set to false by default and should only be set to true by the seed function.
-- **oldRecords**: String that indicates the what to do with the information that there is in the database at the time of seeding. There are 4 accepted values for this attribute:
-    - **"deleteAll"**: Deletes all the records in the database and seeds the entity with the new data. This is the default value.
+- **oldRecords**: String that indicates the what to do with the information that there is in the database at the time of seeding. There are 5 accepted values for this attribute:
+    - **"deleteAll"**: Deletes all the records in the database and seeds the entity with the new data. 
+    - **"ignore"**: Does not delete any record in the database and seeds the entity with the new data. This is the default value.
     - **"dontSeedIfRecordsExists"**: Does not seed the entity if there are records in the database.
     - **"dontSeedIfAnyExists"**: Search for any record in the database that matches any of the records in the data and does not seed the entity if any of them exists.
     - **"dontSeedIfAllExists"**: Search for any record in the database that matches any of the records in the data and does not seed the entity if all of them exists.
 
+Also, you can override the default oldRecords function by passing an object to the seed function with a dictionary called override and key-value pairs where the key is the name of the oldRecords option you want to override and the value is the new function that will process the oldRecords with that option.
 
 ### Tests
 

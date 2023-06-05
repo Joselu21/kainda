@@ -16,6 +16,7 @@ const MinKeys = [
 
 const OldRecords = [
     "deleteAll",
+    "ignore",
     "dontSeedIfRecordsExists",
     "dontSeedIfAllExist",
     "dontSeedIfAnyExist"

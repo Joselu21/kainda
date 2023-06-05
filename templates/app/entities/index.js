@@ -26,7 +26,7 @@ __KAINDA__MODEL__UPPERCASE__.seed_options = {
     dependencies: [
     ],
     is_seeded: false,
-    oldRecords: "deleteAll",
+    oldRecords: "ignore",
     data: __KAINDA__MODEL__UPPERCASE__.Seeders.data
 };
 
