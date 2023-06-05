@@ -159,6 +159,7 @@ async function processOldRecords(model, data, options = {}) {
 
 const processOldFunctions = {
     deleteAll: __processOldDeleteAll,
+    ignore: __processOldIgnore,
     dontSeedIfRecordsExists: __processOldDontSeedIfRecordsExists,
     dontSeedIfAnyExist: __processOldDontSeedIfAnyExist,
     dontSeedIfAllExist: __processOldDontSeedIfAllExist,
@@ -177,6 +178,20 @@ async function __processOldDeleteAll(model, data, options = {}) {
     await model.deleteMany({}, options);
     return true;
 }
+
+/**
+ * Ignores the old records in the given model.
+ * 
+ * @param {Object} model - The model whose old records to ignore
+ * @param {Array<Object>} data - The data to seed
+ * @param {SeedFunctionsOptions} options - The seed function options
+ * @returns {Promise<boolean>} whether the old records were ignored successfully
+ * @private
+ */
+async function __processOldIgnore(model, data, options = {}) {
+    return true;
+}
+
 
 /**
  * Seeds the given model only if there are no records in the database.
