@@ -1,2 +1,2 @@
-const KaindaModel = require('./src/template');
+const KaindaModel = require("./src/template");
 module.exports = KaindaModel;

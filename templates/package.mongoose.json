@@ -10,7 +10,9 @@
         "test": "cross-env NODE_ENV=test mocha --seed",
         "coverage": "cross-env NODE_ENV=test nyc --include 'app/**/*controller.js' mocha",
         "documentation" : "cross-env NODE_ENV=documentation node doc/generate-docs.js",
-        "pm2" : "cross-env NODE_ENV=production pm2 start index.js --name __KAINDA__PROJECT__NAME__"
+        "pm2" : "cross-env NODE_ENV=production pm2 start index.js --name __KAINDA__PROJECT__NAME__",
+        "eslint": "eslint **/*.js",
+        "eslint:fix": "eslint --fix **/*.js"
     },
     "author": "",
     "license": "ISC",
@@ -32,7 +34,9 @@
         "mocha": "^10.2.0",
         "nyc": "^15.1.0",
         "supertest": "^6.3.0",
-        "swagger-ui-express": "^4.6.2"
+        "swagger-ui-express": "^4.6.2",
+        "eslint": "^8.42.0",
+        "eslint-plugin-node": "^11.1.0"
     },
     "mocha": {
         "require": [

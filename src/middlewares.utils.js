@@ -6,19 +6,25 @@
  * @param {string[]} [exceptions=[]] - An optional array of keys to exclude from the check.
  * @returns {(string|boolean)} Returns the first missing field or true if all fields are present.
  */
-function checkObjectHas(keys, container, exceptions = []) {
+function checkObjectHas(keys, container, exceptions = []) 
+{
 
-    if (!keys || !keys.length || !container || typeof container !== "object") {
+    if (!keys || !keys.length || !container || typeof container !== "object") 
+    {
         return false;
     }
 
     const missingFields = [];
 
-    function deepCheckField(key) {
+    function deepCheckField(key) 
+    {
         let value = container;
-        for (let part of key.split(".")) {
-            if (!value[part]) {
-                if (!exceptions.includes(key)) {
+        for (let part of key.split(".")) 
+        {
+            if (!value[part]) 
+            {
+                if (!exceptions.includes(key)) 
+                {
                     missingFields.push(key);
                 }
                 break;
@@ -27,11 +33,15 @@ function checkObjectHas(keys, container, exceptions = []) {
         }
     }
 
-    if ((Array.isArray(keys) && keys.length > 0)) {
-        for (let key of keys) {
+    if ((Array.isArray(keys) && keys.length > 0)) 
+    {
+        for (let key of keys) 
+        {
             deepCheckField(key);
         }
-    } else if (typeof keys === "string") {
+    }
+    else if (typeof keys === "string") 
+    {
         deepCheckField(keys);
     }
 
@@ -45,14 +55,18 @@ function checkObjectHas(keys, container, exceptions = []) {
  * @param {Array} [exceptions=[]] - An optional array of keys to exclude from the check.
  * @returns {Object} - A response object containing information about any missing fields.
  */
-function missingFieldsResponse(arrayOfKeys, container, exceptions = []) {
-    let response = {}
-    for (let i = 0; i < arrayOfKeys.length; i++) {
+function missingFieldsResponse(arrayOfKeys, container, exceptions = []) 
+{
+    let response = {};
+    for (let i = 0; i < arrayOfKeys.length; i++) 
+    {
         let missingFields = checkObjectHas(arrayOfKeys[i], container, exceptions);
-        if (missingFields === true) {
+        if (missingFields === true) 
+        {
             continue;
         }
-        if (JSON.stringify(response) === "{}") {
+        if (JSON.stringify(response) === "{}") 
+        {
             response = {
                 error_type: "EMPTY_FIELD",
                 error_message: `Missing ${Array.isArray(missingFields) ? missingFields[0] : missingFields} field`,
@@ -62,9 +76,13 @@ function missingFieldsResponse(arrayOfKeys, container, exceptions = []) {
                     data: container,
                 },
             };
-        } else if (!response.allAttributesMissing) {
+        }
+        else if (!response.allAttributesMissing) 
+        {
             response.allAttributesMissing = [];
-        } else {
+        }
+        else 
+        {
             response.allAttributesMissing.push(missingFields);
         }
     }
@@ -78,7 +96,8 @@ function missingFieldsResponse(arrayOfKeys, container, exceptions = []) {
  * @param {NextFunction} next - The next function.
  * @returns {void}
  */
-function deactivateRoute(req, res, next) {
+function deactivateRoute(req, res) 
+{
     res.status(404).json({
         error_type: "ROUTE_DEACTIVATED",
         error_message: "This route has been deactivated",

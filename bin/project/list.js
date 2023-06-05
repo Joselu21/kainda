@@ -1,37 +1,44 @@
-const fs = require('fs');
-const chalk = require('chalk');
-const path = require('path');
+const fs = require("fs");
+const chalk = require("chalk");
+const path = require("path");
 
-function __getInstalledModules(packageJson, packageLockJson) {
+function __getInstalledModules(packageJson, packageLockJson) 
+{
     const installedModules = {};
-    for (let [moduleName, moduleVersion] of Object.entries(packageJson.dependencies)) {
+    for (let [moduleName, moduleVersion] of Object.entries(packageJson.dependencies)) 
+    {
         installedModules[moduleName] = {
             expected: moduleVersion
         };
-        const packageLockModule = packageLockJson.packages['node_modules/' + moduleName];
-        installedModules[moduleName].actual = packageLockModule.version ?? 'Not Found';
-        installedModules[moduleName].minimumNodeVersion = packageLockModule.engines?.node ?? 'Not Found';
+        const packageLockModule = packageLockJson.packages["node_modules/" + moduleName];
+        installedModules[moduleName].actual = packageLockModule.version ?? "Not Found";
+        installedModules[moduleName].minimumNodeVersion = packageLockModule.engines?.node ?? "Not Found";
     }
     return installedModules;
 }
 
-function countLinesAndChars(dirPath, exclude = ['node_modules']) {
+function countLinesAndChars(dirPath, exclude = ["node_modules"]) 
+{
     let totalLines = 0;
     let totalChars = 0;
 
     const files = fs.readdirSync(dirPath).filter(file => !exclude.includes(file));
 
-    for (const file of files) {
+    for (const file of files) 
+    {
         const filePath = path.join(dirPath, file);
         const stats = fs.statSync(filePath);
 
-        if (stats.isDirectory()) {
+        if (stats.isDirectory()) 
+        {
             const { lines, chars } = countLinesAndChars(filePath);
             totalLines += lines;
             totalChars += chars;
-        } else {
-            const content = fs.readFileSync(filePath, 'utf-8');
-            const lines = content.split('\n').length;
+        }
+        else 
+        {
+            const content = fs.readFileSync(filePath, "utf-8");
+            const lines = content.split("\n").length;
             const chars = content.length;
             totalLines += lines;
             totalChars += chars;
@@ -43,12 +50,14 @@ function countLinesAndChars(dirPath, exclude = ['node_modules']) {
 
 
 
-function listProjectInfo() {
-    const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
-    const packageLockJson = JSON.parse(fs.readFileSync('./package-lock.json', 'utf8'));
+function listProjectInfo() 
+{
+    const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"));
+    const packageLockJson = JSON.parse(fs.readFileSync("./package-lock.json", "utf8"));
 
     // Verify that the package.json and package-lock.json exist
-    if (!packageJson || !packageLockJson) {
+    if (!packageJson || !packageLockJson) 
+    {
         console.error("package.json or package-lock.json not found");
         return;
     }
@@ -76,8 +85,8 @@ function listProjectInfo() {
 
     console.log();
 
-    const { lines, chars } = countLinesAndChars('./');
-    const { lines: linesWithNodeModules, chars: charsWithNodeModules } = countLinesAndChars('./', []);
+    const { lines, chars } = countLinesAndChars("./");
+    const { lines: linesWithNodeModules, chars: charsWithNodeModules } = countLinesAndChars("./", []);
     console.log(chalk.bold("Code statistics"));
     console.log(chalk.blue("Lines: ") + lines);
     console.log(chalk.blue("Characters: ") + chars);

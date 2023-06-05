@@ -13,7 +13,8 @@ const onlyReason = require("./onlyReasonTemplate");
  * console.log(error); // {error_type: 'INTERNAL_SERVER_ERROR', error_message: 'An unexpected error occurred.', error_data: {reason: 'unexpected error occurred'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500}
  */
-function Kainda500Template(params = {}) {
+function Kainda500Template(params = {}) 
+{
     return onlyReason(
         params,
         "An unexpected error occurred.",
@@ -34,7 +35,8 @@ function Kainda500Template(params = {}) {
  * console.log(error); // {error_type: 'NOT_IMPLEMENTED', error_message: 'The functionality you requested is not implemented.', error_data: {reason: 'functionality not implemented'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/501}
  */
-function Kainda501Template(params = {}) {
+function Kainda501Template(params = {}) 
+{
     return onlyReason(
         params,
         "The functionality you requested is not implemented.",
@@ -55,7 +57,8 @@ function Kainda501Template(params = {}) {
  * console.log(error); // {error_type: 'BAD_GATEWAY', error_message: 'The upstream server did not respond.', error_data: {reason: 'upstream server did not respond'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502}
  */
-function Kainda502Template(params = {}) {
+function Kainda502Template(params = {}) 
+{
     return onlyReason(
         params,
         "The upstream server did not respond.",
@@ -76,7 +79,8 @@ function Kainda502Template(params = {}) {
  * console.log(error); // {error_type: 'SERVICE_UNAVAILABLE', error_message: 'The service is currently unavailable.', error_data: {reason: 'service down for maintenance'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503}
  */
-function Kainda503Template(params = {}) {
+function Kainda503Template(params = {}) 
+{
     return onlyReason(params, "The service is currently unavailable.", "SERVICE_UNAVAILABLE");
 }
 
@@ -93,7 +97,8 @@ function Kainda503Template(params = {}) {
  * console.log(error); // {error_type: 'GATEWAY_TIMEOUT', error_message: 'The proxy server timed out.', error_data: {reason: 'proxy server timed out'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504}
  */
-function Kainda504Template(params = {}) {
+function Kainda504Template(params = {}) 
+{
     return onlyReason(params, "The proxy server timed out.", "GATEWAY_TIMEOUT");
 }
 
@@ -110,7 +115,8 @@ function Kainda504Template(params = {}) {
  * console.log(error); // {error_type: 'HTTP_VERSION_NOT_SUPPORTED', error_message: 'The HTTP version is not supported.', error_data: {reason: 'unsupported HTTP version'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/505}
  */
-function Kainda505Template(params = {}) {
+function Kainda505Template(params = {}) 
+{
     return onlyReason(params, "The HTTP version is not supported.", "HTTP_VERSION_NOT_SUPPORTED");
 }
 
@@ -126,7 +132,8 @@ function Kainda505Template(params = {}) {
  * const error = Kainda506Template({reason: 'variant also negotiates'});
  * console.log(error); // {error_type: 'VARIANT_ALSO_NEGOTIATES', error_message: 'The requested variant also negotiates.', error_data: {reason: 'variant also negotiates'}}
  */
-function Kainda506Template(params = {}) {
+function Kainda506Template(params = {}) 
+{
     return onlyReason(params, "The requested variant also negotiates.", "VARIANT_ALSO_NEGOTIATES");
 }
 
@@ -143,7 +150,8 @@ function Kainda506Template(params = {}) {
  * console.log(error); // {error_type: 'INSUFFICIENT_STORAGE', error_message: 'The server is out of disk space.', error_data: {reason: 'out of disk space'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/507}
  */
-function Kainda507Template(params = {}) {
+function Kainda507Template(params = {}) 
+{
     return onlyReason(params, "The server is out of disk space.", "INSUFFICIENT_STORAGE");
 }
 
@@ -160,7 +168,8 @@ function Kainda507Template(params = {}) {
  * console.log(error); // {error_type: 'LOOP_DETECTED', error_message: 'The server detected a loop in the request processing.', error_data: {reason: 'detected a loop in the request processing'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/508}
  */
-function Kainda508Template(params = {}) {
+function Kainda508Template(params = {}) 
+{
     return onlyReason(params, "The server detected a loop in the request processing.", "LOOP_DETECTED");
 }
 
@@ -177,7 +186,8 @@ function Kainda508Template(params = {}) {
  * console.log(error); // {error_type: 'NOT_EXTENDED', error_message: 'The server requires additional extensions to be accepted.', error_data: {reason: 'Not extended'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/510}
  */
-function Kainda510Template(params = {}) {
+function Kainda510Template(params = {}) 
+{
     return onlyReason(params, "The server requires additional extensions to be accepted.", "NOT_EXTENDED");
 }
 
@@ -194,7 +204,8 @@ function Kainda510Template(params = {}) {
  * console.log(error); // {error_type: 'NETWORK_AUTHENTICATION_REQUIRED', error_message: 'The client needs to authenticate to gain network access.', error_data: {reason: 'Network authentication required'}}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/511}
  */
-function Kainda511Template(params = {}) {
+function Kainda511Template(params = {}) 
+{
     return onlyReason(params, "The client needs to authenticate to gain network access.", "NETWORK_AUTHENTICATION_REQUIRED");
 }
 

@@ -1,33 +1,44 @@
 
-function isSequelizeModel(model) {
+function isSequelizeModel(model) 
+{
     return !!(model?.subModel?.sequelize);
 }
 
-function isMongooseModel(model) {
+function isMongooseModel(model) 
+{
     return model?.subModel?.prototype?.constructor?.name === "model";
 }
 
-function isMongoose() {
+function isMongoose() 
+{
     return isMongooseModel(this);
 }
 
-function isSequelize() {
+function isSequelize() 
+{
     return isSequelizeModel(this);
 }
 
-function getTypeExternal(model) {
+function getTypeExternal(model) 
+{
     const modelAux = {
         subModel: model
-    }
+    };
     return getType(modelAux);
 }
 
-function getType(model) {
-    if (isSequelizeModel(model)) {
+function getType(model) 
+{
+    if (isSequelizeModel(model)) 
+    {
         return "sequelize";
-    } else if (isMongooseModel(model)) {
+    }
+    else if (isMongooseModel(model)) 
+    {
         return "mongoose";
-    } else {
+    }
+    else 
+    {
         throw new Error("The model is not a valid model.");
     }
 }

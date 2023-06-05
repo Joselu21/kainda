@@ -1,5 +1,5 @@
-const SeedService = require('@services/seed.service');
-const LogService = require('@services/log.service');
+const SeedService = require("@services/seed.service");
+const LogService = require("@services/log.service");
 
 /**
  * @class DbService
@@ -10,19 +10,30 @@ const LogService = require('@services/log.service');
  * @property {Object} sequelize The sequelize instance
  * @property {Function} seed The seed method
  */
-class DbService {
+class DbService 
+{
 
     static mongoose;
     static sequelize;
     static seed = SeedService.seed;
 
-    static get() {
-        if (DbService.mongoose && DbService.sequelize) return { 
-            mongoose: DbService.mongoose, 
-            sequelize: DbService.sequelize
-        };
-        if(DbService.mongoose) return DbService.mongoose;
-        if(DbService.sequelize) return DbService.sequelize;
+    static get() 
+    {
+        if (DbService.mongoose && DbService.sequelize) 
+        {
+            return { 
+                mongoose: DbService.mongoose, 
+                sequelize: DbService.sequelize
+            };
+        }
+        if(DbService.mongoose) 
+        {
+            return DbService.mongoose;
+        }
+        if(DbService.sequelize) 
+        {
+            return DbService.sequelize;
+        }
     }
 
     /**
@@ -34,17 +45,23 @@ class DbService {
      * @memberof DbService
      * @returns {Promise<Object>}
      */
-    static async init(critical) {
+    static async init(critical) 
+    {
         // Init the database
-        if (critical.dialect.includes('mongo')) {
+        if (critical.dialect.includes("mongo")) 
+        {
             await DbService.initMongoose(critical);
             return DbService.mongoose;
-        } else if (critical.dialect.includes('sql') || critical.dialect.includes('postgre')) {
+        }
+        else if (critical.dialect.includes("sql") || critical.dialect.includes("postgre")) 
+        {
             await DbService.initSequelize(critical);
             return DbService.sequelize;
-        } else {
+        }
+        else 
+        {
             LogService.ServerLogger.error("[CONFIG] Your configuration file is incorrect, you must specify a valid database configuration");
-            throw new Error('Invalid dialect');
+            throw new Error("Invalid dialect");
         }
     }
 
@@ -58,19 +75,21 @@ class DbService {
      * @returns {Promise<void>}
      * @private
      */
-    static async initMongoose(critical) {
+    static async initMongoose(critical) 
+    {
 
-        const mongoose = require('mongoose');
+        const mongoose = require("mongoose");
 
-        if (!critical || (!critical.uri && (!critical.host || !critical.port || !critical.database_name))) {
+        if (!critical || (!critical.uri && (!critical.host || !critical.port || !critical.database_name))) 
+        {
             LogService.ServerLogger.error("[CONFIG] Your configuration file is incorrect, you must specify a critical database");
-            process.exit(1);
+            throw new Error();
         }
 
         const uri = critical.uri ?? `mongodb://${critical.username}:${encodeURIComponent(critical.password)}@${critical.host}:${critical.port}/${critical.database_name}`;
         const options = critical.options ?? {
             useNewUrlParser: true,
-            compressors: ['zstd'],
+            compressors: ["zstd"],
             maxPoolSize: critical.pool?.max ?? 100,
             minPoolSize: critical.pool?.min ?? 10,
             serverSelectionTimeoutMS: critical.pool?.acquire ?? 5000,
@@ -91,13 +110,15 @@ class DbService {
      * @returns {Promise<void>}
      * @private
      */
-    static async initSequelize(critical) {
+    static async initSequelize(critical) 
+    {
 
-        const Sequelize = require('sequelize');
+        const Sequelize = require("sequelize");
 
-        if (!critical || !critical.host || !critical.port || !critical.database_name) {
+        if (!critical || !critical.host || !critical.port || !critical.database_name) 
+        {
             LogService.ServerLogger.error("[CONFIG] Your configuration file is incorrect, you must specify a critical database");
-            process.exit(1);
+            throw new Error();
         }
 
         // Create a sequelize instance with our configs
@@ -106,18 +127,20 @@ class DbService {
             port: critical.port,
             dialect: critical.dialect,
             pool: critical.pool,
-            logging: critical.logging ? Logger.log : false,
+            logging: critical.logging ?? false,
         });
 
         // if env is not production, we run the migrations
-        if (process.env.NODE_ENV !== 'production' && !process.argv.includes('--force')) {
-            LogService.ServerLogger.info('[SYNC] Syncing models with database...');
+        if (process.env.NODE_ENV !== "production" && !process.argv.includes("--force")) 
+        {
+            LogService.ServerLogger.info("[SYNC] Syncing models with database...");
             await sequelize.sync({ match: /-pruebas$/ });
         }
 
         // If it is executed with param '--force', we force the migrations
-        if ((process.env.NODE_ENV !== 'production' && process.argv.includes('--force')) || process.env.NODE_ENV === 'test') {
-            LogService.ServerLogger.info('[SYNC] Forced syncing models with database...');
+        if ((process.env.NODE_ENV !== "production" && process.argv.includes("--force")) || process.env.NODE_ENV === "test") 
+        {
+            LogService.ServerLogger.info("[SYNC] Forced syncing models with database...");
             await sequelize.sync({ force: true, match: /-pruebas$/ });
         }
 

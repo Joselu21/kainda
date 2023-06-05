@@ -19,20 +19,26 @@ const KaindaException = require("./KaindaException");
  *  ExceptionHandler(error, res);
  * }
  */
-function ExceptionHandler(error, res) {
+function ExceptionHandler(error, res) 
+{
 
     // If error is an array, extract the first element, it can happen on validation errors from Sequelize
-    if (Array.isArray(error)) {
+    if (Array.isArray(error)) 
+    {
         error = error[0];
     }
 
     // If the error is a user-defined exception or a kainda generated exception
     const Models = getModels();
-    if (error instanceof KaindaException) {
-        if (Models) {
+    if (error instanceof KaindaException) 
+    {
+        if (Models) 
+        {
             let keys = Object.keys(Models);
-            for (let key in keys) {
-                if (Models[keys[key]] && Models[keys[key]].Exceptions[error.name] && error instanceof Models[keys[key]].Exceptions[error.name]) {
+            for (let key in keys) 
+            {
+                if (Models[keys[key]] && Models[keys[key]].Exceptions[error.name] && error instanceof Models[keys[key]].Exceptions[error.name]) 
+                {
                     return Models[keys[key]].Exceptions[keys[key] + "ExceptionHandler"](error, res);
                 }
             }
@@ -66,9 +72,11 @@ function ExceptionHandler(error, res) {
  *  GenericKaindaExceptionHandler(error, res);
  * }
  */
-function GenericKaindaExceptionHandler(error, res) {
+function GenericKaindaExceptionHandler(error, res) 
+{
 
-    if (error instanceof KaindaException) {
+    if (error instanceof KaindaException) 
+    {
         res.status(error?.response_code ?? error?.code ?? 500).json(error?.body ?? {
             error_type: error?.name,
             error_message: error?.message,

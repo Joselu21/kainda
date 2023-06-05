@@ -13,7 +13,8 @@
  * @class KaindaException
  * @extends Error
  */
-class KaindaException extends Error {
+class KaindaException extends Error 
+{
 
     /**
      * Creates a new KaindaException. 
@@ -26,10 +27,14 @@ class KaindaException extends Error {
      * @example throw new KaindaException({ message: "This is a message", other: "other" });
      * @example throw new KaindaException("This is a message", 500);
      */
-    constructor(options, user_code = null) {
+    constructor(options, user_code = null) 
+    {
         super(typeof options === "string" ? options : undefined);
         this.body = typeof options === "object" ? options : { message: options };
-        if (user_code) this.response_code = user_code;
+        if (user_code) 
+        {
+            this.response_code = user_code;
+        }
     }
 
     /**
@@ -45,13 +50,17 @@ class KaindaException extends Error {
      * @example throw SubClassOfKaindaException.fromTemplate({ param1: "value1", param2: "value2" }, 500);
      * @example throw SubClassOfKaindaException.fromTemplate({ param1: "value1", param2: "value2" }, 500, (params) => { return { message: `Custom message with ${params.param1} and ${params.param2}` } });
      */
-    static fromTemplate(params, code = null, override_template = null) {
+    static fromTemplate(params, code = null, override_template = null) 
+    {
         const auxError = new this(params, code);
         const templateFn = override_template || auxError.template;
 
-        if (templateFn && typeof templateFn === "function") {
+        if (templateFn && typeof templateFn === "function") 
+        {
             auxError.body = templateFn(params);
-        } else {
+        }
+        else 
+        {
             throw new KaindaException("The exception does not have a template function.");
         }
 

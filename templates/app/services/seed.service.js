@@ -1,5 +1,6 @@
-const LogService = require('@services/log.service');
-const kainda = require('kainda');
+const LogService = require("@services/log.service");
+const DbService = require("@services/db.service");
+const kainda = require("kainda");
 
 /**
  * @class SeedService
@@ -7,7 +8,8 @@ const kainda = require('kainda');
  * @static
  * @memberof DbService
  */
-class SeedService {
+class SeedService 
+{
 
     /**
      * @method seed
@@ -18,10 +20,14 @@ class SeedService {
      * @memberof DbService.SeedService
      * @returns {Promise<void>}
      */
-    static async seed(Models) {
-        if (DbService.mongoose) {
+    static async seed(Models) 
+    {
+        if (DbService.mongoose) 
+        {
             await SeedService.seedMongoose(Models);
-        } else if (DbService.sequelize) {
+        }
+        else if (DbService.sequelize) 
+        {
             await SeedService.seedSequelize(Models);
         }
     }
@@ -37,23 +43,31 @@ class SeedService {
      * @returns {Promise<void>}
      * @private
      */
-    static async seedMongoose(Models, externalTransaction) {
+    static async seedMongoose(Models, externalTransaction) 
+    {
         let transaction = externalTransaction ?? await DbService.mongoose.startSession();
-        try {
+        try 
+        {
             transaction.startTransaction();
-            LogService.ServerLogger.info('[SEED] Seeding database...');
-            for (let model of Object.keys(Models)) {
-                if (Models[model].Seeders.seed && typeof Models[model].Seeders.seed === 'function') {
+            LogService.ServerLogger.info("[SEED] Seeding database...");
+            for (let model of Object.keys(Models)) 
+            {
+                if (Models[model].Seeders.seed && typeof Models[model].Seeders.seed === "function") 
+                {
                     await Models[model].Seeders.seed(transaction);
-                } else if (Models[model].seed && typeof Models[model].seed === 'function') {
+                }
+                else if (Models[model].seed && typeof Models[model].seed === "function") 
+                {
                     await Models[model].seed(null, { transaction });
                 }
             }
             await transaction.commitTransaction();
-            LogService.ServerLogger.verbose('[SEED] Database seeded successfully');
-        } catch (error) {
+            LogService.ServerLogger.verbose("[SEED] Database seeded successfully");
+        }
+        catch (error) 
+        {
             await transaction.abortTransaction();
-            LogService.ServerLogger.error('[SEED] Error seeding database. Rolled back');
+            LogService.ServerLogger.error("[SEED] Error seeding database. Rolled back");
         }
     }
 
@@ -68,22 +82,30 @@ class SeedService {
      * @returns {Promise<void>}
      * @private
      */
-    static async seedSequelize(Models, externalTransaction) {
+    static async seedSequelize(Models, externalTransaction) 
+    {
         let transaction = externalTransaction ?? await DbService.sequelize.transaction();
-        try {
-            LogService.ServerLogger.info('[SEED] Seeding database...');
-            for (let model of Object.keys(Models)) {
-                if (Models[model].Seeders.seed && typeof Models[model].Seeders.seed === 'function') {
+        try 
+        {
+            LogService.ServerLogger.info("[SEED] Seeding database...");
+            for (let model of Object.keys(Models)) 
+            {
+                if (Models[model].Seeders.seed && typeof Models[model].Seeders.seed === "function") 
+                {
                     await Models[model].Seeders.seed(transaction);
-                } else if (Models[model].seed && typeof Models[model].seed === 'function') {
+                }
+                else if (Models[model].seed && typeof Models[model].seed === "function") 
+                {
                     await Models[model].seed(null, { transaction });
                 }
             }
             await transaction.commit();
-            LogService.ServerLogger.verbose(kainda.chalk.green('[SEED] Database seeded successfully'));
-        } catch (error) {
+            LogService.ServerLogger.verbose(kainda.chalk.green("[SEED] Database seeded successfully"));
+        }
+        catch (error) 
+        {
             await transaction.rollback();
-            LogService.ServerLogger.error('[SEED] Error seeding database. Rolled back');
+            LogService.ServerLogger.error("[SEED] Error seeding database. Rolled back");
         }
     }
 

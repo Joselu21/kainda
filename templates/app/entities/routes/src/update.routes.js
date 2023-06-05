@@ -4,7 +4,8 @@ const { deactivateRoute } = require("kainda");
 
 module.exports = {
     
-    update : function (app) {
+    update : function (app) 
+    {
 
         const __KAINDA__MODEL__UPPERCASE__ = ModelsService.Models.__KAINDA__MODEL__UPPERCASE__;
 

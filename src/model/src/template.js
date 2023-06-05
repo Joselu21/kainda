@@ -15,14 +15,17 @@ const { KaindaException, GenericKaindaExceptions } = require("./../../exceptions
  * @constructor
  * @public
  */
-class KaindaModel {
+class KaindaModel 
+{
 
     static isSequelizeModel = ModelType.isSequelizeModel;
     static isMongooseModel = ModelType.isMongooseModel;
 
-    constructor(model) {
+    constructor(model) 
+    {
 
-        if (!model) {
+        if (!model) 
+        {
             throw new Error("The model is not defined.");
         }
 
@@ -70,7 +73,8 @@ class KaindaModel {
 
     }
 
-    #__initPassthrough(model) {
+    #__initPassthrough(model) 
+    {
         const passthrough = generatePassthrough(model);
         this.createOne = passthrough.create.createOne;
         this.insertOne = passthrough.create.createOne;
@@ -98,7 +102,7 @@ class KaindaModel {
         this.deleteOne = passthrough.delete.deleteOne;
         this.deleteMany = passthrough.delete.deleteMany;
 
-    };
+    }
     
     // -------------------- //
     // ---- CONTROLLER ---- //
@@ -110,7 +114,8 @@ class KaindaModel {
      * The controller methods for the submodel
      * @param {Object} Controller
      */
-    set Controller(newController) {
+    set Controller(newController) 
+    {
         this.#_Controller = {
             ...generateControllers(this),
             ...newController,
@@ -121,7 +126,8 @@ class KaindaModel {
      * Controller getter
      * @returns {Object}
      */
-    get Controller() {
+    get Controller() 
+    {
         return this.#_Controller;
     }
 
@@ -137,7 +143,8 @@ class KaindaModel {
      * The exceptions for the model
      * @param {Object} newExceptions
      */
-    set Exceptions(newExceptions) {
+    set Exceptions(newExceptions) 
+    {
         this.#_exceptions = {
             ...GenericKaindaExceptions,
             ...newExceptions,
@@ -148,7 +155,8 @@ class KaindaModel {
      * Exceptions getter
      * @returns {Object}
      */
-    get Exceptions() {
+    get Exceptions() 
+    {
         return this.#_exceptions;
     }
 
@@ -168,13 +176,15 @@ class KaindaModel {
      * @property {String} oldRecords - The options for what to do with old records.
      */
     #_seed_options = {};
-    #_seed = () => {};
+    #_seed = () => 
+    {};
 
     /**
      * Seed Options setter
      * @param {SeedOptions} newSeedOptions
      */
-    set seed_options(newSeedOptions) {
+    set seed_options(newSeedOptions) 
+    {
         SeedOptions.validate(newSeedOptions);
         this.#_seed_options = {
             ...this.#_seed_options,
@@ -186,7 +196,8 @@ class KaindaModel {
      * Seed Options getter
      * @returns {SeedOptions}
      */
-    get seed_options() {
+    get seed_options() 
+    {
         return this.#_seed_options;
     }
 
@@ -194,7 +205,8 @@ class KaindaModel {
      * Seed function setter
      * @param {Function} newSeedFunction
      */
-    set seed(newSeedFunction) {
+    set seed(newSeedFunction) 
+    {
         throw new KaindaException("Seed function cannot be set directly because it can break other seeders functionality when there are dependencies. You can override the seed function by setting the Seeders.seed function in the model.");
     }
 
@@ -203,7 +215,8 @@ class KaindaModel {
      * @returns {Function}
      * @see Seeders.seed
      */
-    get seed() {
+    get seed() 
+    {
         return this.#_seed;
     }
 

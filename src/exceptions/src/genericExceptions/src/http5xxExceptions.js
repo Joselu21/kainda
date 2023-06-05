@@ -1,5 +1,5 @@
 const KaindaException = require("./../../KaindaException");
-const GenericKaindaExceptionTemplates = require('./../../genericTemplates');
+const GenericKaindaExceptionTemplates = require("./../../genericTemplates");
 
 /**
  * Represents an exception for internal server errors.
@@ -15,7 +15,8 @@ const GenericKaindaExceptionTemplates = require('./../../genericTemplates');
  * @example throw new Kainda500Exception("This is a message", 500);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500|MDN Web Docs}
  */
-class Kainda500Exception extends KaindaException {
+class Kainda500Exception extends KaindaException 
+{
     name = "KaindaInternalServerErrorException";
     response_code = 500;
     template = GenericKaindaExceptionTemplates.Kainda500Template;
@@ -35,7 +36,8 @@ class Kainda500Exception extends KaindaException {
  * @example throw new Kainda501Exception("This is a message", 500);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/501|MDN Web Docs}
  */
-class Kainda501Exception extends KaindaException {
+class Kainda501Exception extends KaindaException 
+{
     name = "KaindaNotImplementedException";
     response_code = 501;
     template = GenericKaindaExceptionTemplates.Kainda501Template;
@@ -55,7 +57,8 @@ class Kainda501Exception extends KaindaException {
  * @example throw new Kainda502Exception("This is a message", 500);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502|MDN Web Docs}
  */
-class Kainda502Exception extends KaindaException {
+class Kainda502Exception extends KaindaException 
+{
     name = "KaindaBadGatewayException";
     response_code = 502;
     template = GenericKaindaExceptionTemplates.Kainda502Template;
@@ -75,7 +78,8 @@ class Kainda502Exception extends KaindaException {
  * @example throw new Kainda503Exception("This is a message", 500);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503|MDN Web Docs}
  */
-class Kainda503Exception extends KaindaException {
+class Kainda503Exception extends KaindaException 
+{
     name = "KaindaServiceUnavailableException";
     response_code = 503;
     template = GenericKaindaExceptionTemplates.Kainda503Template;
@@ -95,7 +99,8 @@ class Kainda503Exception extends KaindaException {
  * @example throw new Kainda504Exception("This is a message", 500);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504|MDN Web Docs}
  */
-class Kainda504Exception extends KaindaException {
+class Kainda504Exception extends KaindaException 
+{
     name = "KaindaGatewayTimeoutException";
     response_code = 504;
     template = GenericKaindaExceptionTemplates.Kainda504Template;
@@ -115,7 +120,8 @@ class Kainda504Exception extends KaindaException {
  * @example throw new Kainda505Exception("This is a message", 500);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/505|MDN Web Docs}
  */
-class Kainda505Exception extends KaindaException {
+class Kainda505Exception extends KaindaException 
+{
     name = "KaindaHTTPVersionNotSupportedException";
     response_code = 505;
     template = GenericKaindaExceptionTemplates.Kainda505Template;
@@ -134,7 +140,8 @@ class Kainda505Exception extends KaindaException {
  * @example throw new Kainda506Exception("This is a message", 500);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/506|MDN Web Docs}
  */
-class Kainda506Exception extends KaindaException {
+class Kainda506Exception extends KaindaException 
+{
     name = "KaindaVariantAlsoNegotiatesException";
     response_code = 506;
     template = GenericKaindaExceptionTemplates.Kainda506Template;
@@ -153,7 +160,8 @@ class Kainda506Exception extends KaindaException {
  * @example throw new Kainda507Exception("This is a message", 500);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/507|MDN Web Docs}
  */
-class Kainda507Exception extends KaindaException {
+class Kainda507Exception extends KaindaException 
+{
     name = "KaindaInsufficientStorageException";
     response_code = 507;
     template = GenericKaindaExceptionTemplates.Kainda507Template;
@@ -172,7 +180,8 @@ class Kainda507Exception extends KaindaException {
  * @example throw new Kainda508Exception("This is a message", 500);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/508|MDN Web Docs}
  */
-class Kainda508Exception extends KaindaException {
+class Kainda508Exception extends KaindaException 
+{
     name = "KaindaLoopDetectedException";
     response_code = 508;
     template = GenericKaindaExceptionTemplates.Kainda508Template;
@@ -192,7 +201,8 @@ class Kainda508Exception extends KaindaException {
  * @example throw new Kainda510Exception("This is a message", 500);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/510|MDN Web Docs}
  */
-class Kainda510Exception extends KaindaException {
+class Kainda510Exception extends KaindaException 
+{
     name = "KaindaNotExtendedException";
     response_code = 510;
     template = GenericKaindaExceptionTemplates.Kainda510Template;
@@ -212,7 +222,8 @@ class Kainda510Exception extends KaindaException {
  * @example throw new Kainda511Exception("This is a message", 500);
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/511|MDN Web Docs}
  */
-class Kainda511Exception extends KaindaException {
+class Kainda511Exception extends KaindaException 
+{
     name = "KaindaNetworkAuthenticationRequiredException";
     response_code = 511;
     template = GenericKaindaExceptionTemplates.Kainda511Template;

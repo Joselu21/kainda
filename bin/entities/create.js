@@ -1,12 +1,12 @@
-const path = require('path');
-const prompt = require('prompt');
-const fs = require('fs');
-const chalk = require('chalk');
-const { copyTemplate, hydrateFile, mkdirSafe } = require('../utils/files.utils');
+const path = require("path");
+const prompt = require("prompt");
+const fs = require("fs");
+const chalk = require("chalk");
+const { copyTemplate, hydrateFile, mkdirSafe } = require("../utils/files.utils");
 
-const templatesPath = path.join(__dirname, '../../templates/');
-const appPath = templatesPath + 'app/';
-const entitiesPath = appPath + 'entities/';
+const templatesPath = path.join(__dirname, "../../templates/");
+const appPath = templatesPath + "app/";
+const entitiesPath = appPath + "entities/";
 
 /**
  * Creates the basic file structure for a new entity.
@@ -14,18 +14,23 @@ const entitiesPath = appPath + 'entities/';
  * @param {string} templatePath - The path to the template directory.
  * @param {string} destinationPath - The path to the destination directory.
  */
-function __auxiliarRecursiveCreateStructure(name, templatePath, destinationPath) {
+function __auxiliarRecursiveCreateStructure(name, templatePath, destinationPath) 
+{
 
     const files = fs.readdirSync(templatePath);
 
-    for (const file of files) {
+    for (const file of files) 
+    {
         // If it is a directory, create it
-        const templateFilePath = templatePath + '/' + file;
-        const destinationFilePath = destinationPath + '/' + file;
-        if (fs.lstatSync(templateFilePath).isDirectory()) {
+        const templateFilePath = templatePath + "/" + file;
+        const destinationFilePath = destinationPath + "/" + file;
+        if (fs.lstatSync(templateFilePath).isDirectory()) 
+        {
             mkdirSafe(destinationFilePath);
             __auxiliarRecursiveCreateStructure(name, templateFilePath, destinationFilePath);
-        } else {
+        }
+        else 
+        {
             copyTemplate(templateFilePath, destinationFilePath);
             hydrateFile(destinationFilePath, { entity_name: name });
         }
@@ -40,56 +45,67 @@ function __auxiliarRecursiveCreateStructure(name, templatePath, destinationPath)
  * @param {boolean} options.sequelize - If true, creates a Sequelize entity.
  * @param {boolean} options.mongoose - If true, creates a Mongoose entity.
  */
-function __genericCreateStructure(name, options) {
+function __genericCreateStructure(name, options) 
+{
 
     const urlName = name.toLowerCase().substring(0, 1) + name.substring(1);
 
     const StructureNames = [
-        'controllers',
-        'exceptions',
-        'middlewares',
-        'model',
-        'routes',
-        'seeders',
-        'test',
-        'validators'
+        "controllers",
+        "exceptions",
+        "middlewares",
+        "model",
+        "routes",
+        "seeders",
+        "test",
+        "validators"
     ];
 
-    for (const structureName of StructureNames) {
-        mkdirSafe('app/entities/' + name + '/' + structureName);
-        mkdirSafe('app/entities/' + name + '/' + structureName + '/src');
-        copyTemplate(entitiesPath + structureName + '/index.js', './app/entities/' + name + '/' + structureName + '/index.js');
-        hydrateFile('./app/entities/' + name + '/' + structureName + '/index.js', { entity_name: name });
+    for (const structureName of StructureNames) 
+    {
+        mkdirSafe("app/entities/" + name + "/" + structureName);
+        mkdirSafe("app/entities/" + name + "/" + structureName + "/src");
+        copyTemplate(entitiesPath + structureName + "/index.js", "./app/entities/" + name + "/" + structureName + "/index.js");
+        hydrateFile("./app/entities/" + name + "/" + structureName + "/index.js", { entity_name: name });
 
-        if (structureName === 'model') {
-            if (options.sequelize) {
-                copyTemplate(entitiesPath + structureName + '/src/model.sequelize.js', './app/entities/' + name + '/' + structureName + '/src/' + urlName + '.model.js');
-                copyTemplate(entitiesPath + structureName + '/model.sequelize.json', './app/entities/' + name + '/' + structureName + '/model.json');
-            } else if (options.mongoose) {
-                copyTemplate(entitiesPath + structureName + '/src/model.mongoose.js', './app/entities/' + name + '/' + structureName + '/src/' + urlName + '.model.js');
-                copyTemplate(entitiesPath + structureName + '/model.mongoose.json', './app/entities/' + name + '/' + structureName + '/model.json');
+        if (structureName === "model") 
+        {
+            if (options.sequelize) 
+            {
+                copyTemplate(entitiesPath + structureName + "/src/model.sequelize.js", "./app/entities/" + name + "/" + structureName + "/src/" + urlName + ".model.js");
+                copyTemplate(entitiesPath + structureName + "/model.sequelize.json", "./app/entities/" + name + "/" + structureName + "/model.json");
             }
-            hydrateFile('./app/entities/' + name + '/' + structureName + '/src/' + urlName + '.model.js', { entity_name: name });
-            hydrateFile('./app/entities/' + name + '/' + structureName + '/model.json', { entity_name: name });
+            else if (options.mongoose) 
+            {
+                copyTemplate(entitiesPath + structureName + "/src/model.mongoose.js", "./app/entities/" + name + "/" + structureName + "/src/" + urlName + ".model.js");
+                copyTemplate(entitiesPath + structureName + "/model.mongoose.json", "./app/entities/" + name + "/" + structureName + "/model.json");
+            }
+            hydrateFile("./app/entities/" + name + "/" + structureName + "/src/" + urlName + ".model.js", { entity_name: name });
+            hydrateFile("./app/entities/" + name + "/" + structureName + "/model.json", { entity_name: name });
             continue;
         }
 
-        __auxiliarRecursiveCreateStructure(name, entitiesPath + structureName + '/src', './app/entities/' + name + '/' + structureName + '/src');
+        __auxiliarRecursiveCreateStructure(name, entitiesPath + structureName + "/src", "./app/entities/" + name + "/" + structureName + "/src");
 
-        if (structureName === 'test') {
+        if (structureName === "test") 
+        {
             // Copy model.test.js to name.test.js
-            copyTemplate(entitiesPath + structureName + '/model.test.js', './app/entities/' + name + '/' + structureName + '/' + urlName + '.test.js');
-            hydrateFile('./app/entities/' + name + '/' + structureName + '/' + urlName + '.test.js', { entity_name: name });
+            copyTemplate(entitiesPath + structureName + "/model.test.js", "./app/entities/" + name + "/" + structureName + "/" + urlName + ".test.js");
+            hydrateFile("./app/entities/" + name + "/" + structureName + "/" + urlName + ".test.js", { entity_name: name });
         }
 
-        if (structureName === 'routes') {
+        if (structureName === "routes") 
+        {
             // Copy routes.sequelize|mongoose.json to routes.json
-            if (options.sequelize) {
-                copyTemplate(entitiesPath + structureName + '/routes.sequelize.json', './app/entities/' + name + '/' + structureName + '/routes.json');
-            } else if (options.mongoose) {
-                copyTemplate(entitiesPath + structureName + '/routes.mongoose.json', './app/entities/' + name + '/' + structureName + '/routes.json');
+            if (options.sequelize) 
+            {
+                copyTemplate(entitiesPath + structureName + "/routes.sequelize.json", "./app/entities/" + name + "/" + structureName + "/routes.json");
             }
-            hydrateFile('./app/entities/' + name + '/' + structureName + '/routes.json', { entity_name: name });
+            else if (options.mongoose) 
+            {
+                copyTemplate(entitiesPath + structureName + "/routes.mongoose.json", "./app/entities/" + name + "/" + structureName + "/routes.json");
+            }
+            hydrateFile("./app/entities/" + name + "/" + structureName + "/routes.json", { entity_name: name });
         }
 
     }
@@ -104,10 +120,11 @@ function __genericCreateStructure(name, options) {
  * @param {boolean} options.mongoose - Whether to use mongoose.
  * @returns {void} Nothing.
  */
-function _createEntityStructure(name, options) {
-    mkdirSafe('app/entities/' + name);
-    copyTemplate(path.join(__dirname, '../../templates/app/entities/index.js'), './app/entities/' + name + '/index.js');
-    hydrateFile('./app/entities/' + name + '/index.js', { entity_name: name });
+function _createEntityStructure(name, options) 
+{
+    mkdirSafe("app/entities/" + name);
+    copyTemplate(path.join(__dirname, "../../templates/app/entities/index.js"), "./app/entities/" + name + "/index.js");
+    hydrateFile("./app/entities/" + name + "/index.js", { entity_name: name });
     __genericCreateStructure(name, options);
 }
 
@@ -118,17 +135,19 @@ function _createEntityStructure(name, options) {
  * @param {string} name[null] - The entity name to be validated.
  * @returns {Promise<string>} The obtained entity name.
  */
-async function __obtainEntityName(name = null) {
-    while (!name || name === '') {
+async function __obtainEntityName(name = null) 
+{
+    while (!name || name === "") 
+    {
         console.log("Please, choose a name for your entity");
         prompt.start();
         const schema = {
             properties: {
                 entity_name: {
-                    description: 'Entity name',
-                    type: 'string',
+                    description: "Entity name",
+                    type: "string",
                     required: true,
-                    message: 'Entity name is required'
+                    message: "Entity name is required"
                 }
             }
         };
@@ -148,26 +167,29 @@ async function __obtainEntityName(name = null) {
  * @param {boolean} options.mongoose - Whether to use mongoose.
  * @returns {Promise<Object>} A promise that resolves with the options object.
  */
-async function __obtainOptions(options = {}) {
-    while (!options.sequelize && !options.mongoose) {
+async function __obtainOptions(options = {}) 
+{
+    while (!options.sequelize && !options.mongoose) 
+    {
         console.log("Please, choose a database type");
         prompt.start();
         const schema = {
             properties: {
                 database_type: {
-                    description: 'Database type (sequelize, mongoose)',
-                    type: 'string',
+                    description: "Database type (sequelize, mongoose)",
+                    type: "string",
                     required: true,
-                    message: 'Database type is required'
+                    message: "Database type is required"
                 }
             }
         };
         const result = await prompt.get(schema);
         const databaseType = result.database_type.toLowerCase();
-        options.sequelize = databaseType === 'sequelize';
-        options.mongoose = databaseType === 'mongoose';
-        if (!options.sequelize && !options.mongoose) {
-            console.log(chalk.red('Database type must be sequelize or mongoose'));
+        options.sequelize = databaseType === "sequelize";
+        options.mongoose = databaseType === "mongoose";
+        if (!options.sequelize && !options.mongoose) 
+        {
+            console.log(chalk.red("Database type must be sequelize or mongoose"));
         }
     }
     return options;
@@ -180,7 +202,8 @@ async function __obtainOptions(options = {}) {
  * @param {Object} options - The options to be used when creating the entity.
  * @returns {void}
  */
-async function createEntity(name, options = {}) {
+async function createEntity(name, options = {}) 
+{
 
     name = await __obtainEntityName(name);
     options = await __obtainOptions(options);

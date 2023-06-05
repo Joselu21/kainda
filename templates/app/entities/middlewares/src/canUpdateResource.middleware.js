@@ -7,7 +7,8 @@
  * @param {Function} next
  * @returns {void}
  */
-async function canUpdateResource(req, res, next) {
+async function canUpdateResource(req, res, next) 
+{
 
     console.warn("canUpdateResource middleware is not implemented yet");
     next();

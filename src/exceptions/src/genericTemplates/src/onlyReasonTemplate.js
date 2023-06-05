@@ -10,9 +10,11 @@
  * const error = onlyReason({reason: 'The name must be a string.'}, 'The request is invalid.', 'BAD_REQUEST');
  * console.log(error); // {error_type: 'BAD_REQUEST', error_message: 'The request is invalid. The name must be a string.', error_data: {reason: 'The name must be a string.'}}
  */
-function onlyReason(params, message, httpStatus) {
+function onlyReason(params, message, httpStatus) 
+{
     let newMessage = message;
-    if (params.reason && typeof params.reason === "string") {
+    if (params.reason && typeof params.reason === "string") 
+    {
         newMessage += ` ${params.reason}`;
     }
     return {
