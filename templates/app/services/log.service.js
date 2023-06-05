@@ -142,9 +142,9 @@ function requestConsoleFormatter(info) {
         color = chalk.green;
     } else if (info.message.res.statusCode >= 300 && info.message.res.statusCode < 400) {
         color = chalk.blue;
-    } else if (info.message.res.statusCode >= 400 && info.message.res.statusCode < 500 && info.message.res.statusCode !== 418) {
+    } else if (info.message.res.statusCode >= 400 && info.message.res.statusCode < 500) {
         color = chalk.yellow;
-    } else if (info.message.res.statusCode >= 500 && info.message.res.statusCode < 600 || info.message.res.statusCode === 418) {
+    } else if (info.message.res.statusCode >= 500 && info.message.res.statusCode < 600) {
         color = chalk.red;
     }
     // Whenever the status code is 4xx or 5xx, we log the request body
