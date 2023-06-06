@@ -16,8 +16,15 @@ async function update__KAINDA__MODEL__UPPERCASE__(req, res)
     let transaction = await __KAINDA__MODEL__UPPERCASE__.transaction(DbService.get());
     try 
     {
-        let container = { ...req.body, [__KAINDA__MODEL__UPPERCASE__.modelId]: req.params.__KAINDA__MODEL__LOWERCASE___id };
-        const __KAINDA__MODEL__LOWERCASE__ = await __KAINDA__MODEL__UPPERCASE__.Controller.__update__KAINDA__MODEL__UPPERCASE__(container, { transaction });
+        const __KAINDA__MODEL__LOWERCASE__ = await __KAINDA__MODEL__UPPERCASE__.Controller.updateOne(
+            req.body,
+            {
+                [__KAINDA__MODEL__UPPERCASE__.modelId]: req.params.__KAINDA__MODEL__LOWERCASE___id,
+            },
+            {
+                transaction
+            }
+        );
         await transaction.commit();
         return res.status(200).json(__KAINDA__MODEL__LOWERCASE__.toJSON());
     }
