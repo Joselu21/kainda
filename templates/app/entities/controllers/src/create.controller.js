@@ -16,7 +16,7 @@ async function create__KAINDA__MODEL__UPPERCASE__(req, res)
     let transaction = await __KAINDA__MODEL__UPPERCASE__.transaction(DbService.get());
     try 
     {
-        const __KAINDA__MODEL__LOWERCASE__ = await __KAINDA__MODEL__UPPERCASE__.Controller.__create__KAINDA__MODEL__UPPERCASE__(req.body, { transaction });
+        const __KAINDA__MODEL__LOWERCASE__ = await __KAINDA__MODEL__UPPERCASE__.createOne(req.body, { transaction });
         await transaction.commit();
         return res.status(201).json(__KAINDA__MODEL__LOWERCASE__.toJSON());
     }
