@@ -72,6 +72,8 @@ function initializeStructure(project_name, options = {})
             ["app/services", "log.service.js"],
             ["app/services", "db.service.js"],
             ["app/services", "models.service.js"],
+            ["app/services", "seed.service.js"],
+            ["app/services", "exception.service.js"],
             ["app/test", ""],
             ["app/test", "mocha.setup.js"],
             ["app/test", "utils.setup.js"],
@@ -111,6 +113,9 @@ function initializeStructure(project_name, options = {})
 
         // Gitignore
         copyTemplate(join(__dirname, "../../templates/gitignore"), "./.gitignore");
+        
+        // ESLint
+        copyTemplate(join(__dirname, "../../templates/linter.config.js"), "./.eslintrc.js");
 
     }
     catch (error) 
