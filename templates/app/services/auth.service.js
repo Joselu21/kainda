@@ -1,3 +1,4 @@
+const ExceptionService = require("@services/exception.service");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const kainda = require("kainda");
@@ -9,43 +10,30 @@ const kainda = require("kainda");
  * @param {Function} next Next function
  * @returns {void} Nothing
  */
-async function tokenValid (req, res, next)
+async function tokenValid(req, res, next) 
 {
-
-    try
+    try 
     {
-
         const token = getTokenFromHeaders(req);
-        if (!token)
+        if (!token) 
         {
-
             throw kainda.GenericKaindaExceptions.Kainda401Exception.fromTemplate();
-
         }
         const secret = config.get("jwt.secret"),
             decoded = await verifyToken(
                 secret,
                 token
             );
-        if (!decoded)
+        if (!decoded) 
         {
-
             throw kainda.GenericKaindaExceptions.Kainda401Exception.fromTemplate();
-
         }
         next();
-
     }
-    catch (error)
+    catch (error) 
     {
-
-        kainda.ExceptionHandler(
-            error,
-            res
-        );
-
+        ExceptionService.handle(error, res);
     }
-
 }
 
 /**
@@ -56,52 +44,38 @@ async function tokenValid (req, res, next)
  * @param {Object} conditions The conditions to check
  * @returns {void} Nothing
  */
-async function tokenHas (req, res, next, conditions)
+async function tokenHas(req, res, next, conditions) 
 {
-
-    try
+    try 
     {
-
         const token = getTokenFromHeaders(req);
-        if (!token)
+        if (!token) 
         {
-
             throw kainda.GenericKaindaExceptions.Kainda401Exception.fromTemplate();
-
         }
         const secret = config.get("jwt.secret"),
             decoded = await verifyToken(
                 secret,
                 token
             );
-        if (!decoded)
+        if (!decoded) 
         {
-
             throw kainda.GenericKaindaExceptions.Kainda401Exception.fromTemplate();
-
         }
-        for (const condition of conditions)
+        for (const condition of conditions) 
         {
-
-            if (!decoded[condition.key] || condition.value && decoded[condition.key] !== condition.value)
+            if (!decoded[condition.key] || condition.value && decoded[condition.key] !== condition.value) 
             {
 
                 throw kainda.GenericKaindaExceptions.Kainda401Exception.fromTemplate();
 
             }
-
         }
         next();
-
     }
-    catch (error)
+    catch (error) 
     {
-
-        kainda.ExceptionHandler(
-            error,
-            res
-        );
-
+        ExceptionService.handle(error, res);
     }
 
 }
@@ -114,33 +88,23 @@ async function tokenHas (req, res, next, conditions)
  * @param {Function} next Next function
  * @returns {void} Nothing
  */
-function tokenProvided (req, res, next)
+function tokenProvided(req, res, next) 
 {
-
-    try
+    try 
     {
-
         const token = getTokenFromHeaders(
             req,
             res
         );
-        if (!token)
+        if (!token) 
         {
-
             throw kainda.GenericKaindaExceptions.Kainda401Exception.fromTemplate("Token not found");
-
         }
         next();
-
     }
-    catch (error)
+    catch (error) 
     {
-
-        kainda.ExceptionHandler(
-            error,
-            res
-        );
-
+        ExceptionService.handle(error, res);
     }
 
 }
@@ -150,21 +114,17 @@ function tokenProvided (req, res, next)
  * @param {Object} req Request object
  * @returns {string} The extracted token
  */
-function getTokenFromHeaders (req)
+function getTokenFromHeaders(req) 
 {
-
     let token = req.headers["x-access-token"] ?? req.headers.authorization;
-    if (token && token.startsWith("Bearer "))
+    if (token && token.startsWith("Bearer ")) 
     {
-
         token = token.slice(
             7,
             token.length
         );
-
     }
     return token;
-
 }
 
 /**
@@ -172,12 +132,10 @@ function getTokenFromHeaders (req)
  * @param {string} token The token to decode
  * @returns {Object} The decoded token
  */
-function decodeToken (token)
+function decodeToken(token) 
 {
-
     const decoded = jwt.decode(token);
     return decoded;
-
 }
 
 /**
@@ -186,32 +144,26 @@ function decodeToken (token)
  * @returns {object} The decoded token
  * @example verifyToken(process.env.JWT_SECRET, "dsdfnMyTokendfdsf")
  */
-async function verifyToken (secret, token)
+async function verifyToken(secret, token) 
 {
-
-    if (!token || token === "")
+    if (!token || token === "") 
     {
-
         return false;
-
     }
 
     let decoded = null;
-    try
+    try 
     {
-
         decoded = jwt.verify(
             token,
             secret
         );
-
     }
-    catch (e)
+    catch (e) 
     {
-
         return false;
-
     }
+
     return decoded;
 
 }

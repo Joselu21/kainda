@@ -370,7 +370,7 @@ For example, a controller could look like this:
             res.status(201).json(entity.toJSON());
         } catch (error) {
             if (transaction) await transaction.rollback();
-            ExceptionHandler(error, res);
+    ExceptionService.handle(error, res);
         }
     }
 

@@ -1,6 +1,6 @@
+const ExceptionService = require("@services/exception.service");
 const ModelsService = require("@services/models.service");
 const LogService = require("@services/log.service");
-const { ExceptionHandler } = require("kainda");
 
 /**
  * Get all __KAINDA__MODEL__LOWERCASE__s
@@ -32,7 +32,7 @@ async function getAll__KAINDA__MODEL__UPPERCASE__s(req, res)
     catch (error) 
     {
         LogService.ErrorLogger.error(error);
-        ExceptionHandler(error, res);
+        ExceptionService.handle(error, res);
     }
 }
 
@@ -64,7 +64,7 @@ async function get__KAINDA__MODEL__UPPERCASE__ById(req, res)
     catch (error) 
     {
         LogService.ErrorLogger.error(error);
-        ExceptionHandler(error, res);
+        ExceptionService.handle(error, res);
     }
 }
 

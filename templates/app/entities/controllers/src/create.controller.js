@@ -1,7 +1,7 @@
+const ExceptionService = require("@services/exception.service");
 const ModelsService = require("@services/models.service");
 const LogService = require("@services/log.service");
 const DbService = require("@services/db.service");
-const { ExceptionHandler } = require("kainda");
 
 /**
  * Create new __KAINDA__MODEL__LOWERCASE__
@@ -27,7 +27,7 @@ async function create__KAINDA__MODEL__UPPERCASE__(req, res)
         {
             await transaction.rollback();
         }
-        ExceptionHandler(error, res);
+        ExceptionService.handle(error, res);
     }
 }
 
