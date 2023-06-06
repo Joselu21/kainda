@@ -1,28 +1,28 @@
 class KaindaTransaction 
 {
 
-    static async #MongooseTransaction(mongoose) 
+    static async #MongooseTransaction(mongoose, options) 
     {
         let transaction = await mongoose.startSession();
         transaction.startTransaction();
-        return new KaindaTransaction(transaction, "mongoose");
+        return new KaindaTransaction(transaction, "mongoose", options);
     }
 
-    static async #SequelizeTransaction(sequelize) 
+    static async #SequelizeTransaction(sequelize, options) 
     {
         let transaction = await sequelize.transaction();
-        return new KaindaTransaction(transaction, "sequelize");
+        return new KaindaTransaction(transaction, "sequelize", options);
     }
 
-    static async newTransaction(modelType, instance) 
+    static async newTransaction(modelType, instance, options) 
     {
         if (modelType === "mongoose") 
         {
-            return await this.#MongooseTransaction(instance);
+            return await this.#MongooseTransaction(instance, options);
         }
         else if (modelType === "sequelize") 
         {
-            return await this.#SequelizeTransaction(instance);
+            return await this.#SequelizeTransaction(instance, options);
         }
         else 
         {
@@ -30,12 +30,13 @@ class KaindaTransaction
         }
     }
 
-    constructor (transaction, modelType) 
+    constructor(transaction, modelType, options = {}) 
     {
         this.isKaindaTransaction = true;
         this.transaction = transaction;
         this.modelType = modelType;
         this.state = "active";
+        this.options = options;
         if (this.modelType === "mongoose") 
         {
             this.commit = this.#commitMongoose;
@@ -50,41 +51,77 @@ class KaindaTransaction
 
     async #commitSequelize() 
     {
-        this.state = "commited";
-        await this.transaction.commit();
+        if (this.options.throwOnBadState && !this.isActive()) 
+        {
+            throw new Error("Transaction is not active");
+        }
+        if (!this.options.throwOnBadState && this.isActive()) 
+        {
+            this.state = "commited";
+            await this.transaction.commit();
+            return true;
+        }
+        return false;
     }
 
     async #commitMongoose() 
     {
-        this.state = "commited";
-        await this.transaction.commitTransaction();
-        this.transaction.endSession();
+        if (this.options.throwOnBadState && !this.isActive()) 
+        {
+            throw new Error("Transaction is not active");
+        }
+        if (!this.options.throwOnBadState && this.isActive()) 
+        {
+            this.state = "commited";
+            await this.transaction.commitTransaction();
+            this.transaction.endSession();
+            return true;
+        }
+        return false;
     }
 
     async #rollbackMongoose() 
     {
-        this.state = "rolledBack";
-        await this.transaction.abortTransaction();
-        this.transaction.endSession();
+        if (this.options.throwOnBadState && !this.isActive()) 
+        {
+            throw new Error("Transaction is not active");
+        }
+        if (!this.options.throwOnBadState && this.isActive()) 
+        {
+            this.state = "rolledBack";
+            await this.transaction.abortTransaction();
+            this.transaction.endSession();
+            return true;
+        }
+        return false;
     }
 
     async #rollbackSequelize() 
     {
-        this.state = "rolledBack";
-        await this.transaction.rollback();
+        if (this.options.throwOnBadState && !this.isActive()) 
+        {
+            throw new Error("Transaction is not active");
+        }
+        if (!this.options.throwOnBadState && this.isActive()) 
+        {
+            this.state = "rolledBack";
+            await this.transaction.rollback();
+            return true;
+        }
+        return false;
     }
 
-    get isActive () 
+    get isActive() 
     {
         return this.state === "active";
     }
 
-    get isCommited () 
+    get isCommited() 
     {
         return this.state === "commited";
     }
 
-    get isRolledBack () 
+    get isRolledBack() 
     {
         return this.state === "rolledBack";
     }

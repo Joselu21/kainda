@@ -287,7 +287,17 @@ The final configuration for the development environment will be:
 
 The Models are the core of the framework, they are the ones that contain all the information about the entity, its controllers, exceptions, middlewares, routes, seeders and validators. Each entity has a unique KaindaModel and its construction is the only difference between a MongooseModel and a SequelizeModel in the app. 
 
-The KaindaModel class is a wrapper class for Mongoose and Sequelize models, which allows us to use the same code for both of them. Inside the KaindaModel class, we have some passthrough methods that standarize the way we interact with the models, like the create, update, delete, get and find methods. It also contains internally a class for creating and managing transactions, used by the default controllers and recommended for all the modifications of the database.
+The KaindaModel class is a wrapper class for Mongoose and Sequelize models, which allows us to use the same code for both of them. Inside the KaindaModel class, we have some passthrough methods that standarize the way we interact with the models, like the create, update, delete, get and find methods. 
+
+#### Transactions
+All KaindaModels contains internally a class for creating and managing transactions, used by the default controllers and recommended for all the modifications of the database. The base class exports an asyncronous function that returns a transaction of the desired database type, which is a MongooseTransaction or a SequelizeTransaction. The transaction class contains the following methods:
+- commit: Commits the transaction
+- rollback: Rollbacks the transaction
+- isActive: Returns true if the transaction is active, false otherwise
+- isCommitted: Returns true if the transaction is committed, false otherwise
+- isRolledBack: Returns true if the transaction is rolledback, false otherwise
+
+Also, every time you create a new transaction you can pass certain options as the second parameter. Currently, the only option available is throwOnBadState, which is a boolean flag that indicates wether the transaction should throw an error if it is not active when trying to commit or rollback it. This option is false by default! So if you commit or rollback a transaction that is already committed or rolled back, it will not throw an error, it will just return false.
 
 ### Routes
 
@@ -365,19 +375,21 @@ For example, a controller could look like this:
 
 ```javascript
     async function create(req, res) {
-        let transaction = Models.MyEntity.transaction();
+        let transaction = await Models.MyEntity.transaction(DbService.get(), { throwOnBadState: true });
         try {
             const entity = await Models.MyEntity.createOne(req.body, { transaction });
             await transaction.commit();
             res.status(201).json(entity.toJSON());
         } catch (error) {
             if (transaction) await transaction.rollback();
-    ExceptionService.handle(error, res);
+            ExceptionService.handle(error, res);
         }
     }
 
     module.exports = { create };
 ```
+
+You can add your own controllers to the entity by creating a new controller file in the controllers folder of the entity. The controller file must export an object that contains named functions that receives the request and response parameters.
 
 ### Exceptions
 
