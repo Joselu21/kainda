@@ -51,15 +51,21 @@ async function main()
         if (err) 
         {
             LogService.StartLogger.error(err);
-            throw new Error();
+            throw new Error("Error while starting the server: " + (err.message ?? "Possible EADDRINUSE"));
         }
-        LogService.StartLogger.info(`__KAINDA__PROJECT__NAME__ is running on ${host}:${port}`);
+        LogService.StartLogger.info(`suarte_backend is running on ${host}:${port}`);
         poll = false;
+    });
+
+    server.on("error", (err) => 
+    {
+        LogService.StartLogger.error(err);
+        throw new Error("Error while starting the server: " + (err.message ?? "Possible EADDRINUSE"));
     });
 
     while (poll) 
     {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 100));
     }
 
     return app;
