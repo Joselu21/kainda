@@ -37,7 +37,7 @@ class KaindaModel
         this.modelType = ModelType.getTypeExternal(model);
         this.isMongoose = this.modelType === "mongoose";
         this.isSequelize = this.modelType === "sequelize";
-        this.transaction = async (instance) => await KaindaTransaction.newTransaction(this.modelType, instance);
+        this.transaction = async (instance, options) => await KaindaTransaction.newTransaction(this.modelType, instance, options);
         this.name = this.isMongoose ? model.modelName : this.isSequelize ? model.name : "Unknown";
         this.modelName = this.name;
         this.modelId = this.isMongoose ? "_id" : this.isSequelize ? model.primaryKeyAttribute : "Unknown";
