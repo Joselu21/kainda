@@ -18,7 +18,7 @@ const GenericKaindaExceptionTemplates = require("./../../genericTemplates");
 class Kainda400Exception extends KaindaException 
 {
     name = "KaindaBadRequestException";
-    response_code = 400;
+    response_code = this.response_code ?? 400;
     template = GenericKaindaExceptionTemplates.Kainda400Template;
 }
 
@@ -39,7 +39,7 @@ class Kainda400Exception extends KaindaException
 class Kainda401Exception extends KaindaException 
 {
     name = "KaindaUnauthorizedException";
-    response_code = 401;
+    response_code = this.response_code ?? 401;
     template = GenericKaindaExceptionTemplates.Kainda401Template;
 }
 
@@ -60,7 +60,7 @@ class Kainda401Exception extends KaindaException
 class Kainda402Exception extends KaindaException 
 {
     name = "KaindaPaymentRequiredException";
-    response_code = 402;
+    response_code = this.response_code ?? 402;
     template = GenericKaindaExceptionTemplates.Kainda402Template;
 }
 
@@ -81,7 +81,7 @@ class Kainda402Exception extends KaindaException
 class Kainda403Exception extends KaindaException 
 {
     name = "KaindaForbiddenException";
-    response_code = 403;
+    response_code = this.response_code ?? 403;
     template = GenericKaindaExceptionTemplates.Kainda403Template;
 }
 
@@ -102,7 +102,7 @@ class Kainda403Exception extends KaindaException
 class Kainda404Exception extends KaindaException 
 {
     name = "KaindaNotFoundException";
-    response_code = 404;
+    response_code = this.response_code ?? 404;
     template = GenericKaindaExceptionTemplates.Kainda404Template;
 }
 
@@ -123,7 +123,7 @@ class Kainda404Exception extends KaindaException
 class Kainda405Exception extends KaindaException 
 {
     name = "KaindaMethodNotAllowedException";
-    response_code = 405;
+    response_code = this.response_code ?? 405;
     template = GenericKaindaExceptionTemplates.Kainda405Template;
 }
 
@@ -144,7 +144,7 @@ class Kainda405Exception extends KaindaException
 class Kainda406Exception extends KaindaException 
 {
     name = "KaindaNotAcceptableException";
-    response_code = 406;
+    response_code = this.response_code ?? 406;
     template = GenericKaindaExceptionTemplates.Kainda406Template;
 }
 
@@ -165,7 +165,7 @@ class Kainda406Exception extends KaindaException
 class Kainda407Exception extends KaindaException 
 {
     name = "KaindaProxyAuthenticationRequiredException";
-    response_code = 407;
+    response_code = this.response_code ?? 407;
     template = GenericKaindaExceptionTemplates.Kainda407Template;
 }
 
@@ -186,7 +186,7 @@ class Kainda407Exception extends KaindaException
 class Kainda408Exception extends KaindaException 
 {
     name = "KaindaRequestTimeoutException";
-    response_code = 408;
+    response_code = this.response_code ?? 408;
     template = GenericKaindaExceptionTemplates.Kainda408Template;
 }
 
@@ -207,7 +207,7 @@ class Kainda408Exception extends KaindaException
 class Kainda409Exception extends KaindaException 
 {
     name = "KaindaConflictException";
-    response_code = 409;
+    response_code = this.response_code ?? 409;
     template = GenericKaindaExceptionTemplates.Kainda409Template;
 }
 
@@ -228,7 +228,7 @@ class Kainda409Exception extends KaindaException
 class Kainda410Exception extends KaindaException 
 {
     name = "KaindaGoneException";
-    response_code = 410;
+    response_code = this.response_code ?? 410;
     template = GenericKaindaExceptionTemplates.Kainda410Template;
 }
 
@@ -249,7 +249,7 @@ class Kainda410Exception extends KaindaException
 class Kainda411Exception extends KaindaException 
 {
     name = "KaindaLengthRequiredException";
-    response_code = 411;
+    response_code = this.response_code ?? 411;
     template = GenericKaindaExceptionTemplates.Kainda411Template;
 }
 
@@ -270,7 +270,7 @@ class Kainda411Exception extends KaindaException
 class Kainda412Exception extends KaindaException 
 {
     name = "KaindaPreconditionFailedException";
-    response_code = 412;
+    response_code = this.response_code ?? 412;
     template = GenericKaindaExceptionTemplates.Kainda412Template;
 }
 
@@ -291,7 +291,7 @@ class Kainda412Exception extends KaindaException
 class Kainda413Exception extends KaindaException 
 {
     name = "KaindaPayloadTooLargeException";
-    response_code = 413;
+    response_code = this.response_code ?? 413;
     template = GenericKaindaExceptionTemplates.Kainda413Template;
 }
 
@@ -312,7 +312,7 @@ class Kainda413Exception extends KaindaException
 class Kainda414Exception extends KaindaException 
 {
     name = "KaindaURITooLongException";
-    response_code = 414;
+    response_code = this.response_code ?? 414;
     template = GenericKaindaExceptionTemplates.Kainda414Template;
 }
 
@@ -333,7 +333,7 @@ class Kainda414Exception extends KaindaException
 class Kainda415Exception extends KaindaException 
 {
     name = "KaindaUnsupportedMediaTypeException";
-    response_code = 415;
+    response_code = this.response_code ?? 415;
     template = GenericKaindaExceptionTemplates.Kainda415Template;
 }
 
@@ -354,7 +354,7 @@ class Kainda415Exception extends KaindaException
 class Kainda416Exception extends KaindaException 
 {
     name = "KaindaRangeNotSatisfiableException";
-    response_code = 416;
+    response_code = this.response_code ?? 416;
     template = GenericKaindaExceptionTemplates.Kainda416Template;
 }
 
@@ -375,7 +375,7 @@ class Kainda416Exception extends KaindaException
 class Kainda417Exception extends KaindaException 
 {
     name = "KaindaExpectationFailedException";
-    response_code = 417;
+    response_code = this.response_code ?? 417;
     template = GenericKaindaExceptionTemplates.Kainda417Template;
 }
 
@@ -396,7 +396,7 @@ class Kainda417Exception extends KaindaException
 class Kainda418Exception extends KaindaException 
 {
     name = "KaindaImATeapotException";
-    response_code = 418;
+    response_code = this.response_code ?? 418;
     template = GenericKaindaExceptionTemplates.Kainda418Template;
 }
 
@@ -417,7 +417,7 @@ class Kainda418Exception extends KaindaException
 class Kainda421Exception extends KaindaException 
 {
     name = "KaindaMisdirectedException";
-    response_code = 421;
+    response_code = this.response_code ?? 421;
     template = GenericKaindaExceptionTemplates.Kainda421Template;
 }
 
@@ -438,7 +438,7 @@ class Kainda421Exception extends KaindaException
 class Kainda422Exception extends KaindaException 
 {
     name = "KaindaUnprocessableEntityException";
-    response_code = 422;
+    response_code = this.response_code ?? 422;
     template = GenericKaindaExceptionTemplates.Kainda422Template;
 }
 
@@ -459,7 +459,7 @@ class Kainda422Exception extends KaindaException
 class Kainda423Exception extends KaindaException 
 {
     name = "KaindaLockedException";
-    response_code = 423;
+    response_code = this.response_code ?? 423;
     template = GenericKaindaExceptionTemplates.Kainda423Template;
 }
 
@@ -480,7 +480,7 @@ class Kainda423Exception extends KaindaException
 class Kainda424Exception extends KaindaException 
 {
     name = "KaindaFailedDependencyException";
-    response_code = 424;
+    response_code = this.response_code ?? 424;
     template = GenericKaindaExceptionTemplates.Kainda424Template;
 }
 
@@ -501,7 +501,7 @@ class Kainda424Exception extends KaindaException
 class Kainda425Exception extends KaindaException 
 {
     name = "KaindaTooEarlyException";
-    response_code = 425;
+    response_code = this.response_code ?? 425;
     template = GenericKaindaExceptionTemplates.Kainda425Template;
 }
 
@@ -522,7 +522,7 @@ class Kainda425Exception extends KaindaException
 class Kainda426Exception extends KaindaException 
 {
     name = "KaindaUpgradeRequiredException";
-    response_code = 426;
+    response_code = this.response_code ?? 426;
     template = GenericKaindaExceptionTemplates.Kainda426Template;
 }
 
@@ -543,7 +543,7 @@ class Kainda426Exception extends KaindaException
 class Kainda428Exception extends KaindaException 
 {
     name = "KaindaPreconditionRequiredException";
-    response_code = 428;
+    response_code = this.response_code ?? 428;
     template = GenericKaindaExceptionTemplates.Kainda428Template;
 }
 
@@ -564,7 +564,7 @@ class Kainda428Exception extends KaindaException
 class Kainda429Exception extends KaindaException 
 {
     name = "KaindaTooManyRequestsException";
-    response_code = 429;
+    response_code = this.response_code ?? 429;
     template = GenericKaindaExceptionTemplates.Kainda429Template;
 }
 
@@ -585,7 +585,7 @@ class Kainda429Exception extends KaindaException
 class Kainda431Exception extends KaindaException 
 {
     name = "KaindaRequestHeaderFieldsTooLargeException";
-    response_code = 431;
+    response_code = this.response_code ?? 431;
     template = GenericKaindaExceptionTemplates.Kainda431Template;
 }
 
@@ -606,7 +606,7 @@ class Kainda431Exception extends KaindaException
 class Kainda451Exception extends KaindaException 
 {
     name = "KaindaUnavailableForLegalReasonsException";
-    response_code = 451;
+    response_code = this.response_code ?? 451;
     template = GenericKaindaExceptionTemplates.Kainda451Template;
 }
 

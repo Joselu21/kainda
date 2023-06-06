@@ -18,7 +18,7 @@ const GenericKaindaExceptionTemplates = require("./../../genericTemplates");
 class Kainda300Exception extends KaindaException 
 {
     name = "KaindaMultipleChoicesException";
-    response_code = 300;
+    response_code = this.response_code ?? 300;
     template = GenericKaindaExceptionTemplates.Kainda300Template;
 }
 
@@ -39,7 +39,7 @@ class Kainda300Exception extends KaindaException
 class Kainda301Exception extends KaindaException 
 {
     name = "KaindaMovedPermanentlyException";
-    response_code = 301;
+    response_code = this.response_code ?? 301;
     template = GenericKaindaExceptionTemplates.Kainda301Template;
 }
 
@@ -60,7 +60,7 @@ class Kainda301Exception extends KaindaException
 class Kainda302Exception extends KaindaException 
 {
     name = "KaindaFoundException";
-    response_code = 302;
+    response_code = this.response_code ?? 302;
     template = GenericKaindaExceptionTemplates.Kainda302Template;
 }
 
@@ -81,7 +81,7 @@ class Kainda302Exception extends KaindaException
 class Kainda303Exception extends KaindaException 
 {
     name = "KaindaSeeOtherException";
-    response_code = 303;
+    response_code = this.response_code ?? 303;
     template = GenericKaindaExceptionTemplates.Kainda303Template;
 }
 
@@ -102,7 +102,7 @@ class Kainda303Exception extends KaindaException
 class Kainda304Exception extends KaindaException 
 {
     name = "KaindaNotModifiedException";
-    response_code = 304;
+    response_code = this.response_code ?? 304;
     template = GenericKaindaExceptionTemplates.Kainda304Template;
 }
 
@@ -123,7 +123,7 @@ class Kainda304Exception extends KaindaException
 class Kainda307Exception extends KaindaException 
 {
     name = "KaindaTemporaryRedirectException";
-    response_code = 307;
+    response_code = this.response_code ?? 307;
     template = GenericKaindaExceptionTemplates.Kainda307Template;
 }
 
@@ -144,7 +144,7 @@ class Kainda307Exception extends KaindaException
 class Kainda308Exception extends KaindaException 
 {
     name = "KaindaPermanentRedirectException";
-    response_code = 308;
+    response_code = this.response_code ?? 308;
     template = GenericKaindaExceptionTemplates.Kainda308Template;
 }
 

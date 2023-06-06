@@ -18,7 +18,7 @@ const GenericKaindaExceptionTemplates = require("./../../genericTemplates");
 class Kainda500Exception extends KaindaException 
 {
     name = "KaindaInternalServerErrorException";
-    response_code = 500;
+    response_code = this.response_code ?? 500;
     template = GenericKaindaExceptionTemplates.Kainda500Template;
 }
 
@@ -39,7 +39,7 @@ class Kainda500Exception extends KaindaException
 class Kainda501Exception extends KaindaException 
 {
     name = "KaindaNotImplementedException";
-    response_code = 501;
+    response_code = this.response_code ?? 501;
     template = GenericKaindaExceptionTemplates.Kainda501Template;
 }
 
@@ -60,7 +60,7 @@ class Kainda501Exception extends KaindaException
 class Kainda502Exception extends KaindaException 
 {
     name = "KaindaBadGatewayException";
-    response_code = 502;
+    response_code = this.response_code ?? 502;
     template = GenericKaindaExceptionTemplates.Kainda502Template;
 }
 
@@ -81,7 +81,7 @@ class Kainda502Exception extends KaindaException
 class Kainda503Exception extends KaindaException 
 {
     name = "KaindaServiceUnavailableException";
-    response_code = 503;
+    response_code = this.response_code ?? 503;
     template = GenericKaindaExceptionTemplates.Kainda503Template;
 }
 
@@ -102,7 +102,7 @@ class Kainda503Exception extends KaindaException
 class Kainda504Exception extends KaindaException 
 {
     name = "KaindaGatewayTimeoutException";
-    response_code = 504;
+    response_code = this.response_code ?? 504;
     template = GenericKaindaExceptionTemplates.Kainda504Template;
 }
 
@@ -123,7 +123,7 @@ class Kainda504Exception extends KaindaException
 class Kainda505Exception extends KaindaException 
 {
     name = "KaindaHTTPVersionNotSupportedException";
-    response_code = 505;
+    response_code = this.response_code ?? 505;
     template = GenericKaindaExceptionTemplates.Kainda505Template;
 }
 /**
@@ -143,7 +143,7 @@ class Kainda505Exception extends KaindaException
 class Kainda506Exception extends KaindaException 
 {
     name = "KaindaVariantAlsoNegotiatesException";
-    response_code = 506;
+    response_code = this.response_code ?? 506;
     template = GenericKaindaExceptionTemplates.Kainda506Template;
 }
 /**
@@ -163,7 +163,7 @@ class Kainda506Exception extends KaindaException
 class Kainda507Exception extends KaindaException 
 {
     name = "KaindaInsufficientStorageException";
-    response_code = 507;
+    response_code = this.response_code ?? 507;
     template = GenericKaindaExceptionTemplates.Kainda507Template;
 }
 /**
@@ -183,7 +183,7 @@ class Kainda507Exception extends KaindaException
 class Kainda508Exception extends KaindaException 
 {
     name = "KaindaLoopDetectedException";
-    response_code = 508;
+    response_code = this.response_code ?? 508;
     template = GenericKaindaExceptionTemplates.Kainda508Template;
 }
 
@@ -204,7 +204,7 @@ class Kainda508Exception extends KaindaException
 class Kainda510Exception extends KaindaException 
 {
     name = "KaindaNotExtendedException";
-    response_code = 510;
+    response_code = this.response_code ?? 510;
     template = GenericKaindaExceptionTemplates.Kainda510Template;
 }
 
@@ -225,7 +225,7 @@ class Kainda510Exception extends KaindaException
 class Kainda511Exception extends KaindaException 
 {
     name = "KaindaNetworkAuthenticationRequiredException";
-    response_code = 511;
+    response_code = this.response_code ?? 511;
     template = GenericKaindaExceptionTemplates.Kainda511Template;
 }
 
