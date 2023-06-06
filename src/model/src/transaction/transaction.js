@@ -111,17 +111,17 @@ class KaindaTransaction
         return false;
     }
 
-    get isActive() 
+    isActive() 
     {
         return this.state === "active";
     }
 
-    get isCommited() 
+    isCommited() 
     {
         return this.state === "commited";
     }
 
-    get isRolledBack() 
+    isRolledBack() 
     {
         return this.state === "rolledBack";
     }
