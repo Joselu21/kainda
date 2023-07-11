@@ -59,6 +59,7 @@ function exportFiles(searchPath, extension)
                 [file.name.substring(0, file.name.indexOf("."))]: aux
             };
         }
+        return exportable;
     }, {});
 }
 
