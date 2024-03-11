@@ -1,6 +1,4 @@
-const serveDocumentation = require("@/doc/doc-serve");
 const kainda = require("kainda");
-const path = require("path");
 
 class ModelsService 
 {
@@ -42,9 +40,6 @@ class ModelsService
             });
             res.status(200).json(routes);
         });
-
-        // Serve the documentation
-        serveDocumentation(app, "/doc", path.join(process.cwd(), "/doc/openapi.json"));
     }
 
 }
