@@ -77,6 +77,7 @@ function initializeStructure(project_name, options = {})
             ["app/services/documentation.service", ""],
             ["app/services/documentation.service", "index.js"],
             ["app/services/documentation.service", "openApi3.js"],
+            ["app/services/documentation.service/json", ""],
             ["app/services/documentation.service/json", "components.json"],
             ["app/services/documentation.service/json", "index.json"],
             ["app/services/documentation.service/json", "paths.json"],
@@ -115,6 +116,9 @@ function initializeStructure(project_name, options = {})
         
         // ESLint
         copyTemplate(join(__dirname, "../../templates/linter.config.js"), "./.eslintrc.js");
+
+        // JSConfig
+        copyTemplate(join(__dirname, "../../templates/js_config.json"), "./jsconfig.json");
 
     }
     catch (error) 

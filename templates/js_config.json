@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "module": "commonjs",
+        "paths": {
+            "@/*": [
+                "./"
+            ],
+            "@app/*": [
+                "./app/*"
+            ],
+            "@entities/*": [
+                "./app/entities/*"
+            ],
+            "@services/*": [
+                "./app/services/*"
+            ],
+            "@test/*": [
+                "./app/test/*"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
