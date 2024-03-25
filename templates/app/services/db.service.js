@@ -80,15 +80,28 @@ class DbService
 
         const mongoose = require("mongoose");
 
-        if (!critical || (!critical.uri && (!critical.host || !critical.port || !critical.database_name))) 
+        if (!critical || (!critical.uri && (!critical.protocol || !critical.host))) 
         {
-            LogService.ServerLogger.error("[CONFIG] Your configuration file is incorrect, you must specify a critical database");
+            LogService.ServerLogger.error("[CONFIG] Your configuration file is incorrect, you must specify a valid critical database");
             throw new Error();
         }
 
-        const uri = critical.uri ?? `mongodb://${critical.username}:${encodeURIComponent(critical.password)}@${critical.host}:${critical.port}/${critical.database_name}`;
+        let uri = "";
+        if (critical.uri)
+        {
+            uri = critical.uri;
+        } 
+        else 
+        {
+            uri += critical.protocol.endsWith("://") ? critical.protocol : `${critical.protocol}://`;
+            uri += critical.username ? `${critical.username}:${encodeURIComponent(critical.password)}` : "";
+            uri += critical.username ? "@" : "";
+            uri += critical.host;
+            uri += critical.port ? `:${critical.port}` : "";
+            uri += critical.database_name ? `/${critical.database_name}` : "";
+        }
+        
         const options = critical.options ?? {
-            useNewUrlParser: true,
             compressors: ["zstd"],
             maxPoolSize: critical.pool?.max ?? 100,
             minPoolSize: critical.pool?.min ?? 10,
@@ -117,7 +130,7 @@ class DbService
 
         if (!critical || !critical.host || !critical.port || !critical.database_name) 
         {
-            LogService.ServerLogger.error("[CONFIG] Your configuration file is incorrect, you must specify a critical database");
+            LogService.ServerLogger.error("[CONFIG] Your configuration file is incorrect, you must specify a valid critical database");
             throw new Error();
         }
 
