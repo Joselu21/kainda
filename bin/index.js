@@ -8,13 +8,20 @@ const listProjectInfo = require("./project/list");
 const { extractArgument } = require("./utils/args.utils");
 const entityDetails = require("./entities/details");
 
-loop();
+try
+{
+    loop();
+} 
+catch (error)
+{
+    console.log(chalk.green("Bye!"));
+}
 
-async function loop() 
+async function loop () 
 {
 
     let exitCondition = false;
-    let enterMode = process.argv[2];
+    let enterMode = process.argv[ 2 ];
     if (enterMode === "project") 
     {
         console.log("enterManageProjects");
@@ -26,7 +33,7 @@ async function loop()
         await manageEntities();
         throw new Error();
     }
-    else if(enterMode) 
+    else if (enterMode) 
     {
         console.log(chalk.red("Invalid argument " + enterMode));
     }
@@ -57,43 +64,43 @@ async function loop()
 
         switch (choice.option) 
         {
-        case "1":
-        case 1:
-            await manageProjects();
-            break;
-        case "2":
-        case 2:
-            await manageEntities();
-            break;
-        case "3":
-        case 3:
-            console.log(chalk.green("Bye!"));
-            exitCondition = true;
-            break;
-        default:
-            console.log(chalk.red("Invalid option"));
-            break;
+            case "1":
+            case 1:
+                await manageProjects();
+                break;
+            case "2":
+            case 2:
+                await manageEntities();
+                break;
+            case "3":
+            case 3:
+                console.log(chalk.green("Bye!"));
+                exitCondition = true;
+                break;
+            default:
+                console.log(chalk.red("Invalid option"));
+                break;
         }
 
     } while (!exitCondition);
 }
 
-async function manageProjects(action = null) 
+async function manageProjects (action = null) 
 {
 
     action = action ?? extractArgument("project");
-    if(action) 
+    if (action) 
     {
         switch (action) 
         {
-        case "create":
-        case "init":
-            console.log("createProject");
-            await createProject();
-            break;
-        default:
-            console.log(chalk.red("Invalid project action: " + action));
-            break;
+            case "create":
+            case "init":
+                console.log("createProject");
+                await createProject();
+                break;
+            default:
+                console.log(chalk.red("Invalid project action: " + action));
+                break;
         }
         throw new Error();
     }
@@ -124,44 +131,44 @@ async function manageProjects(action = null)
 
     switch (choice.option) 
     {
-    case "1":
-    case 1:
-        await createProject();
-        break;
-    case "2":
-    case 2:
-        await listProjectInfo();
-        break;
-    case "3":
-    case 3:
-        break;
-    case "4":
-    case 4:
-        break;
-    case "5":
-    case 5:
-        throw new Error();
-    default:
-        console.log(chalk.red("Invalid option"));
-        break;
+        case "1":
+        case 1:
+            await createProject();
+            break;
+        case "2":
+        case 2:
+            await listProjectInfo();
+            break;
+        case "3":
+        case 3:
+            break;
+        case "4":
+        case 4:
+            break;
+        case "5":
+        case 5:
+            throw new Error();
+        default:
+            console.log(chalk.red("Invalid option"));
+            break;
     }
 }
 
-async function manageEntities(action = null) 
+async function manageEntities (action = null) 
 {
 
     action = action ?? extractArgument("entity");
     let name = extractArgument("create");
-    if(action) 
+    if (action) 
     {
         switch (action) 
         {
-        case "create":
-            await createEntity(name);
-            break;
-        default:
-            console.log(chalk.red("Invalid entity action: " + action));
-            break;
+            case "create":
+                await createEntity(name);
+                break;
+            default:
+                console.log(chalk.red("Invalid entity action: " + action));
+                break;
         }
         throw new Error();
     }
@@ -192,27 +199,27 @@ async function manageEntities(action = null)
 
     switch (choice.option) 
     {
-    case "1":
-    case 1:
-        await createEntity();
-        break;
-    case "2":
-    case 2:
-        await listEntities();
-        break;
-    case "3":
-    case 3:
-        await entityDetails();
-        break;
-    case "4":
-    case 4:
-        break;
-    case "5":
-    case 5:
-        throw new Error();
-    default:
-        console.log(chalk.red("Invalid option"));
-        break;
+        case "1":
+        case 1:
+            await createEntity();
+            break;
+        case "2":
+        case 2:
+            await listEntities();
+            break;
+        case "3":
+        case 3:
+            await entityDetails();
+            break;
+        case "4":
+        case 4:
+            break;
+        case "5":
+        case 5:
+            throw new Error();
+        default:
+            console.log(chalk.red("Invalid option"));
+            break;
     }
 }
 

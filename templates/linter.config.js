@@ -10,7 +10,7 @@ module.exports = {
         ecmaVersion: "latest",
     },
     rules: {
-        indent: [ "error", 4 ],
+        indent: [ "error", 4, { SwitchCase: 1 } ],
         quotes: [ "error", "double" ],
         semi: [ "error", "always" ],
         "no-unused-vars": [
