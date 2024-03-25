@@ -53,7 +53,7 @@ async function main()
             LogService.StartLogger.error(err);
             throw new Error("Error while starting the server: " + (err.message ?? "Possible EADDRINUSE"));
         }
-        LogService.StartLogger.info(`suarte_backend is running on ${host}:${port}`);
+        LogService.StartLogger.info(`API is running on ${host}:${port}`);
         poll = false;
     });
 
