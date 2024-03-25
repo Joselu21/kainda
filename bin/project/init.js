@@ -74,6 +74,14 @@ function initializeStructure(project_name, options = {})
             ["app/services", "models.service.js"],
             ["app/services", "seed.service.js"],
             ["app/services", "exception.service.js"],
+            ["app/services/documentation.service", ""],
+            ["app/services/documentation.service", "index.js"],
+            ["app/services/documentation.service", "openApi3.js"],
+            ["app/services/documentation.service/json", ""],
+            ["app/services/documentation.service/json", "components.json"],
+            ["app/services/documentation.service/json", "index.json"],
+            ["app/services/documentation.service/json", "paths.json"],
+            ["app/services/documentation.service/json", "tags.json"],
             ["app/test", ""],
             ["app/test", "mocha.setup.js"],
             ["app/test", "utils.setup.js"],
@@ -82,15 +90,7 @@ function initializeStructure(project_name, options = {})
             ["config", "development.json"],
             ["config", "production.json"],
             ["config", "test.json"],
-            ["doc", ""],
-            ["doc", "openapi.json"],
-            ["doc", "doc-serve.js"],
-            ["doc", "generate-docs.js"],
-            ["doc/src", ""],
-            ["doc/src", "components.json"],
-            ["doc/src", "index.json"],
-            ["doc/src", "paths.json"],
-            ["doc/src", "tags.json"],
+            ["docs", ""],
         ];
 
         for (const [source, destination] of dirsAndFiles) 
@@ -116,6 +116,9 @@ function initializeStructure(project_name, options = {})
         
         // ESLint
         copyTemplate(join(__dirname, "../../templates/linter.config.js"), "./.eslintrc.js");
+
+        // JSConfig
+        copyTemplate(join(__dirname, "../../templates/js_config.json"), "./jsconfig.json");
 
     }
     catch (error) 

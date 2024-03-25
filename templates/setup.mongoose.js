@@ -2,6 +2,7 @@
 * IMPORTS 
 */
 require("module-alias/register");
+const DocumentationService = require("@services/documentation.service");
 const ModelsService = require("@services/models.service");
 const LogService = require("@services/log.service");
 const DbService = require("@services/db.service");
@@ -11,8 +12,14 @@ const kainda = require("kainda");
 const config = require("config");
 const https = require("http");
 
-async function main() 
+async function main () 
 {
+    if(process.env.NODE_ENV === "documentation")
+    {
+        DocumentationService.generateDocumentation();
+        return;
+    }
+    
     // We run express which will provide us an execution environment
     let app = express();
 
@@ -23,7 +30,7 @@ async function main()
     setupMiddlewares(app);
 
     // Critical database initialization
-    const critical = config.get("databases").filter(db => db.description === "critical")[0];
+    const critical = config.get("databases").filter(db => db.description === "critical")[ 0 ];
     await DbService.init(critical);
 
     // Make some configuration and utils globally available
@@ -38,6 +45,9 @@ async function main()
 
     // Require the routes
     ModelsService.setupRoutes(app);
+
+    // Add the documentation route to the express app
+    DocumentationService.addDocumentationRouteToExpress(app);
 
     /**
     * Server creation

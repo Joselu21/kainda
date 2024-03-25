@@ -10,5 +10,10 @@
     "jwt": {
         "secret": "",
         "expiresIn": "1h"
+    },
+    "documentation": {
+        "folder": "docs",
+        "expressRoute": "/docs",
+        "currentFile" : "current.json"
     }
 }
