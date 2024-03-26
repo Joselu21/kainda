@@ -2,6 +2,7 @@
     "paths": {
         "/__KAINDA__MODEL__LOWERCASE__/": {
             "post": {
+                "deprecated": true,
                 "summary": "Create a new __KAINDA__MODEL__LOWERCASE__",
                 "operationId": "create__KAINDA__MODEL__UPPERCASE__",
                 "tags": [
@@ -37,12 +38,6 @@
                     },
                     "409": {
                         "$ref": "#/components/responses/ConflictError"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/TooManyRequestsError"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/InternalServerError"
                     }
                 },
                 "security": [
@@ -52,6 +47,7 @@
                 ]
             },
             "get": {
+                "deprecated": true,
                 "summary": "Get all __KAINDA__MODEL__LOWERCASE__s",
                 "operationId": "getAll__KAINDA__MODEL__UPPERCASE__s",
                 "tags": [
@@ -87,12 +83,6 @@
                     },
                     "401": {
                         "$ref": "#/components/responses/UnauthorizedError"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/TooManyRequestsError"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/InternalServerError"
                     }
                 },
                 "security": [
@@ -104,6 +94,7 @@
         },
         "/__KAINDA__MODEL__LOWERCASE__/{__KAINDA__MODEL__LOWERCASE___id}/": {
             "get": {
+                "deprecated": true,
                 "summary": "Get a __KAINDA__MODEL__LOWERCASE__ by id",
                 "operationId": "get__KAINDA__MODEL__UPPERCASE__ById",
                 "tags": [
@@ -130,12 +121,6 @@
                     },
                     "404": {
                         "$ref": "#/components/responses/NotFoundError"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/TooManyRequestsError"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/InternalServerError"
                     }
                 },
                 "security": [
@@ -145,6 +130,7 @@
                 ]
             },
             "put": {
+                "deprecated": true,
                 "summary": "Update a __KAINDA__MODEL__LOWERCASE__ by id",
                 "operationId": "update__KAINDA__MODEL__UPPERCASE__",
                 "tags": [
@@ -185,12 +171,6 @@
                     },
                     "404": {
                         "$ref": "#/components/responses/NotFoundError"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/TooManyRequestsError"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/InternalServerError"
                     }
                 },
                 "security": [
@@ -200,6 +180,7 @@
                 ]
             },
             "delete": {
+                "deprecated": true,
                 "summary": "Delete a __KAINDA__MODEL__LOWERCASE__ by id",
                 "operationId": "delete__KAINDA__MODEL__UPPERCASE__",
                 "tags": [
@@ -226,12 +207,6 @@
                     },
                     "404": {
                         "$ref": "#/components/responses/NotFoundError"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/TooManyRequestsError"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/InternalServerError"
                     }
                 },
                 "security": [
