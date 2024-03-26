@@ -54,7 +54,7 @@ class SeedService
             {
                 if (Models[model].Seeders.seed && typeof Models[model].Seeders.seed === "function") 
                 {
-                    await Models[model].Seeders.seed(transaction);
+                    await Models[model].Seeders.seed(Models[model].seed_options.data, { transaction });
                 }
                 else if (Models[model].seed && typeof Models[model].seed === "function") 
                 {
@@ -92,7 +92,7 @@ class SeedService
             {
                 if (Models[model].Seeders.seed && typeof Models[model].Seeders.seed === "function") 
                 {
-                    await Models[model].Seeders.seed(transaction);
+                    await Models[model].Seeders.seed(Models[model].seed_options.data, { transaction });
                 }
                 else if (Models[model].seed && typeof Models[model].seed === "function") 
                 {
