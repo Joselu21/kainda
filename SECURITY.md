@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Due to the major rehaul of the new Kainda v5.0.0, only versions >= 5.0.0 are currently mantained. This exlusion will probably not be a problem due to the fact that prior to this version, kainda was only used in private projects and all of these are updated to newer versions.
+Due to the major rehaul of the new Kainda v7.0.0, the only major version currently mantained is Kainda v7. This exclusion will probably not be a problem due to the fact that prior to this version, kainda was only used in private projects and all of these are updated to newer versions.
 It is important to note that due to the nature of this project old versions may be discontinued rapidly if there are major changes affecting the generated structure of a new project
 
 ## Reporting a Vulnerability
