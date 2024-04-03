@@ -48,12 +48,12 @@ class DbService
     static async init(critical) 
     {
         // Init the database
-        if (critical.dialect.includes("mongo")) 
+        if (critical?.dialect.includes("mongo")) 
         {
             await DbService.initMongoose(critical);
             return DbService.mongoose;
         }
-        else if (critical.dialect.includes("sql") || critical.dialect.includes("postgre")) 
+        else if (critical?.dialect.includes("sql") || critical?.dialect.includes("postgre")) 
         {
             await DbService.initSequelize(critical);
             return DbService.sequelize;
