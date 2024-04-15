@@ -46,12 +46,12 @@ class ExceptionService
 
         if (DbService.mongoose && error instanceof DbService.mongoose.Error) 
         {
-            ExceptionService.mongooseHandler(error, res);
+            return ExceptionService.mongooseHandler(error, res);
         }
 
         if (DbService.sequelize && error instanceof DbService.sequelize.BaseError) 
         {
-            ExceptionService.sequelizeHandler(error, res);
+            return ExceptionService.sequelizeHandler(error, res);
         }
 
         return ExceptionService.returnGenericException(error, res);
@@ -70,7 +70,7 @@ class ExceptionService
 
     static response(json, res) 
     {
-        return res.status(json.error_code).json(json.body);
+        return res.status(json.error_code).json(json);
     }
 
     static mongooseHandler(error, res) 
