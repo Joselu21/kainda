@@ -47,7 +47,10 @@ async function main ()
     ModelsService.setupRoutes(app);
 
     // Add the documentation route to the express app
-    DocumentationService.addDocumentationRouteToExpress(app);
+    if(config.has("documentation"))
+    {
+        DocumentationService.addDocumentationRouteToExpress(app);
+    }
 
     /**
     * Server creation
