@@ -1,5 +1,33 @@
-const { chalk } = require("kainda");
+const chalk = require("chalk");
 const winston = require("winston");
+
+class MockLogger 
+{
+    constructor() 
+    {
+        this.transports = [];
+    }
+
+    error() 
+    {
+    }
+
+    warn() 
+    {
+    }
+
+    info() 
+    {
+    }
+
+    verbose() 
+    {
+    }
+
+    debug() 
+    {
+    }
+}
 
 class LogService 
 {
@@ -139,21 +167,37 @@ class LogService
 
     static get ErrorLogger() 
     {
+        if (!LogService.#errorLogger || !LogService.#errorLogger.transports || LogService.#errorLogger.transports.length === 0) 
+        {
+            return new MockLogger();
+        }
         return LogService.#errorLogger;
     }
 
     static get RequestLogger() 
     {
+        if (!LogService.#requestLogger || !LogService.#requestLogger.transports || LogService.#requestLogger.transports.length === 0) 
+        {
+            return new MockLogger();
+        }
         return LogService.#requestLogger;
     }
 
     static get StartLogger() 
     {
+        if (!LogService.#startLogger || !LogService.#startLogger.transports || LogService.#startLogger.transports.length === 0) 
+        {
+            return new MockLogger();
+        }
         return LogService.#startLogger;
     }
 
     static get ServerLogger() 
     {
+        if (!LogService.#serverLogger || !LogService.#serverLogger.transports || LogService.#serverLogger.transports.length === 0) 
+        {
+            return new MockLogger();
+        }
         return LogService.#serverLogger;
     }
 
