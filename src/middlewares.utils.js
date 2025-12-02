@@ -21,7 +21,7 @@ function checkObjectHas(keys, container, exceptions = [])
         let value = container;
         for (let part of key.split(".")) 
         {
-            if (!value[part]) 
+            if (Object.prototype.hasOwnProperty.call(value, part) === false) 
             {
                 if (!exceptions.includes(key)) 
                 {
